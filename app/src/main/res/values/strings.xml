@@ -1,4 +1,60 @@
 <resources>
     <string name="app_name">FriendsKnowsBest</string>
     <string name="facebook_app_id">156564188127616</string>
+
+    <string name="login_first">Login or Register first!</string>
+    <string name="categoryromantic">category_romantic</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Log in</string>
+    <string name="action_register">Registrar</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+
+    <array name="category_romantic">
+
+        <item>
+            1. Who is most likely to be the first to have children?
+        </item>
+        <item>
+            2. Who is most likely to have sex most often?
+        </item>
+        <item>
+            3. Who is most likely to build the biggest house?
+        </item>
+        <item>
+            4. Who is most likely to move to another country?
+        </item>
+        <item>
+            5. Who is most likely to have the most children?
+        </item>
+        <item>
+            6. Who is most likely to celebrate their Golden Anniversary?
+        </item>
+        <item>
+            7. Who is most likely to get cheated on?
+        </item>
+        <item>
+            8. Who is most likely to become very fat within the next five years?
+        </item>
+        <item>
+            9. Who is most likely to give birth twice in one year?
+        </item>
+        <item>
+            10. Who is most likely to win the lottery and separate?
+        </item>
+
+    </array>
+
+
 </resources>

@@ -1,11 +1,89 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.Theme.AppCompat">
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--</style>-->
+    <style name="MainAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
+    <!--style/ThemeOverlay.AppCompat.Dark-->
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:button">
+            @color/colorAccent
+        </item>
+        <!--@style/Widget.AppCompat.Button.Colored-->
+
+    </style>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:button">
+            @color/colorAccent
+        </item>
+        <!--<item name="colorButtonNormal">#ff0000</item>-->
+        <!--<item name="android:textColor">@android:color/white</item>-->
+    </style>
+
+
+
+    <style name="AppTheme.AppCompat.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:button">
+            @color/colorAccent
+        </item>
+
+    </style>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <style name="cardTheme" parent="AppTheme.NoActionBar">
+
+    </style>
+
+    <!--<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">-->
+    <!--<item name="colorButtonNormal">#ff0000</item>-->
+    <!--<item name="android:textColor">@android:color/white</item>-->
+    <!--</style>-->
+    <style name="AppTheme.Button" >
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="AppTheme.Label" >
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+    <style name="AppTheme.Label.Light"  >
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+    </style>
+    <style name="AppTheme.EditText">
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+        <item name="android:textColor">@color/teal</item>
+    </style>
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+
     </style>
 
 </resources>

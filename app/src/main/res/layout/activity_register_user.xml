@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="RegisterUser">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/nameTV"
+        android:hint="Nombre"
+        android:layout_marginTop="20dp" />
+
+    <ImageView
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:src="@drawable/placeholder"
+        android:layout_width="195dp"
+        android:layout_height="196dp"
+        android:id="@+id/userImageView" />
+
+    <ImageButton
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_mode_edit_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editImageBtn"
+        android:textAlignment="center" />
+
+    <Button
+        android:text="Guardar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/guardarBtn"
+        android:theme="@style/AppTheme.Button"
+        style="@style/Widget.AppCompat.Button.Small"
+         />
+</LinearLayout>

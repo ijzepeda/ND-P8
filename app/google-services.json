@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "963353948393",
+    "firebase_url": "https://nd-p7-7d3b1.firebaseio.com",
+    "project_id": "nd-p7-7d3b1",
+    "storage_bucket": "nd-p7-7d3b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963353948393:android:7c91230f3a3c5714",
+        "android_client_info": {
+          "package_name": "com.ijzepeda.friendsknowsbest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963353948393-hu4en4melcj20ogbhu5fs3eh58c1p64q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI7qUtWAxEVn4Ij2xvBcSDL7bwskEzOe0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

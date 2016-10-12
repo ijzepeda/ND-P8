@@ -1,10 +1,9 @@
 package  com.ijzepeda.friendsknowsbest;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,7 +30,6 @@ TextView nameTV;
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private FirebaseStorage storage;
-
     private DatabaseReference databaseRef;
 
     @Override
@@ -78,8 +75,10 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                             }
                         });
 
-                Intent intent=new Intent(getApplicationContext(),MainMenuActivity.class);
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
+                finish();
+                return;
             }
         });
 

@@ -26,6 +26,7 @@
         <item name="android:button">
             @color/colorAccent
         </item>
+        <!--<item name="buttonStyle"></item>-->
         <!--@style/Widget.AppCompat.Button.Colored-->
 
     </style>
@@ -65,6 +66,11 @@
     <!--<item name="android:textColor">@android:color/white</item>-->
     <!--</style>-->
     <style name="AppTheme.Button" >
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="menuButton" parent="AppTheme.Button" >
+        <item name="layoutWidth">match_parent</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>

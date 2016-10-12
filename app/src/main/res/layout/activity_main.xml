@@ -1,33 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-
+android:orientation="vertical"
        android:layout_height="match_parent"
     android:layout_width="match_parent"
     >
 
         <Button
-            android:text="Offline"
-            android:layout_width="wrap_content"
+            android:text="Quick Game"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="181dp"
-            android:id="@+id/offline" />
+            android:layout_marginTop="62dp"
+            android:id="@+id/offline"
+            android:layout_gravity="center"
+           android:theme="@style/menuButton"/>
 
     <Button
         android:text="Online"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/offline"
-        android:layout_alignLeft="@+id/offline"
-        android:layout_alignStart="@+id/offline"
-        android:layout_marginTop="45dp"
-        android:id="@+id/online" />
+        android:id="@+id/online"
+        android:layout_gravity="center"
+        android:theme="@style/menuButton"/>
 
-</RelativeLayout>
+    <Button
+        android:text="New Game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newGameBtn"
+        android:layout_gravity="center"
+        android:theme="@style/menuButton"/>
+    <Button
+        android:text="Load Game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadGameBtn"
+        android:layout_gravity="center"
+        android:theme="@style/menuButton"/>
+
+    <Button
+        android:text="Settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingsBtn"
+        android:layout_gravity="center"
+        android:theme="@style/menuButton"/>
+    <Button
+        android:text="Logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/logoutBtn"
+        android:layout_marginBottom="19dp"
+        android:layout_gravity="center"
+        android:theme="@style/menuButton"/>
+
+</LinearLayout>
 
 

@@ -3,22 +3,22 @@ package com.ijzepeda.friendsknowsbest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,10 +71,7 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    CallbackManager callbackManager;
-    FirebaseApp firebaseApp;
-    FirebaseAuth firebaseAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
+
     private static String TAG="LOGIN";
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -111,6 +108,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private DatabaseReference databaseRootRef;
     private StorageReference storageRef;
     DatabaseReference firebaseDatabaseRootReference;
+    CallbackManager callbackManager;
+    FirebaseApp firebaseApp;
+    FirebaseAuth firebaseAuth;
+    FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseUser mFirebaseUser;
 
 //    @Override
 //    protected void onDestroy() {
@@ -135,6 +137,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //        get database
         databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
         firebaseDatabaseRootReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
 
 
         // Set up the login form.
@@ -164,6 +167,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.d(TAG, "facebook:onError", error);
             }
         });
+        mFirebaseUser = auth.getCurrentUser();
+//        Log.e("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
+        if (mFirebaseUser != null) {
+            // Not signed in, launch the Sign In activity
+//seems it doesnt work with FACEBOOK loginned
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -223,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Log.e("mauthlistener","provider is:"+user.getProviderId());
                     Log.e("mauthlistener","photourl is:"+user.getPhotoUrl());
                     //No need to ask for email again, go directly
-                    Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     showProgress(false);
                     finish();
                     startActivity(intent);
@@ -237,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
         if(isEmailValid(Utils.getInstance().getValue(this,"email")) ){
-            Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             showProgress(false);
             finish();
             startActivity(intent);
@@ -262,7 +275,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }else{
                             Toast.makeText(LoginActivity.this, "Authentication with Facebook Success!",
                                     Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             showProgress(false);
                             finish();
                             startActivity(intent);
@@ -575,7 +588,7 @@ public void getUser(String mail){
                 utils.save(getApplication(),name,"username");
 //                utils.save(getApplication(),mail,"email");
 
-                Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 showProgress(false);
                 startActivity(intent);
                 finish();

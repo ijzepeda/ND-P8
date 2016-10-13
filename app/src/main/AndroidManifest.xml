@@ -17,10 +17,11 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>>
-
+        </activity>
+        >
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -30,6 +31,10 @@
         <activity android:name=".MainMenuActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterUser" />
+        <activity android:name=".NewGame" />
+        <activity android:name=".LoadActivity" />
+        <activity android:name=".Settings" />
+        <activity android:name=".FavoriteCards"></activity>
     </application>
 
 </manifest>

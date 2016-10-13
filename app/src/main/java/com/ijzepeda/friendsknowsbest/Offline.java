@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.daprlabs.cardstack.SwipeDeck;
@@ -19,9 +18,6 @@ import java.util.Random;
 //import com.andtinder.view.SimpleCardStackAdapter;
 
 public class Offline extends AppCompatActivity {
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
 //    CardModel card,card2,card3,newCard;
 //    SimpleCardStackAdapter adapter;

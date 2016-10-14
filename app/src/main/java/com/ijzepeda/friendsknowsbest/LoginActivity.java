@@ -8,7 +8,9 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -61,6 +64,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -230,6 +235,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     //user is signed in
                     Log.d("login","onAuthStateChanfed:signed_in:"+user.getUid());
                     Utils.getInstance().save(getApplication(),user.getUid(),"uid");
+                    Utils.getInstance().save(getApplication(),user.getDisplayName(),"username");
+                    Utils.getInstance().save(getApplication(),user.getEmail(),"email");
                     Log.e("mauthlistener","name is:"+user.getDisplayName());
                     Log.e("mauthlistener","email is:"+user.getEmail());
                     Log.e("mauthlistener","uid is:"+user.getUid());
@@ -257,7 +264,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
 
+//GETSHA for facebook //TODO DELETE
+       /** try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.ijzepeda.friendsknowsbest",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("facebook KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (NoSuchAlgorithmException e) {
 
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        */
     }
     private void facebookLogin(AccessToken accessToken){
         Log.d(TAG,"facebookLogin Handling");

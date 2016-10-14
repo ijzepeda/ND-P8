@@ -35,6 +35,15 @@
         android:lines="1"
         android:inputType="number" />
 
+    <Button
+        android:text="Invite more friends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/inviteFriendsBtn"
+        android:theme="@style/AppTheme.Button"
+        style="@style/Widget.AppCompat.Button.Small"
+        />
+
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

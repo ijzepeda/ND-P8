@@ -2,22 +2,34 @@ package com.ijzepeda.friendsknowsbest;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.appinvite.AppInvite;
+import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.google.android.gms.internal.zznu.is;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity   implements
+        GoogleApiClient.OnConnectionFailedListener {
 FirebaseAuth mFirebaseAuth;
     FirebaseUser mFirebaseUser;
+private static String TAG="MainActivity";
+    private GoogleApiClient mGoogleApiClient;
     String mUsername;
     String mPhotoUrl;
     Button logoutBtn;
@@ -30,6 +42,8 @@ FirebaseAuth mFirebaseAuth;
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_main);
+//user
+
 
         //Bind Views
         loadGameBtn=(Button)findViewById(R.id.loadGameBtn);
@@ -56,6 +70,9 @@ FirebaseAuth mFirebaseAuth;
 //            return;
         } else {
                     Log.e("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getUid(),"uid");
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getDisplayName(),"name");
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getEmail(),"email");
 
             //show buttons
             loadGameBtn.setVisibility(View.VISIBLE);
@@ -127,15 +144,41 @@ FirebaseAuth mFirebaseAuth;
             }
         });
 
-//        quickGameBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(getApplication(), Offline.class);
-//                startActivity(intent);
-//                finish();
-//                return;
-//            }
-//        });
+        //GET INVITATION
+        // Check for App Invite invitations and launch deep-link activity if possible.
+        // Requires that an Activity is registered in AndroidManifest.xml to handle
+        // deep-link URLs.
+        mGoogleApiClient=new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .addApi(AppInvite.API)
+                .build();
+        boolean autoLaunchDeepLink = false;//true;
+        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(AppInviteInvitationResult result) {
+                                Log.d(TAG, "getInvitation:onResult:" + result.getStatus());
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract information from the intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+                                    String invitationId = AppInviteReferral.getInvitationId(intent);
+                                    Log.e(TAG, "getInvitation:deepLink:" + deepLink);
+                                    Log.e(TAG, "getInvitation:invitationId:" + invitationId);
+                                    String extraString=intent.getStringExtra("prueba");
+                                    Log.e("~~~","Your invite from:"+extraString);
+                                    // Because autoLaunchDeepLink = true we don't have to do anything
+                                    // here, but we could set that to false and manually choose
+                                    // an Activity to launch to handle the deep link here.
+                                    // ...
+                                    Log.e("~~~","OPENING INTENT:");
+
+//                                    startActivity(intent);//<< is this same one intent/activity
+                                }
+                            }
+                        });
 
     }
 
@@ -151,5 +194,11 @@ FirebaseAuth mFirebaseAuth;
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+
     }
 }

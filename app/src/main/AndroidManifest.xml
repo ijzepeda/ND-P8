@@ -34,7 +34,9 @@
         <activity android:name=".NewGame" />
         <activity android:name=".LoadActivity" />
         <activity android:name=".Settings" />
-        <activity android:name=".FavoriteCards"></activity>
+        <activity android:name=".FavoriteCards" />
+        <activity android:name=".GameActivity" />
+        <activity android:name=".ResultsActivity"></activity>
     </application>
 
 </manifest>

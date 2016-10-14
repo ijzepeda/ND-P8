@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
-        android:id="@+id/imageButton"
+        android:id="@+id/nextInviteBtn"
         android:layout_gravity="bottom|right|end"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"

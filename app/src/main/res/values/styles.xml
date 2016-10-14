@@ -61,9 +61,9 @@
 
     <style name="ThemeOverlay.AppTheme.PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
         <!-- popup menu background - NEVER "android:background" !!! in themes -->
-        <item name="android:colorBackground"></item>
+        <!--<item name="android:colorBackground"></item>-->
         <!-- popup menu item text color -->
-        <item name="android:textColorPrimary"></item>
+        <!--<item name="android:textColorPrimary"></item>-->
     </style>
 
     <style name="AppTheme.ActionBarStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">

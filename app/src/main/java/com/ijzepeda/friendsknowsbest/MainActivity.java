@@ -97,6 +97,46 @@ FirebaseAuth mFirebaseAuth;
             }
         });
 
+        newGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent newGame=new Intent(getApplication(), NewGame.class);
+                startActivity(newGame);
+                finish();
+                return;
+            }
+        });
+
+        loadGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loadGame=new Intent(getApplication(), LoadActivity.class);
+                startActivity(loadGame);
+                finish();
+                return;
+            }
+        });
+
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplication(), Settings.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
+
+//        quickGameBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(getApplication(), Offline.class);
+//                startActivity(intent);
+//                finish();
+//                return;
+//            }
+//        });
+
     }
 
 

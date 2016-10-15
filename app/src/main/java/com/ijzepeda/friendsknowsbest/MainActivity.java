@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
 import com.google.android.gms.appinvite.AppInviteReferral;
@@ -21,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.google.android.gms.internal.zznu.is;
 
 
 public class MainActivity extends AppCompatActivity   implements
@@ -186,7 +186,7 @@ private static String TAG="MainActivity";
     private void logout(){
         FirebaseAuth.getInstance().signOut();
         Utils.getInstance().clearSharedPreference(this);//.save(this,usermail,"email");
-
+        LoginManager.getInstance().logOut();
 //        firebaseAuth.signOut();// if you are in this part, you can only logout
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 //        finish();

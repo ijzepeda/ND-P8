@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,14 +17,20 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.auth.api.model.StringList;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegisterUser extends AppCompatActivity {
     private static String TAG="RegisterUSer";
 TextView nameTV;
+    ImageView profilePic;
+    Button saveBtn;
     String uid;
     User user;
     //firebase
@@ -38,6 +46,8 @@ TextView nameTV;
         setContentView(R.layout.activity_register_user);
         //create user object
 nameTV=(TextView)findViewById(R.id.nameTV);
+saveBtn=(Button)findViewById(R.id.saveBtn);
+        profilePic=(ImageView)findViewById(R.id.userProfilePicView);
 
         app= FirebaseApp.getInstance();
         database= FirebaseDatabase.getInstance();
@@ -48,7 +58,7 @@ nameTV=(TextView)findViewById(R.id.nameTV);
 
 uid=Utils.getInstance().getValue(getApplication(),"uid");
 
-        ((Button)findViewById(R.id.guardarBtn)).setOnClickListener(new View.OnClickListener() {
+        ((Button)findViewById(R.id.saveBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Utils.getInstance().save(getApplication(),"username",nameTV.getText().toString());
@@ -74,6 +84,26 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                                 }
                             }
                         });
+
+
+                //TODO BEFORE GOING TO MENU AGAIN, CREATE USER IN DATABSE, That includes game
+                Map<String,Object> friendsMap=new HashMap<String, Object>();
+                Map<String,Object>cardsMap=new HashMap<String, Object>();
+                Map<String,Object>gamesMap=new HashMap<String, Object>();
+                friendsMap.put("Friend0","");
+                cardsMap.put("FavCard1","");
+                gamesMap.put("game0","GameUID123");
+                User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),
+                        friendsMap,cardsMap,gamesMap);
+                databaseRef=database.getReference("Users");
+
+                //TODO KEY CANT BE AN EMAIL!
+                Map<String,Object> map=new HashMap<String,Object>();
+                map.put(firebaseUser.getUid(),"");
+                databaseRef.updateChildren(map);
+                databaseRef.child(firebaseUser.getUid()).setValue(user);
+
+
 
                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);

@@ -24,7 +24,7 @@
         android:src="@drawable/placeholder"
         android:layout_width="195dp"
         android:layout_height="196dp"
-        android:id="@+id/userImageView" />
+        android:id="@+id/userProfilePicView" />
 
     <ImageButton
         android:gravity="center"
@@ -39,7 +39,7 @@
         android:text="Save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/guardarBtn"
+        android:id="@+id/saveBtn"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
          />

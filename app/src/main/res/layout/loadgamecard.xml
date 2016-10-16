@@ -67,14 +67,14 @@
                 android:layout_marginTop="9dp" />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
                 card_view:srcCompat="@drawable/ic_delete_black_24dp"
-                android:id="@+id/imageButton2"
+                android:id="@+id/deleteGameBtn"
                 android:background="@color/cardview_light_background"
-                android:layout_alignBottom="@+id/cardsdrawn"
-                android:layout_alignLeft="@+id/game_id"
-                android:layout_alignStart="@+id/game_id" />
+                android:layout_height="50dp"
+                android:layout_alignTop="@+id/cardsdrawn"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
 

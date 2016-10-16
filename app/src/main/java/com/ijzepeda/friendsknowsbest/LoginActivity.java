@@ -62,7 +62,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -280,10 +282,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void facebookLogin(AccessToken accessToken){
         Log.d(TAG,"facebookLogin Handling");
         AuthCredential credential= FacebookAuthProvider.getCredential(accessToken.getToken());
+
+
+
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         Log.d(TAG,"signInWithCredential:onComplete"+task.isSuccessful());
                         if(!task.isSuccessful()){
                             Log.w(TAG, "signInWithCredential", task.getException());
@@ -291,8 +297,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     Toast.LENGTH_SHORT).show();
 
                         }else{
+
+                        //TODO somehow verify that if the user exists, then create/fill the user details in database
+
                             Toast.makeText(LoginActivity.this, "Authentication with Facebook Success!",
                                     Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser firebaseUser=auth.getCurrentUser();
+                            Map<String,Object> friendsMap=new HashMap<String, Object>();
+                            Map<String,Object>cardsMap=new HashMap<String, Object>();
+                            Map<String,Object>gamesMap=new HashMap<String, Object>();
+                            friendsMap.put("Friend0","");
+                            cardsMap.put("FavCard1","");
+                            gamesMap.put("game0","GAME123");//GameUID123
+                            User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),
+                                    friendsMap,cardsMap,gamesMap);
+                            databaseRef=database.getReference("Users");
+
+                            //TODO KEY CANT BE AN EMAIL!
+                            Map<String,Object> map=new HashMap<String,Object>();
+                            map.put(firebaseUser.getUid(),"");
+                            databaseRef.updateChildren(map);
+                            databaseRef.child(firebaseUser.getUid()).setValue(user);
+
+
+
+
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             showProgress(false);
                             finish();

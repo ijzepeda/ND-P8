@@ -3,41 +3,56 @@ package com.ijzepeda.friendsknowsbest;
 
 //import static com.ijzepeda.tatt.R.id.nameTV;
 
+import java.util.Map;
+
+import static android.os.Build.VERSION_CODES.M;
+
 /**
  * Created by Ivan on 10/3/2016.
  */
 
 public class User {
-    String name, lastName, phone, address, card, billingAddress,uid,email;
+    String name, age,earnedCards,email,uid;
+    Map<String,Object> friends;//=new HAshMap<String,Object>(); users.put("users",""); root.updateChildren(users)
+    Map<String,Object> cards;
+    Map<String,Object> games;
 
-
-
-    public User() {
+      public User() {
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", card='" + card + '\'' +
-                ", billingAddress='" + billingAddress + '\'' +
-                ", uid='" + uid + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    public User(String name, String lastName, String phone, String address, String card, String billingAddress, String uid, String email) {
+    public User(String name, String age, String earnedCards, String email, String uid, Map<String, Object> friends, Map<String, Object> cards, Map<String, Object> games) {
         this.name = name;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
-        this.card = card;
-        this.billingAddress = billingAddress;
-        this.uid = uid;
+        this.age = age;
+        this.earnedCards = earnedCards;
         this.email = email;
+        this.uid = uid;
+        this.friends = friends;
+        this.cards = cards;
+        this.games = games;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getEarnedCards() {
+        return earnedCards;
+    }
+
+    public void setEarnedCards(String earnedCards) {
+        this.earnedCards = earnedCards;
     }
 
     public String getEmail() {
@@ -48,59 +63,35 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String nameTV) {
-        this.name = nameTV;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCard() {
-        return card;
-    }
-
-    public void setCard(String card) {
-        this.card = card;
-    }
-
-    public String getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
     public String getUid() {
         return uid;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public Map<String, Object> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Map<String, Object> friends) {
+        this.friends = friends;
+    }
+
+    public Map<String, Object> getCards() {
+        return cards;
+    }
+
+    public void setCards(Map<String, Object> cards) {
+        this.cards = cards;
+    }
+
+    public Map<String, Object> getGames() {
+        return games;
+    }
+
+    public void setGames(Map<String, Object> games) {
+        this.games = games;
     }
 }

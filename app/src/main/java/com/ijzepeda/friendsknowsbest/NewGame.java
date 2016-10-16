@@ -157,6 +157,7 @@ public void createDeck(){
    //POPULATE DECK
     Map<String,Object> cardMap=new HashMap<String,Object>();//Number of card in Deck
     Map<String,Object> collectionCardNoMap=new HashMap<String,Object>();//number of card within collection
+    Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
     String [] cards=getResources().getStringArray(R.array.category_romantic);
     int noOfCards=cards.length;
 
@@ -174,13 +175,15 @@ public void createDeck(){
 
     //todo este codigo semifunciona, genera las cards# pero solo al ultimo le pone los childs
      String cardNo;
-     for( i =0;i<noOfCards;i++) {
+    playerOnCardMap.put(userName,userEmail);
+    for( i =0;i<noOfCards;i++) {
          cardNo = "card" + i;
          cardMap.put(cardNo, ""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
          databaseDeckRef.child(deckId).updateChildren(cardMap);
          collectionCardNoMap.put("card", randomCardOrder[i]);
          collectionCardNoMap.put("users", "");
          databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
+         databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
          cardMap.clear();
          collectionCardNoMap.clear();
      }

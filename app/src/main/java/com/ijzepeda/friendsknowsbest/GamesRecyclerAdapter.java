@@ -25,6 +25,8 @@ import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
 public class GamesRecyclerAdapter extends RecyclerView.Adapter<GamesRecyclerAdapter.ViewHolder> {
     List<Game> gamesList;
 private static String GAME_ID="game_id";
+    private static String DECK_ID="deck_id";
+
 
     public GamesRecyclerAdapter(List mGamesList){
         gamesList=mGamesList;
@@ -42,11 +44,12 @@ private static String GAME_ID="game_id";
     @Override
     public void onBindViewHolder(GamesRecyclerAdapter.ViewHolder holder, int position) {
 Game game=gamesList.get(position);
-
         holder.noUsersTV.setText("Players: "+game.getNoUsers());
         holder.gameNameTV.setText("Game: "+game.getName());
-        holder.gameidTV.setText("DeckId: "+game.getDeckId());
-holder.gameidTV.setVisibility(View.INVISIBLE);
+        //missing deck > "DeckId: "+game.getDeckId()
+        holder.deckIdTV.setText(game.getDeckId());
+        holder.gameidTV.setText(game.getUid());
+        holder.gameidTV.setVisibility(View.GONE);
 
 
         String cardDrawn=game.getCurrentCard()+"/"+game.getNoCards();
@@ -64,13 +67,14 @@ holder.gameidTV.setVisibility(View.INVISIBLE);
 
     //Provide reference to views of each data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-TextView gameidTV,gameNameTV,cardsDrawn, noUsersTV;
+TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
         ImageButton deleteGameBtn;
         Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
             gameidTV=(TextView)itemView.findViewById(R.id.game_id);
+            deckIdTV=(TextView)itemView.findViewById(R.id.deck_id);
             gameNameTV=(TextView)itemView.findViewById(R.id.game_name);
             cardsDrawn=(TextView)itemView.findViewById(R.id.cardsdrawn);
             noUsersTV =(TextView)itemView.findViewById(R.id.players);
@@ -85,7 +89,7 @@ TextView gameidTV,gameNameTV,cardsDrawn, noUsersTV;
                 public void onClick(View view) {
                     Intent gameIntent = new Intent(context, GameActivity.class);
                     gameIntent.putExtra(GAME_ID, gameidTV.getText());
-//            gameIntent.putExtra()
+                    gameIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
                     context.startActivity(gameIntent);
                 }
             });
@@ -94,14 +98,20 @@ TextView gameidTV,gameNameTV,cardsDrawn, noUsersTV;
                 @Override
                 public void onClick(View view) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle ("Hello Dialog")
-                            .setMessage ("Are you sure " + String.valueOf(getAdapterPosition()))
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    builder.setTitle ("Leave Game")
+                            .setMessage ("Are you sure?" + String.valueOf(getAdapterPosition()))
+                            .setPositiveButton("SURE", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                 }
-                            });
+                            })
+                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
 
                     builder.create().show();
                 }
@@ -110,30 +120,6 @@ TextView gameidTV,gameNameTV,cardsDrawn, noUsersTV;
 
         @Override
         public void onClick(View view) {
-//            Context context=itemView.getContext();
-Log.e("Clicked view","view is:"+view.getId());
-Log.e("Clicked view","deleteGameBtn is:"+deleteGameBtn.getId());
-Log.e("Clicked view","game_name is:"+R.id.game_name);
-            if(view.getId()==deleteGameBtn.getId()){
-                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle ("Hello Dialog")
-                        .setMessage ("Are you sure " + String.valueOf(getAdapterPosition()))
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-
-                builder.create().show();
-//                return true;
-            }
-            else if(view.getId()== R.id.game_name){
-                Intent gameIntent = new Intent(context, GameActivity.class);
-                gameIntent.putExtra(GAME_ID, gameidTV.getText());
-//            gameIntent.putExtra()
-                context.startActivity(gameIntent);
-            }
         }
     }
 

@@ -34,7 +34,12 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
-
+            <TextView
+                android:id="@+id/deck_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="game_id"
+                android:visibility="invisible"/>
             <TextView
                 android:id="@+id/game_name"
                 android:layout_width="wrap_content"

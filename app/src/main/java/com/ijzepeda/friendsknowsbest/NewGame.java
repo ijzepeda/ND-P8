@@ -158,7 +158,7 @@ public void createDeck(){
     Map<String,Object> cardMap=new HashMap<String,Object>();//Number of card in Deck
     Map<String,Object> collectionCardNoMap=new HashMap<String,Object>();//number of card within collection
     Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
-    String [] cards=getResources().getStringArray(R.array.category_romantic);
+    String [] cards=getResources().getStringArray(R.array.category_romantic);//TODO Verifica esto!
     int noOfCards=cards.length;
 
     Integer[] randomCardOrder = new Integer[noOfCards];

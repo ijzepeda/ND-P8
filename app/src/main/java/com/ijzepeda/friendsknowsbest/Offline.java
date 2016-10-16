@@ -1,6 +1,7 @@
 package com.ijzepeda.friendsknowsbest;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,22 +40,30 @@ int i=4;
 
         //Not that useful
        alertDialog=  new AlertDialog.Builder(this)
-                .setTitle("End of game")
-                .setMessage("Wanna load another card?")
+                .setTitle("Game Over")
+                .setMessage("You should start a new game")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
 //                        loadDeck(getString(R.string.categoryromantic));
+                        /*cards.add(new Card(0,0,"","",true));
                         cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));
+                        cards.add(new Card(0,0,"","",true));*/
 //                        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(cards, getApplication());
 //                        cardStack.setAdapter(adapter);
+                        Intent intent=new Intent(getApplication(),Offline.class);
+                        startActivity(intent);
+                        finish();
+return;
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
+                        Intent intent=new Intent(getApplication(),MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                        return;
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert);

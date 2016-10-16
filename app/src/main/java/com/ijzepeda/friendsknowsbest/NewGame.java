@@ -54,8 +54,8 @@ public class NewGame extends AppCompatActivity  implements
     String name;//=gameName.getText().toString();//"First Game";
     int noUsers=1;
     int noCards;
-    private static int defaultNoCards=10;
-    String uid="123";
+//    private static int defaultNoCards=10;
+    String uid="GAME123";
     boolean unlimitedCounter=true;
     Map<String,Object> userMap=new HashMap<String,Object>();
 
@@ -73,7 +73,6 @@ private GoogleApiClient mGoogleApiClient;
         setContentView(R.layout.activity_new_game);
 //TODO: create the game first, before sending the invite. to add the game url maybe
 //        create a game object, and invite with the gameobject
-        deckId=deckId+"123";
         mGoogleApiClient=new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
@@ -92,7 +91,9 @@ private GoogleApiClient mGoogleApiClient;
         userName=Utils.getInstance().getValue(getApplication(),"username");
         userEmail=Utils.getInstance().getValue(getApplication(),"email");
 
-
+//Generate the random UID
+        deckId=deckId+"123";
+        uid="GAME123";
 
 
         gameNameTV=(TextView)findViewById(R.id.gameNameTextView);
@@ -107,6 +108,7 @@ private GoogleApiClient mGoogleApiClient;
 //                startActivity(TempIntent);
 //                finish();
 //                return;
+
               String gameId=  createGame();
                 sendInvitation(gameId);
             }
@@ -116,7 +118,7 @@ private GoogleApiClient mGoogleApiClient;
             @Override
             public void onClick(View view) {
                 createDeck();
-
+//                createGame();// needs to invite friends before set the game
 
                 Intent TempIntent= new Intent(NewGame.this, LoadActivity.class);
                 startActivity(TempIntent);
@@ -159,24 +161,31 @@ public void createDeck(){
     Map<String,Object> collectionCardNoMap=new HashMap<String,Object>();//number of card within collection
     Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
     String [] cards=getResources().getStringArray(R.array.category_romantic);//TODO Verifica esto!
-    int noOfCards=cards.length;
+    int noOfCardsInArray=cards.length;
 
-    Integer[] randomCardOrder = new Integer[noOfCards];
+    Integer[] randomCardOrder = new Integer[noOfCardsInArray];
     for ( i = 0; i < randomCardOrder.length; i++) {
         randomCardOrder[i] = i;
     }
     Collections.shuffle(Arrays.asList(randomCardOrder));
 
 //OnlineCard
-//    cardMap.put("card1",""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
-//    cardMap.put("card2",""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
-//    cardMap.put("card3",""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
-//    databaseDeckRef.child(deckId).setValue(cardMap);
 
     //todo este codigo semifunciona, genera las cards# pero solo al ultimo le pone los childs
      String cardNo;
-    playerOnCardMap.put(userName,userEmail);
-    for( i =0;i<noOfCards;i++) {
+//    playerOnCardMap.put(userName,userEmail);
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
+    playerOnCardMap.put(userUid,userName);
+    Log.e("Track&Delete","    playerOnCardMap.put(userUid,userName):"+userUid+", "+userName);
+//    for( i =0;i<noOfCardsInArray;i++) {
+    for( i =0;i<noCards;i++) {
          cardNo = "card" + i;
          cardMap.put(cardNo, ""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
          databaseDeckRef.child(deckId).updateChildren(cardMap);
@@ -187,6 +196,7 @@ public void createDeck(){
          cardMap.clear();
          collectionCardNoMap.clear();
      }
+//    databaseDeckRef.child(deckId).child("card9").child("users").updateChildren(playerOnCardMap);//la puse y funciono!
 
 //    databaseDeckRef.child(deckId).setValue(cardMap);
 //    databaseGameRef.child("GAME"+i).setValue(gameObject);
@@ -204,36 +214,45 @@ public void createDeck(){
 //        users.put("users","");
 //        databaseGameRef.updateChildren(users);
 name=gameNameTV.getText().toString();
+        //Todo add Validation to dont leave it empty
         if(Integer.parseInt(noCardsTV.getText().toString())>0) {
             noCards = Integer.parseInt(noCardsTV.getText().toString());
+            //
+            if(noCards>(getResources().getStringArray(R.array.category_romantic)).length){
+                noCards=(getResources().getStringArray(R.array.category_romantic)).length;
+            }
+
         }else{
-            noCards=defaultNoCards;
+            noCards=(getResources().getStringArray(R.array.category_romantic)).length;
         }
 
-        userMap.put(userName,userEmail);
-        Game gameObject=new Game(currentCard,deckId,name,noUsers,noCards,uid,unlimitedCounter,userMap);
+//        userMap.put(userName,userEmail);
+        userMap.put(userUid,userName);
 
-
+//TODO CREATE NAME OF UID
         Map<String,Object> map=new HashMap<String,Object>();
         int i=123;
-        map.put("GAME"+i,"");
-        databaseGameRef.updateChildren(map);
+//        map.put("GAME"+i,"");
+        map.put(uid,"");
+        Game gameObject=new Game(currentCard,deckId,name,noUsers,noCards,uid,unlimitedCounter,userMap);
 
-//databaseGameRef.child("GAME"+i).push().setValue(gameObject);
+       databaseGameRef.updateChildren(map);
+
+databaseGameRef.child(uid).push().setValue(gameObject);//Todo what is this for?!
                         //usar el updateChildren con un Map , en vez de un objeto
-                        //databaseGameRef.child("GAME"+i).updateChildren(gameObjectMAP);
-databaseGameRef.child("GAME"+i).setValue(gameObject);
+//                        databaseGameRef.child("GAME"+i).updateChildren(gameObjectMAP);
+databaseGameRef.child(uid).setValue(gameObject);
 //        databaseGameRef.child("GAME"+i).
 //TODO ~~~~~~~~~~~~~~~~~ THis methos needs to be added when user receive the link to be added to a game
         userMap.clear();
-        userMap.put("Nombre Usuario2","email2");
-        userMap.put("Nombre Usuario3","email3");
+//        userMap.put("UserUID2","User NAme 2");
+//        userMap.put("UserUID3","User name 3");
         //ADD A NEW USER USING THE GAMEID
-        databaseGameRef.child("GAME"+i).child("users").updateChildren(userMap);
-        databaseGameRef.child("GAME"+i).child("noUsers").setValue(3); //todo get current value and extra 1
+       // databaseGameRef.child("GAME"+i).child("users").updateChildren(userMap);
+//        databaseGameRef.child("GAME"+i).child("noUsers").setValue(3); //todo get current value and extra 1
 
 
-return "GAME"+i;
+return uid;
     }
 
     private void sendInvitation(String gameid){
@@ -242,12 +261,16 @@ return "GAME"+i;
                 .setMessage("Lets play!")
 //                .setCallToActionText("Call to action text")
 //                .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
-                .setDeepLink(Uri.parse("http://example.com/offer/five_dollar_offer"))
-//                .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/Q8OH"))
-//                .setCustomImage(Uri.parse("android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo"))//getString(R.string.invitation_custom_image)))
-        .setEmailSubject("You are invited to a FriendsKnowsBest game")
-        .setEmailHtmlContent("Just click %%APPINVITE_LINK_PLACEHOLDER%% and lets play")
-//                .setAccount()
+
+//                .setDeepLink(Uri.parse("http://example.com/offer/five_dollar_offer"))//TODO WORKS!~~~~~
+                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))//TODOWORKS!
+//
+//  .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/Q8OH"))
+                .setCustomImage(Uri.parse("android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo"))//getString(R.string.invitation_custom_image)))
+
+//        .setEmailSubject("You are invited to a FriendsKnowsBest game")
+//        .setEmailHtmlContent("Just click %%APPINVITE_LINK_PLACEHOLDER%% and lets play")
+
                 .build();
         intent.putExtra("prueba","con exito");
         startActivityForResult(intent, REQUEST_INVITE);

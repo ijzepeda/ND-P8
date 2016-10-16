@@ -3,32 +3,47 @@ package com.ijzepeda.friendsknowsbest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
+    //Bundle details
 String currentGameID;
 String currentDeckID;
+//int currentCardID;
+int gameTotalCards;
+
     private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";
+    private static String CURRENT_CARD_ID="current_card_id";
+    private static String TOTAL_CARDS_ID="total_card_id";
     private static String usermail="";
     private static String username="";
     private static String useruid="";
@@ -54,18 +69,35 @@ String currentDeckID;
 
     //CardSwipe
     AlertDialog.Builder alertDialog;
-     SwipeDeckAdapter adapter;
+    SwipeDeckAdapter adapter;
+    SwipeDeck cardStack;
+    ArrayList<Card> cards=new ArrayList<>();
+    private String[] mQuotes ;//= getResources().getStringArray(R.array.category_romantic);
+    int displayCardNo=0;
+    String category="Misc";
 
+//int currentCard; //Priority to Update and sync
+//Views
+    TextView commentTextView;
+    ImageButton sendBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
         currentDeckID=getIntent().getStringExtra(DECK_ID);
+        currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);//Todo check this getCurrentCard());
+        gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
+
         mQuotes = getResources().getStringArray(R.array.category_romantic);
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
         context=getApplication();
+
+        //Link Views
+        commentTextView=(TextView)findViewById(R.id.commentTV);
+        sendBtn=(ImageButton) findViewById(R.id.SendImageButton);
 
         //DIALOG
         alertDialog=  new AlertDialog.Builder(this)
@@ -73,14 +105,8 @@ String currentDeckID;
                 .setMessage("You should start a new game")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-//                        loadDeck(getString(R.string.categoryromantic));
-                        /*cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));*/
-//                        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(cards, getApplication());
-//                        cardStack.setAdapter(adapter);
-                        Intent intent=new Intent(getApplication(),Offline.class);
+
+                        Intent intent=new Intent(getApplication(),NewGame.class);
                         startActivity(intent);
                         finish();
                         return;
@@ -89,10 +115,10 @@ String currentDeckID;
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
-                        Intent intent=new Intent(getApplication(),MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        return;
+//                        Intent intent=new Intent(getApplication(),MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                        return;
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert);
@@ -116,61 +142,12 @@ String currentDeckID;
         useruid=auth.getCurrentUser().getUid();
 
         //GetCurrentGame details
-     /**   databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                Log.e("~~~>>>>","About to place GAME object from DB");
-                    currentGame = dataSnapshot.getValue(Game.class);
-                Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
+//        databaseGameRef.child(currentGameID)
+      loadGame();
 
-                //--
-                //Aqui puse el LOADER del DECK
-                databaseDeckRootRef.child(currentGame.getDeckId()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                            Log.e(">>~~>>","Posible condition to stop on current card:"+childSnapshot.getKey());
-                            int cardNo=(int) childSnapshot.child("card").getValue();
-                            createCard(cardNo);
-                        }
-                        adapter = new SwipeDeckAdapter(cards, context);
-                        cardStack.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                //--
-//                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-*/
      //AQUI IBA EL Loader del DECK
-        databaseDeckRootRef.child(currentDeckID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                    Log.e(">>~~>>","Posible condition to stop on current card:"+childSnapshot.getKey());
-                    int cardNo=Integer.parseInt(""+childSnapshot.child("card").getValue());
-                    createCard(cardNo);
-                }
-                adapter = new SwipeDeckAdapter(cards, context);
-                cardStack.setAdapter(adapter);
-            }
+     loadDeck();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         //CARDSWIPE
         cardStack.setEventCallback(new SwipeDeck.SwipeEventCallback() {
             @Override
@@ -201,13 +178,12 @@ String currentDeckID;
 //       adapter = new SwipeDeckAdapter(cards, this);
 //        cardStack.setAdapter(adapter);
 
+        //FETCHPLAYERS
+        fetchPlayers();
     }
 
-    SwipeDeck cardStack;
-    ArrayList<Card> cards=new ArrayList<>();
-   private String[] mQuotes ;//= getResources().getStringArray(R.array.category_romantic);
-int displayCardNo=0;
-    String category="Misc";
+
+
 
     public  void createCard(int cardNo){
         String quote= mQuotes[cardNo];
@@ -221,5 +197,209 @@ int displayCardNo=0;
         // cards.add(new Card(0,0,"","",true));
     }
 
+
+public void loadDeck(){
+
+    databaseDeckRootRef.child(currentDeckID).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            int noOfCurrentCardToCreate=0;
+            for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                if(noOfCurrentCardToCreate<currentCard || currentCard==0) {
+                    int cardNo = Integer.parseInt("" + childSnapshot.child("card").getValue());
+                    createCard(cardNo);
+                }
+                noOfCurrentCardToCreate++;
+
+            }
+            Collections.reverse(cards);//from newer
+            adapter = new SwipeDeckAdapter(cards, context);
+            cardStack.setAdapter(adapter);
+
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
+
+}
+
+    public void loadGame(){
+
+        //GetCurrentGame details
+
+//        databaseGameRef.child(currentGameID)
+
+        //-----*****
+        /**
+         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+        //                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+        Log.e("~~~>>>>","About to place GAME object from DB");
+        currentGame = dataSnapshot.getValue(Game.class);
+        Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
+
+        //--
+        //Aqui puse el LOADER del DECK
+        databaseDeckRootRef.child(currentGame.getDeckId()).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+        Log.e(">>~~>>","Posible condition to stop on current card:"+childSnapshot.getKey());
+        int cardNo=(int) childSnapshot.child("card").getValue();
+        createCard(cardNo);
+        }
+        adapter = new SwipeDeckAdapter(cards, context);
+        cardStack.setAdapter(adapter);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+        });
+        //--
+        //                }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+        });
+         */
+        /////---------------------------------****
+
+    }
+
+    //-------    Players RecyclerView
+    PlayersInGameRecyclerAdapter playersRecyclerAdapter;
+    RecyclerView playersRecyclerView;
+    public List<String> playersList=new ArrayList<>();
+
+    public void fetchPlayers(){
+        fetchPlayersCommented();
+        playersRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
+        linearLayoutManager=new LinearLayoutManager(this);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
+//Load players
+Log.e("ANTES DE EEROR","currentGameID:"+currentGameID);
+        databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                Log.e("~~~>>>>","About to place GAME object from DB,currentGameID:"+currentGameID);
+                currentGame = dataSnapshot.getValue(Game.class);
+                Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
+                Map<String,Object> gameUsers= currentGame.getUsers();
+  }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+//final List gameUserNamesList=new ArrayList();
+        databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                    Log.e("databaseGameRef","onDataChange happening here"+childSnapshot.getKey());
+
+//                    gameUserNamesList.add(childSnapshot.getValue());
+                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK, y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto, y enviarlos al adapter
+                    playersList.add(childSnapshot.getValue().toString());
+                    Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
+                    Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
+                    playersRecyclerAdapter.notifyDataSetChanged();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+//settign up the adapters
+//        playersRecyclerView.setLayoutManager(linearLayoutManager);
+        playersRecyclerView.setLayoutManager(gridLayoutManager);
+        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersList,getApplication());
+        playersRecyclerAdapter.notifyDataSetChanged();
+        playersRecyclerView.setAdapter(playersRecyclerAdapter);
+
+    }
+public void fetchPlayersCommented(){
+    //currentGameID
+//        databaseGameRef.child("GAME123").addListenerForSingleValueEvent(new ValueEventListener() {
+    /**Log.e("~~~>","currentGameID;"+currentGameID);
+     databaseGameRef.child(currentGameID+"").addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+    //                currentGame = dataSnapshot.getValue(Game.class);
+    //                Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
+    Log.e("~~~>>>>","Just place GAME object from DB:"+dataSnapshot.getKey().toString());
+    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+    Log.d("gameA,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
+    Log.d("gameA,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
+    Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
+    }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+    });*/
+
+}
+
+    public void selectedPlayer(final String selectedPlayer){
+        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+        commentTextView.setHint("Why would you vote for "+selectedPlayer);
+        sendBtn.setClickable(true);
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserVote userVote=new UserVote(username,"url",commentTextView.getText().toString(),true, selectedPlayer+"UID", selectedPlayer);
+
+
+                databaseDeckRootRef.child(currentDeckID).child("card"+currentGame.getCurrentCard()).child("users").child(useruid).push().setValue(userVote);
+
+
+            }
+        });
+
+
+
+    }
+
+    int fetchedCurrentCard;
+    public int getCurrentCard(){
+        fetchedCurrentCard=0;
+        //Load the card from Child.
+        //TODO FIX ERROR Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'com.google.firebase.database.DatabaseReference com.google.firebase.database.DatabaseReference.child(java.lang.String)' on a null object reference
+//    at com.ijzepeda.friendsknowsbest.GameActivity.getCurrentCard(GameActivity.java:277)
+
+        databaseGameRef.child(currentGameID).child("currentCard").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                fetchedCurrentCard=Integer.parseInt(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return fetchedCurrentCard;
+
+    }
 
 }

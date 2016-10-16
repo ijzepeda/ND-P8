@@ -92,8 +92,19 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                 Map<String,Object>gamesMap=new HashMap<String, Object>();
                 friendsMap.put("Friend0","");
                 cardsMap.put("FavCard1","");
-                gamesMap.put("game0","GameUID123");
-                User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),
+//                gamesMap.put("game0","GameUID123");
+                gamesMap.put("GameUID123","GameUID123");
+
+                String userName="";
+                String userMail="";
+
+                if(firebaseUser.getDisplayName()!=null){
+                    userName=firebaseUser.getDisplayName().toString();
+                }else{
+                    userName=nameTV.getText().toString();
+                }
+
+                User user=new User(userName,"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),
                         friendsMap,cardsMap,gamesMap);
                 databaseRef=database.getReference("Users");
 

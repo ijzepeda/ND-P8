@@ -28,21 +28,29 @@
                 android:id="@+id/swipe_deck"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="20dp"
                 swipedeck:card_spacing="10dp"
                 swipedeck:max_visible="3"
                 swipedeck:render_above="true"
                 swipedeck:rotation_degrees="15"
-                swipedeck:opacity_end="0.33"/>
+                swipedeck:opacity_end="0.33"
+                android:paddingBottom="25dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:layout_marginBottom="10dp" />
 
 
         </com.daprlabs.cardstack.SwipeFrameLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/playerdRecyclerView"
+            android:id="@+id/playersRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -51,25 +59,29 @@
             android:layout_weight="2">
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/editText"
-                android:layout_weight="1" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:ems="20"
+                android:id="@+id/commentTV"
+                android:layout_weight="0.8"
+                android:hint="Select a Friend"
+
+                />
+            <!--android:inputType="textMultiLine"-->
 
             <ImageButton
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_send_black_24dp"
-                android:id="@+id/imageButton"
-                android:layout_weight="1"
+                android:id="@+id/SendImageButton"
+                android:layout_weight="0.2"
                 android:layout_gravity="bottom|right|end"
                 android:layout_marginStart="45dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="45dp"
-
+android:clickable="false"
                 android:theme="@style/AppTheme.Button"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:tint="@color/cardview_light_background"

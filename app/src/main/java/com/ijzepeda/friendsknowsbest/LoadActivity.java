@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class LoadActivity extends AppCompatActivity {
 
-    RecyclerView loadGameRecyclerView;
+    //RecyclerView loadGameRecyclerView;
     GamesRecyclerAdapter gamesRecyclerAdapter;
     Context context;
 
@@ -50,7 +50,7 @@ public class LoadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load);
         context = getApplicationContext();
-        loadGameRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
+       // loadGameRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
 
 //RecyclerView
         ordersRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
@@ -86,11 +86,14 @@ public class LoadActivity extends AppCompatActivity {
                       Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
                       userGameList.add(childSnapshot.getValue().toString());
 
-
+// String gameuid=childSnapshot.getRef().toString();
             databaseGameRef.child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                         Game gameTemp = dataSnapshot.getValue(Game.class);
+
+                    gameTemp.setUid(dataSnapshot.getKey().toString());//todo need to update
+
                         gamesList.add(gameTemp);
                         gamesRecyclerAdapter.notifyDataSetChanged();
                 }

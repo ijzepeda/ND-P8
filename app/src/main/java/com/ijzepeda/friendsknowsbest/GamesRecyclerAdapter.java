@@ -26,6 +26,10 @@ public class GamesRecyclerAdapter extends RecyclerView.Adapter<GamesRecyclerAdap
     List<Game> gamesList;
 private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";
+    private static String CURRENT_CARD_ID="current_card_id";
+    private static String TOTAL_CARDS_ID="total_card_id";
+
+    Game game;
 
 
     public GamesRecyclerAdapter(List mGamesList){
@@ -43,12 +47,13 @@ private static String GAME_ID="game_id";
 
     @Override
     public void onBindViewHolder(GamesRecyclerAdapter.ViewHolder holder, int position) {
-Game game=gamesList.get(position);
+        game=gamesList.get(position);
         holder.noUsersTV.setText("Players: "+game.getNoUsers());
         holder.gameNameTV.setText("Game: "+game.getName());
         //missing deck > "DeckId: "+game.getDeckId()
         holder.deckIdTV.setText(game.getDeckId());
         holder.gameidTV.setText(game.getUid());
+        Log.e("~~~>>>>","game.getUid()"+game.getUid());
         holder.gameidTV.setVisibility(View.GONE);
 
 
@@ -90,6 +95,8 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                     Intent gameIntent = new Intent(context, GameActivity.class);
                     gameIntent.putExtra(GAME_ID, gameidTV.getText());
                     gameIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
+                    gameIntent.putExtra(CURRENT_CARD_ID,  game.getCurrentCard());
+                    gameIntent.putExtra(TOTAL_CARDS_ID,  game.getNoCards());
                     context.startActivity(gameIntent);
                 }
             });

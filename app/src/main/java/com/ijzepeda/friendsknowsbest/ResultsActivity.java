@@ -1,5 +1,6 @@
 package com.ijzepeda.friendsknowsbest;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -38,9 +40,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.data;
 import static android.R.attr.name;
 import static android.R.attr.process;
+import static android.R.attr.y;
 import static android.R.id.message;
+import static android.R.string.no;
 import static com.ijzepeda.friendsknowsbest.R.id.favBtn;
 import static com.ijzepeda.friendsknowsbest.R.id.playersRecyclerView;
 import static com.ijzepeda.friendsknowsbest.R.id.winnerTextView;
@@ -75,7 +80,7 @@ public class ResultsActivity extends AppCompatActivity {
     private Game currentGame;
 
     //Results Variables & elements
-    String winnerName;
+//    String winnerName;
     String winnerImagePic;
     String winnerCard;
     String currentCardText;
@@ -97,7 +102,7 @@ public class ResultsActivity extends AppCompatActivity {
         currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);//Todo check this getCurrentCard());
         currentDeckCard=getIntent().getIntExtra(CURRENT_DECK_CARD_ID,0);
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
-        gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
+//        gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 
 
         //FIREBASE
@@ -120,17 +125,34 @@ public class ResultsActivity extends AppCompatActivity {
          winnerPic=(ImageView)findViewById(R.id.winnerPicImageView);
          cardWinnerTextView=(TextView)findViewById(R.id.cardWinnerTextView);
         winnerNameTextView=(TextView)findViewById(R.id.winnerTextView);
-continueBtn=(Button)findViewById(R.id.continueBtn);
+        continueBtn=(Button)findViewById(R.id.continueBtn);
         counterBtn=(Button)findViewById(R.id.counterBtn);
         shareBtn=(ImageButton)findViewById(R.id.shareBtn);
         favoriteBtn=(ImageButton)findViewById(R.id.favBtn);
 
 
-Log.e("playerUri","is: "+userPicURI.toString());
-
+//Log.e("playerUri","is: "+userPicURI.toString());
 //        Picasso.with(this).load(userPic).into(winnerPic);
 
+        continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                continueBtn.setClickable(false);
+                if(!alreadyAccepted) {
+                    alreadyAccepted=true;
+//                    UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayer + "UID", selectedPlayer,selectedPlayer+"userPic",false);
+                    databaseDeckRef.child(currentDeckID).child("card" +currentCard).child("users").child(useruid).child("acceptResult").setValue(alreadyAccepted);
+                }else{
+
+                }
+            }
+        });
+
+
+        //this one just populate the recyclerview
         fetchPlayersFromGame();
+
+
         fetchUserVotes();
         CheckPlayersAcceptanceStatus();
 
@@ -144,12 +166,6 @@ Log.e("playerUri","is: "+userPicURI.toString());
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int i=0;
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                            Log.e("fetchUserVotes,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                            Log.e("fetchUserVotes,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                            Log.e("fetchUserVotes,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
-
-                            Log.e("!@#~~~~~","Aqui hay error, "+childSnapshot.getValue(UserVote.class));
-//                            dataSnapshot.getValue(Game.class)
                             userVotesList.add(i++,childSnapshot.getValue(UserVote.class));
                         }
                         processVotes();
@@ -178,7 +194,8 @@ int maxVotes=0,winningPlayerIndex=0;
 //            }
 
         }
-
+//        playersThatCommentedToWinnerList
+//      childSnapshot.getValue().toString()
 
         Map<String, Integer> instances = new HashMap<String, Integer>();
         int index=0;
@@ -218,7 +235,7 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
         String quote= mQuotes[currentDeckCard];
         String completeMessage;
         String winnerTitle;
-        if(username.equals(winnerName)) { //TODO CHANGE TO UID
+        if(username.equals(winningPlayerName)) { //TODO CHANGE TO UID
             completeMessage="Your Friend thout that You are more likely to " + quote.substring(2);
             winnerTitle="You won";
             }else{
@@ -228,12 +245,47 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
         cardWinnerTextView.setText(completeMessage);
         winnerNameTextView.setText(winnerTitle);
 
+        fetchCommentsForWinner();
+
+    }
+
+
+    public void fetchCommentsForWinner(){
+
+//        childSnapshot.getValue().toString()
+        playersList.clear();
+        playersRecyclerAdapter.notifyDataSetChanged();
+
+
+        databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+Log.e("~~~~~~>fetchcomment","for winner childSnapshot.child(\"name\").getValue()"+childSnapshot.child("name").getValue().toString());
+        if(childSnapshot.child("nomineeName").getValue().toString().equals(winningPlayerName)) {
+            playersList.add(childSnapshot.child("name").getValue().toString());//childSnapshot.getValue().toString());
+            playersRecyclerAdapter.notifyDataSetChanged();
+        }
+
+        }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
     }
 
     //-------    Players RecyclerView
     PlayersInGameRecyclerAdapter playersRecyclerAdapter;
     RecyclerView playersRecyclerView;
     public List<String> playersList=new ArrayList<>();
+    public List<String> playersThatCommentedToWinnerList=new ArrayList<>();
     private LinearLayoutManager linearLayoutManager;
     public void viewComment(String selectedPlayer){
         int userVotePosition=0;
@@ -269,14 +321,15 @@ List<UserVote>userVotesList=new ArrayList<>();
         playersRecyclerView=(RecyclerView)findViewById(R.id.playerCommentsRecyclerView);
         linearLayoutManager=new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
+        GridLayoutManager gridLayoutVerticalManager=new GridLayoutManager(this,2,LinearLayoutManager.VERTICAL,false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 //        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
 
 //Load players
+        /**
         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("!@#~~~~~","Aqui NO! hay error, "+dataSnapshot.getValue(Game.class));
                 currentGame = dataSnapshot.getValue(Game.class);
             }
             @Override
@@ -288,17 +341,22 @@ List<UserVote>userVotesList=new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 totalUsers=(int)dataSnapshot.getChildrenCount();
-                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()) {
 
 //                    gameUserNamesList.add(childSnapshot.getValue());
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK, y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto, y enviarlos al adapter
+
+//                    if(childSnapshot.getValue().toString())
+                    {
                     playersList.add(childSnapshot.getValue().toString());
-                    Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
-                    Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
+                    Log.e("databaseGameRef", "playerlist just added" + childSnapshot.getValue().toString());
+                    Log.e("databaseGameRef", "playerlist just added" + playersList.get(0));
                     playersRecyclerAdapter.notifyDataSetChanged();
+                }
+//              todo      teniendo esa lista, hacer un llamado a USERS y sacar objetos de usuarios, y mandarlos al recycler, no la lista de nombres... que serian uids no names
 
                 }
             }
@@ -308,45 +366,48 @@ List<UserVote>userVotesList=new ArrayList<>();
 
             }
         });
-
+*/
 //settign up the adapters
 //        playersRecyclerView.setLayoutManager(linearLayoutManager);
-        playersRecyclerView.setLayoutManager(gridLayoutManager);
+//        playersRecyclerView.setLayoutManager(gridLayoutManager);
+        playersRecyclerView.setLayoutManager(gridLayoutVerticalManager);
         playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersList,getApplication());
         playersRecyclerAdapter.notifyDataSetChanged();
         playersRecyclerView.setAdapter(playersRecyclerAdapter);
 
     }
 
-int totalUsers;
-int totalVotes;
-    boolean alreadyVoted=false;
+    //useful to continue
+    int totalUsers;
+    int totalAccepted;
+    boolean alreadyAccepted=false;
     public void CheckPlayersAcceptanceStatus(){
         Log.e("checkGame()","About to start reading changes");
-        totalVotes=0;
+        totalAccepted=0;
+        totalUsers=currentGame.getNoUsers();//is it null?
         databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                alreadyVoted=false; //startloading and return to false, if found the match, then is true
+                alreadyAccepted=false; //startloading and return to false, if found the match, then is true
                 //refresh recyclerview adapter.
 //                playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
-                boolean userVoted=false;
-                if(dataSnapshot.child("voted").exists())
-                    userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                if(userVoted){
+                boolean userAccepted=false;
+                if(dataSnapshot.child("acceptResult").exists())
+                    userAccepted=Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                if(userAccepted){
                     //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
                     if(dataSnapshot.child("name").equals(username)){
-                        alreadyVoted=true;
+                        alreadyAccepted=true;
                     }else{
-                        alreadyVoted=true;//you just voted!
-                        totalVotes++;
+                        alreadyAccepted=true;//you just voted!
+                        totalAccepted++;
                     }
                 }
-                if(totalVotes>=totalUsers){
-                    Log.e(">>checkGame...()","onChildAdded All players have voted! continue");
+                if(totalAccepted>=totalUsers){
+                    Log.e(">>checkGame...()","onChildAdded All players have accepted! continue");
 //                    showResult();
-
+endCard();
 
                 }
             }
@@ -355,25 +416,26 @@ int totalVotes;
             /**Snapshot retrives only the child [in this case the USer] that changed. therefore, I just need to look for voted, not users/voted*/
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                alreadyVoted=false; //startloading and return to false, if found the match, then is true
+                alreadyAccepted=false; //startloading and return to false, if found the match, then is true
 
 //                playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
-                boolean userVoted=false;
-                if(dataSnapshot.child("voted").exists())
-                    userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                if(userVoted){
+                boolean userAccepted=false;
+                if(dataSnapshot.child("acceptResult").exists())
+                    userAccepted=Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                if(userAccepted){
                     if(dataSnapshot.child("name").equals(username)){
-                        alreadyVoted=true;
+                        alreadyAccepted=true;
                     }else{
-                        alreadyVoted=true;//you just voted!
-                        totalVotes++;
+                        alreadyAccepted=true;//you just voted!
+                        totalAccepted++;
                     }
                 }
 
-                if(totalVotes>=totalUsers){
-                    Log.e(">>checkGame...()","onChildChanged All players have voted! continue");
+                if(totalAccepted>=totalUsers){
+                    Log.e(">>checkGame...()","onChildChanged All players have accepted! continue");
 //                    showResult();
+                    endCard();
                 }
                 //trigger next move
             }
@@ -394,5 +456,26 @@ int totalVotes;
             }
         });
     }
+
+    public void endCard(){
+
+
+if(gameTotalCards<currentCard) {
+    databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard + 1);
+    Intent intent = new Intent(this, GameActivity.class);
+    intent.putExtra(GAME_ID, currentGameID);
+    intent.putExtra(DECK_ID, currentDeckID + "");
+    intent.putExtra(CURRENT_CARD_ID, currentCard + 1);
+    intent.putExtra(TOTAL_CARDS_ID, gameTotalCards);
+    intent.putExtra(CURRENT_DECK_CARD_ID, currentDeckCard);
+    startActivity(intent);
+    finish();
+}else{
+//    Intent intent=new Intent(this,GameOver.class);
+    Intent intent=new Intent(this,MainActivity.class);
+    startActivity(intent);
+}
+    }
+
 
 }

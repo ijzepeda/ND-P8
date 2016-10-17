@@ -18,10 +18,12 @@ import com.ijzepeda.friendsknowsbest.Game;
 import com.ijzepeda.friendsknowsbest.GameActivity;
 import com.ijzepeda.friendsknowsbest.GamesRecyclerAdapter;
 import com.ijzepeda.friendsknowsbest.R;
+import com.ijzepeda.friendsknowsbest.ResultsActivity;
 
 import java.util.List;
 
 import static android.R.id.list;
+import static com.ijzepeda.friendsknowsbest.R.id.alreadyVotedPlayer;
 import static com.ijzepeda.friendsknowsbest.R.id.deleteGameBtn;
 
 /**
@@ -57,11 +59,19 @@ Context activityContext;
         String player=playersList.get(position);
         holder.playerNameTV.setText(player);
 
-        holder.selectPlayerRadioButton.setChecked(position == lastCheckedPosition);
+//        holder.selectPlayerRadioButton.setChecked(position == lastCheckedPosition);
         holder.selectPlayerCheckBox.setChecked(position == lastCheckedPosition);
 //        holder.gameNameTV.setText("Game: "+game.getName());
 //TODO `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //TODO: holder.playerImageView.PICASO CREATE IMAGE BY URL
+
+
+//TODO `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//TODO: holder.alreadyVotedPlayer read if voted is true and mark it
+        /**
+         if(playerlist.get(position).isVoted()){
+            holder.alreadyVotedPlayerImageView.setVisibility(View.VISIBLE);
+        }*/
 
 
         //checbox to select only 1 player
@@ -93,22 +103,24 @@ Context activityContext;
         ImageView playerImageView;
         ImageView alreadyVotedPlayerImageView;
         CheckBox selectPlayerCheckBox;
-        RadioButton selectPlayerRadioButton;
+//        RadioButton selectPlayerRadioButton;
         Context context;
 
         public ViewHolder(View itemView) {
             super(itemView);
             playerNameTV=(TextView)itemView.findViewById(R.id.playerName);
             playerImageView=(ImageView)itemView.findViewById(R.id.playerImage);
-            alreadyVotedPlayerImageView=(ImageView)itemView.findViewById(R.id.alreadyVotedPlayer);
+            alreadyVotedPlayerImageView=(ImageView)itemView.findViewById(alreadyVotedPlayer);
             selectPlayerCheckBox=(CheckBox)itemView.findViewById(R.id.selectPlayerCheckBox);
-            selectPlayerRadioButton=(RadioButton)itemView.findViewById(R.id.selectPlayerRadioButton);
+//            selectPlayerRadioButton=(RadioButton)itemView.findViewById(R.id.selectPlayerRadioButton);
 
             //add a new onclicklistener here, or by implements on view
 //            itemView.setOnClickListener(this);
             context =itemView.getContext();
-itemView.setOnClickListener(this);
+
+            itemView.setOnClickListener(this);
             selectPlayerCheckBox.setOnClickListener(this);
+
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
@@ -139,15 +151,23 @@ itemView.setOnClickListener(this);
         public void onClick(View view) {
 
                     selectPlayerCheckBox.setChecked (true);
-                    selectPlayerRadioButton.setChecked (true);
+//                    selectPlayerRadioButton.setChecked (true);
 
             lastCheckedPosition = getAdapterPosition();
             notifyItemRangeChanged(0, playersList.size());
-
+//TODO#####~~~~~~~~~~~~~~~~~CHANGE USERNAME TO USERUID #######################~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-***********************************######################
+//TODO#####~~~~~~~~~~~~~~~~~CHANGE USERNAME TO USERUID #######################~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-***********************************######################
+//TODO#####~~~~~~~~~~~~~~~~~CHANGE USERNAME TO USERUID #######################~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-***********************************######################
             if(context instanceof GameActivity){
+                //send object of user //uid,name,image.
                         ((GameActivity)context).selectedPlayer(playerNameTV.getText().toString());
 
                     }
+            if(context instanceof ResultsActivity){
+                //                                      send playerUID or UserVote
+                ((ResultsActivity)context).viewComment(playerNameTV.getText().toString());
+
+            }
         }
     }
 

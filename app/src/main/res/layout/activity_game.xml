@@ -61,13 +61,13 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:inputType="none"
-                android:ems="20"
+                android:inputType="textMultiLine"
                 android:id="@+id/commentTV"
                 android:layout_weight="0.8"
                 android:hint="Select a Friend"
 
-                />
+                android:maxEms="20" />
+            <!--android:focusable="false"-->
             <!--android:inputType="textMultiLine"-->
 
             <ImageButton

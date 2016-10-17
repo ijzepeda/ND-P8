@@ -51,6 +51,7 @@ dependencies {
 
     compile 'com.facebook.android:facebook-android-sdk:4.10.0'
     compile 'com.daprlabs.aaron:cardstack:0.3.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     //    testCompile 'junit:junit:4.12'
     //    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     //    androidTestCompile 'com.android.support.test:runner:0.5'

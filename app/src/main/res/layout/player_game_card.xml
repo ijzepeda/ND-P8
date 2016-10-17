@@ -34,25 +34,19 @@
                 android:text="Nombre de Jugador"
                 android:id="@+id/playerName"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
 
                 android:layout_weight="1"
-                android:layout_marginBottom="5dp"
-                android:maxLines="2" />
+                android:layout_marginBottom="10dp"
+                android:maxLines="2"
+                android:lineSpacingExtra="8sp" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    card_view:srcCompat="@android:drawable/checkbox_on_background"
-                    android:id="@+id/alreadyVotedPlayer"
-                    android:paddingTop="5dp" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -65,7 +59,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/selectPlayerRadioButton"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    card_view:srcCompat="@android:drawable/checkbox_on_background"
+                    android:id="@+id/alreadyVotedPlayer"
+                    android:paddingTop="5dp"
+                    android:visibility="invisible" />
             </LinearLayout>
 
         </LinearLayout>

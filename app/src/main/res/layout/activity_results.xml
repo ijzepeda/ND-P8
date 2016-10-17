@@ -16,11 +16,14 @@
         android:layout_width="142dp"
         android:layout_height="125dp"
         app:srcCompat="@drawable/placeholder"
-        android:id="@+id/imageView"
+        android:id="@+id/winnerPicImageView"
         android:layout_gravity="center"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:layout_weight="1"
+        />
 
     <TextView
+        android:layout_weight="0.2"
         android:text="WON"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,15 +35,17 @@
         android:textAlignment="center" />
 
     <TextView
+        android:layout_weight="0.3"
         android:text="Your friend thought tat PLAYER is/are more likely to be LIKE THAT CARD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/AppTheme.ActionBarStyle"
         android:layout_gravity="center"
         android:textAlignment="center"
-        />
+        android:id="@+id/cardWinnerTextView" />
 
     <TextView
+        android:layout_weight="0.2"
         android:text="They are to blame:"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,11 +53,13 @@
         android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_weight="0.5"
         android:id="@+id/playerCommentsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:layout_weight="0.5"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -74,16 +81,16 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="0.2"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_gravity="end"
         >
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:srcCompat="@android:drawable/btn_star"
             android:id="@+id/favBtn"
             android:layout_gravity="end"
@@ -91,13 +98,13 @@
             />
 
         <ImageButton
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             app:srcCompat="@android:drawable/ic_menu_share"
             android:id="@+id/shareBtn"
             android:layout_gravity="end"
 
             android:background="@layout/round_shape"
-            android:layout_width="wrap_content" />
+            android:layout_width="50dp" />
 
     </LinearLayout>
 

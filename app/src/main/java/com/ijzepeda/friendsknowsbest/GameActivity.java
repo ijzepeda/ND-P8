@@ -3,7 +3,9 @@ package com.ijzepeda.friendsknowsbest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.IntegerRes;
+import android.support.constraint.solver.widgets.Snapshot;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,26 +40,31 @@ public class GameActivity extends AppCompatActivity {
     //Bundle details
 String currentGameID;
 String currentDeckID;
-//int currentCardID;
 int gameTotalCards;
+int currentDeckCard;
 
     private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";
     private static String CURRENT_CARD_ID="current_card_id";
     private static String TOTAL_CARDS_ID="total_card_id";
+    private static String CURRENT_DECK_CARD_ID="total_deck_card_id";
+
     private static String usermail="";
     private static String username="";
     private static String useruid="";
+    private static String userPic="picURL";
+//    private static Uri userPicUri="picURL";
     Context context;
 
     //CurrentGame
     private int currentCard;
-    private int totalCards;
+//    private int totalCards;
     private int totalUsers;
     private Game currentGame;
 
     private LinearLayoutManager linearLayoutManager;
     public List<Game> gamesList=new ArrayList<>();
+
     //firebase
     private FirebaseApp app;
     private FirebaseDatabase database;
@@ -64,8 +72,8 @@ int gameTotalCards;
     private FirebaseStorage storage;
     private DatabaseReference databaseGameRef;
     private DatabaseReference databaseDeckRootRef;
-    private DatabaseReference databaseDeckRef;
-    private DatabaseReference databaseRootRef;
+//    private DatabaseReference databaseDeckRef;
+//    private DatabaseReference databaseRootRef;
 
     //CardSwipe
     AlertDialog.Builder alertDialog;
@@ -80,6 +88,10 @@ int gameTotalCards;
 //Views
     TextView commentTextView;
     ImageButton sendBtn;
+
+    //Game Variables
+    int totalVotes;
+    boolean alreadyVoted=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +110,7 @@ int gameTotalCards;
         //Link Views
         commentTextView=(TextView)findViewById(R.id.commentTV);
         sendBtn=(ImageButton) findViewById(R.id.SendImageButton);
+//        commentTextView.setFocusable(false);//avoid writting message before selecting
 
         //DIALOG
         alertDialog=  new AlertDialog.Builder(this)
@@ -129,7 +142,7 @@ int gameTotalCards;
         auth=FirebaseAuth.getInstance();
         storage=FirebaseStorage.getInstance();
         //        get database
-        databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
+//        databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
         // -- reference to table in database
         databaseGameRef =database.getReference("Game");
         databaseDeckRootRef =database.getReference("Deck");
@@ -140,6 +153,7 @@ int gameTotalCards;
         usermail=auth.getCurrentUser().getEmail();
         username=auth.getCurrentUser().getDisplayName();
         useruid=auth.getCurrentUser().getUid();
+        userPic=auth.getCurrentUser().getPhotoUrl().toString();
 
         //GetCurrentGame details
 //        databaseGameRef.child(currentGameID)
@@ -180,6 +194,9 @@ int gameTotalCards;
 
         //FETCHPLAYERS
         fetchPlayers();
+
+        //StartGAME Interaction
+        checkGameAndPlayerStatus();
     }
 
 
@@ -187,7 +204,7 @@ int gameTotalCards;
 
     public  void createCard(int cardNo){
         String quote= mQuotes[cardNo];
-        Card cartita=new Card(displayCardNo++, Integer.parseInt(quote.substring(0,1)),quote,category,false);
+        Card cartita=new Card(displayCardNo++, Integer.parseInt(quote.substring(0,1)),quote,category,false);//tenia un 0,1
 //        Integer.parseInt(quote.substring(0,1));
         cards.add(cartita);
 //TODO no puedo notificar        adapter.notifyDataSetChanged();
@@ -208,7 +225,11 @@ public void loadDeck(){
                 if(noOfCurrentCardToCreate<currentCard || currentCard==0) {
                     int cardNo = Integer.parseInt("" + childSnapshot.child("card").getValue());
                     createCard(cardNo);
+                    if(currentCard==noOfCurrentCardToCreate){
+                        currentDeckCard=cardNo;
+                    }
                 }
+
                 noOfCurrentCardToCreate++;
 
             }
@@ -308,10 +329,14 @@ Log.e("ANTES DE EEROR","currentGameID:"+currentGameID);
         databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                totalUsers=(int)dataSnapshot.getChildrenCount();
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                     Log.e("databaseGameRef","onDataChange happening here"+childSnapshot.getKey());
 
 //                    gameUserNamesList.add(childSnapshot.getValue());
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK, y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto, y enviarlos al adapter
                     playersList.add(childSnapshot.getValue().toString());
                     Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
@@ -361,24 +386,118 @@ public void fetchPlayersCommented(){
 }
 
     public void selectedPlayer(final String selectedPlayer){
-        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
-        commentTextView.setHint("Why would you vote for "+selectedPlayer);
+//        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+//        commentTextView.setFocusable(true);
+        commentTextView.setHint("Why would you vote for \n"+selectedPlayer);
         sendBtn.setClickable(true);
+
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserVote userVote=new UserVote(username,"url",commentTextView.getText().toString(),true, selectedPlayer+"UID", selectedPlayer);
+                sendBtn.setClickable(false);
+                sendBtn.setColorFilter((R.color.bel_lightgrey_text));
+
+                if(!alreadyVoted) {
+                    alreadyVoted=true;
+                    UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayer + "UID", selectedPlayer,selectedPlayer+"userPic",false);
+                    databaseDeckRootRef.child(currentDeckID).child("card" + currentGame.getCurrentCard()).child("users").child(useruid).setValue(userVote);
+                }else{
+
+                }
+            }
+        });
+    }
 
 
-                databaseDeckRootRef.child(currentDeckID).child("card"+currentGame.getCurrentCard()).child("users").child(useruid).push().setValue(userVote);
+    /**
+     * Using this method i might encounter a problem if i edit a value and leave. because noone will notice the change on the already voted users
+     * I can use a read all voted, and then the listener for changes. I believe added, is in this instance. so I dont need to do it twice*/
+    public void checkGameAndPlayerStatus(){
+        Log.e("checkGame()","About to start reading changes");
+        totalVotes=0;
+        databaseDeckRootRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                alreadyVoted=false; //startloading and return to false, if found the match, then is true
+                //refresh recyclerview adapter.
+                playersRecyclerAdapter.notifyDataSetChanged();
+                //determine if all players have voted
+                boolean userVoted=false;
+                if(dataSnapshot.child("voted").exists())
+                 userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
+                if(userVoted){
+                    //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
+                    if(dataSnapshot.child("name").equals(username)){
+                        alreadyVoted=true;
+                    }else{
+                        alreadyVoted=true;//you just voted!
+                        totalVotes++;
+                    }
+                }
+                if(totalVotes>=totalUsers){
+                    Log.e(">>checkGame...()","onChildAdded All players have voted! continue");
+                    showResult();
 
+
+                }
+            }
+
+
+/**Snapshot retrives only the child [in this case the USer] that changed. therefore, I just need to look for voted, not users/voted*/
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                alreadyVoted=false; //startloading and return to false, if found the match, then is true
+
+                playersRecyclerAdapter.notifyDataSetChanged();
+                //determine if all players have voted
+                boolean userVoted=false;
+                if(dataSnapshot.child("voted").exists())
+                    userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
+                if(userVoted){
+                    if(dataSnapshot.child("name").equals(username)){
+                        alreadyVoted=true;
+                    }else{
+                        alreadyVoted=true;//you just voted!
+                        totalVotes++;
+                    }
+                }
+
+                if(totalVotes>=totalUsers){
+                    Log.e(">>checkGame...()","onChildChanged All players have voted! continue");
+                    showResult();
+                }
+                //trigger next move
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-
-
-
     }
+
+public void showResult(){
+    Intent intent=new Intent(this,ResultsActivity.class);
+    intent.putExtra(GAME_ID, currentGameID);
+    intent.putExtra(DECK_ID,  currentDeckID+"");
+    intent.putExtra(CURRENT_CARD_ID,  currentCard);
+    intent.putExtra(TOTAL_CARDS_ID,  gameTotalCards);
+    intent.putExtra(CURRENT_DECK_CARD_ID,  currentDeckCard);
+    startActivity(intent);
+    finish();
+
+}
+
 
     int fetchedCurrentCard;
     public int getCurrentCard(){
@@ -400,6 +519,13 @@ public void fetchPlayersCommented(){
         });
         return fetchedCurrentCard;
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 }

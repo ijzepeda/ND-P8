@@ -181,11 +181,7 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(new ValueEventListener() {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Log.d("getDeckId", dataSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-        Log.d("getDeckId", dataSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-        Log.d("getDeckId", dataSnapshot.getValue().toString()); //< Contains the whole json:.
-
-        oldNoUsers=Double.parseDouble(dataSnapshot.getValue().toString());
+         oldNoUsers=Double.parseDouble(dataSnapshot.getValue().toString());
         databaseGameRef.child(gameId).child("noUsers").setValue(oldNoUsers+1);
 
     }

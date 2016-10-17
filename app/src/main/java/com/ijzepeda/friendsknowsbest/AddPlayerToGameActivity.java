@@ -109,12 +109,13 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
                                      deepLink = AppInviteReferral.getDeepLink(intent);
                                      invitationId = AppInviteReferral.getInvitationId(intent);
 
-                                    Log.e(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
-                                    Log.e(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
+                                    Log.d(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
+                                    Log.d(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
                                     extraString=""+intent.getStringExtra("prueba");
-                                    inviteTv.setText("Your invite To Join:"+gameId);
 gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
-                                    Log.e("~~~~AddGame","removing base I got gameid:"+gameId);
+                                    inviteTv.setText("Your invite To Join:"+gameId);
+
+                                    Log.d("~~~~AddGame","removing base I got gameid:"+gameId);
 
 //TODO------------------------------------------------------------------------------------------------------------------
                                     //todo Alert and accept to add to game:
@@ -129,7 +130,7 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 
                                             }else{
                                                 Toast.makeText(AddPlayerToGameActivity.this, "You are in that game", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(AddPlayerToGameActivity.this,MainActivity.class);
+                                                Intent intent = new Intent(AddPlayerToGameActivity.this,LoadActivity.class);
                                                 startActivity(intent);
                                                 finish();
                                             }
@@ -199,6 +200,21 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
     }
 });
         userMap.put(userUid,userName);
+
+        databaseGameRef.child(gameId).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                inviteTv.setText("Your invite To Join:"+dataSnapshot.getValue());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         databaseGameRef.child(gameId).child("users").updateChildren(userMap);
         userMap.clear();
@@ -280,6 +296,16 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
 
 
 
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+     Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

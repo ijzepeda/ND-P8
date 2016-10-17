@@ -23,6 +23,8 @@ import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
  */
 
 public class GamesRecyclerAdapter extends RecyclerView.Adapter<GamesRecyclerAdapter.ViewHolder> {
+    public static final String ACTION_DATA_UPDATED =
+            "com.ijzepeda.friendsknowsbest.ACTION_DATA_UPDATED";
     List<Game> gamesList;
 private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";

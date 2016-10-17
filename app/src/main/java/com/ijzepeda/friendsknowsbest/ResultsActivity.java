@@ -114,6 +114,7 @@ public class ResultsActivity extends AppCompatActivity {
         databaseGameRef =database.getReference("Game");
         databaseDeckRef =database.getReference("Deck");
 
+
         //UserDetails
         //should I save them on the device? or keep veriifying userAuth?
         usermail=auth.getCurrentUser().getEmail();
@@ -154,7 +155,7 @@ public class ResultsActivity extends AppCompatActivity {
 
 
         fetchUserVotes();
-        CheckPlayersAcceptanceStatus();
+        //CheckPlayersAcceptanceStatus();
 
     }
 
@@ -229,7 +230,7 @@ int maxVotes=0,winningPlayerIndex=0;
     public void refreshWinnerDetails(){
         //TODO CHECK I dont have to se a userVote, Because I fecth from acomment and not from the winning user
 winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
-   Picasso.with(this).load(winningPlayerPic).into(winnerPic);
+   Picasso.with(this).load(winningPlayerPic).error(R.drawable.placeholder).into(winnerPic);
         String[] mQuotes ;//= getResources().getStringArray(R.array.category_romantic);
         mQuotes = getResources().getStringArray(R.array.category_romantic);
         String quote= mQuotes[currentDeckCard];
@@ -326,17 +327,22 @@ List<UserVote>userVotesList=new ArrayList<>();
 //        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
 
 //Load players
-        /**
         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentGame = dataSnapshot.getValue(Game.class);
+                totalUsers=currentGame.getUsers().size();
+
+                CheckPlayersAcceptanceStatus();
+//                totalUsers=(int)dataSnapshot.getChildrenCount();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+        /**
+
         databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -384,7 +390,7 @@ List<UserVote>userVotesList=new ArrayList<>();
     public void CheckPlayersAcceptanceStatus(){
         Log.e("checkGame()","About to start reading changes");
         totalAccepted=0;
-        totalUsers=currentGame.getNoUsers();//is it null?
+//        totalUsers=currentGame.getNoUsers();//is it null?
         databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -459,8 +465,10 @@ endCard();
 
     public void endCard(){
 
+        //TODO debo quitar este ffalse para terminar la prueba
 
-if(gameTotalCards<currentCard) {
+if(false)
+if(gameTotalCards>currentCard) {
     databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard + 1);
     Intent intent = new Intent(this, GameActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
@@ -478,4 +486,9 @@ if(gameTotalCards<currentCard) {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

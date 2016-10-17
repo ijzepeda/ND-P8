@@ -29,7 +29,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:text="Earned cards:"
@@ -52,7 +53,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
 
         <TextView
             android:text="Favorite cards:"
@@ -80,8 +82,15 @@
         android:id="@+id/NotificationSwitch"
 
         style="@style/TextAppearance.AppCompat.Large"
+        android:visibility="gone" />
+    <Button
+        android:text="Save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/saveBtn"
+        android:theme="@style/AppTheme.Button"
+        style="@style/Widget.AppCompat.Button.Small"
         />
-
     <Button
         android:text="Logout"
         android:layout_width="match_parent"

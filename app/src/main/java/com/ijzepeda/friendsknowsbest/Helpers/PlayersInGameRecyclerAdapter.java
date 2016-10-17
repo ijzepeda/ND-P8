@@ -19,6 +19,7 @@ import com.ijzepeda.friendsknowsbest.GameActivity;
 import com.ijzepeda.friendsknowsbest.GamesRecyclerAdapter;
 import com.ijzepeda.friendsknowsbest.R;
 import com.ijzepeda.friendsknowsbest.ResultsActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -65,6 +66,9 @@ Context activityContext;
 //TODO `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //TODO: holder.playerImageView.PICASO CREATE IMAGE BY URL
 
+        Picasso.with(context).load("userObj.getPhoto").error(R.drawable.placeholder).into(holder.playerImageView);
+
+
 
 //TODO `~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //TODO: holder.alreadyVotedPlayer read if voted is true and mark it
@@ -96,7 +100,7 @@ Context activityContext;
         return playersList.size();
     }
 
-
+    Context context;
     //Provide reference to views of each data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView playerNameTV;
@@ -104,7 +108,7 @@ Context activityContext;
         ImageView alreadyVotedPlayerImageView;
         CheckBox selectPlayerCheckBox;
 //        RadioButton selectPlayerRadioButton;
-        Context context;
+
 
         public ViewHolder(View itemView) {
             super(itemView);

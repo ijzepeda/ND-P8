@@ -12,7 +12,7 @@ import static android.os.Build.VERSION_CODES.M;
  */
 
 public class User {
-    String name, age,earnedCards,email,uid;
+    String name, age,earnedCards,email,uid, photoUrl;
     Map<String,Object> friends;//=new HAshMap<String,Object>(); users.put("users",""); root.updateChildren(users)
     Map<String,Object> cards;
     Map<String,Object> games;
@@ -20,15 +20,35 @@ public class User {
       public User() {
     }
 
-    public User(String name, String age, String earnedCards, String email, String uid, Map<String, Object> friends, Map<String, Object> cards, Map<String, Object> games) {
+    public User(String name, String age, String earnedCards, String email, String uid, String photoUrl, Map<String, Object> friends, Map<String, Object> cards, Map<String, Object> games) {
         this.name = name;
         this.age = age;
         this.earnedCards = earnedCards;
         this.email = email;
         this.uid = uid;
+        this.photoUrl = photoUrl;
         this.friends = friends;
         this.cards = cards;
         this.games = games;
+    }
+
+//    public User(String name, String age, String earnedCards, String email, String uid, Map<String, Object> friends, Map<String, Object> cards, Map<String, Object> games) {
+//        this.name = name;
+//        this.age = age;
+//        this.earnedCards = earnedCards;
+//        this.email = email;
+//        this.uid = uid;
+//        this.friends = friends;
+//        this.cards = cards;
+//        this.games = games;
+//    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public String getName() {

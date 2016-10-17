@@ -25,13 +25,14 @@
         android:text="Unlimited Counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/counterSwitch" />
+        android:id="@+id/counterSwitch"
+        android:visibility="gone" />
 
     <AutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/numberCardsTextView"
-        android:hint="Number of cards (blank for default)"
+        android:hint="Number of cards"
         android:lines="1"
         android:inputType="number" />
 

@@ -139,7 +139,7 @@ private static String TAG="MainActivity";
             public void onClick(View v) {
                 Intent intent=new Intent(getApplication(), Settings.class);
                 startActivity(intent);
-                finish();
+//                finish();
                 return;
             }
         });

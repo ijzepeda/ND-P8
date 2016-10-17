@@ -69,14 +69,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/counterBtn"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:theme="@style/menuButton" />
 
         <Button
             android:text="Continue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/continueBtn"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:theme="@style/menuButton"/>
 
     </LinearLayout>
 
@@ -95,7 +98,7 @@
             android:id="@+id/favBtn"
             android:layout_gravity="end"
             android:background="@layout/round_shape"
-            />
+            android:visibility="invisible" />
 
         <ImageButton
             android:layout_height="50dp"
@@ -104,7 +107,8 @@
             android:layout_gravity="end"
 
             android:background="@layout/round_shape"
-            android:layout_width="50dp" />
+            android:layout_width="50dp"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

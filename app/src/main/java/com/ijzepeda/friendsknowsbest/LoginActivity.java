@@ -310,7 +310,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             friendsMap.put("Friend0","");
                             cardsMap.put("FavCard1","");
                             gamesMap.put("game0","GAME123");//GameUID123
-                            User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),
+                            User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
                                     friendsMap,cardsMap,gamesMap);
                             databaseRef=database.getReference("Users");
 

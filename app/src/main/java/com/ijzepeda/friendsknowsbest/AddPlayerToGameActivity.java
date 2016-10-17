@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
@@ -111,7 +112,7 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
                                     Log.e(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
                                     Log.e(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
                                     extraString=""+intent.getStringExtra("prueba");
-                                    inviteTv.setText("Your invite from:"+extraString);
+                                    inviteTv.setText("Your invite To Join:"+gameId);
 gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
                                     Log.e("~~~~AddGame","removing base I got gameid:"+gameId);
 
@@ -123,10 +124,15 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
                                     databaseUsersRef.child(userUid).child("games").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-//                                            if (!dataSnapshot.child(gameId).exists()) {
-//                                                addGame(gameId);
-//
-//                                            }
+                                            if (!dataSnapshot.child(gameId).exists()) {
+                                                addGame(gameId);
+
+                                            }else{
+                                                Toast.makeText(AddPlayerToGameActivity.this, "You are in that game", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AddPlayerToGameActivity.this,MainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
                                         }
 
                                         @Override
@@ -134,7 +140,8 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 
                                         }
                                     });
-                                    addGame(gameId);
+//                                    if user doesnt exists , then open register/
+//                                    addGame(gameId);
 //TODO------------------------------------------------------------------------------------------------------------------
 
 

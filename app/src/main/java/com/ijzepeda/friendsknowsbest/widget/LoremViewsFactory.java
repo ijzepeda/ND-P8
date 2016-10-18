@@ -52,9 +52,9 @@ public class LoremViewsFactory implements RemoteViewsService.RemoteViewsFactory 
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         wWidgetGamesList=new ArrayList<>();
         wWidgetGamesList.addAll(Utils.getInstance().getWidgetGameList());
-//    for(Game game:wWidgetGamesList){
-//    Log.e("LoremViewsFactory","game added in list has"+game.getName());
-//    }
+    for(Game game:wWidgetGamesList){
+    Log.e("LoremViewsFactory","game added in list has"+game.getName());
+    }
     }
 
     public void refreshWidgetGameList(){

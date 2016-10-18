@@ -65,7 +65,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         RemoteViews remoteViews;
         ComponentName watchWidget;
-        remoteViews = new RemoteViews(ctxt.getPackageName(), R.layout.widget);
+        remoteViews = new RemoteViews(ctxt.getPackageName(), R.layout.widget_layout);
         watchWidget = new ComponentName(ctxt, WidgetProvider.class);
         remoteViews.setOnClickPendingIntent(R.id.syncButton, getPendingSelfIntent(ctxt, SYNC_CLICKED));
         appWidgetManager.updateAppWidget(watchWidget, remoteViews);

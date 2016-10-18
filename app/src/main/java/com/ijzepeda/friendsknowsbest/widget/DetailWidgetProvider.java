@@ -22,6 +22,10 @@ import com.ijzepeda.friendsknowsbest.R;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DetailWidgetProvider extends AppWidgetProvider {
+
+
+
+
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
@@ -63,6 +67,11 @@ public class DetailWidgetProvider extends AppWidgetProvider {
                     new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
         }
+
+        int[] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(new ComponentName(context, WidgetProvider.class));
+        WidgetProvider myWidget = new WidgetProvider();
+        myWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
+
     }
 
     /**

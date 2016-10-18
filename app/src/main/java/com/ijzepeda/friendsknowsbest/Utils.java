@@ -4,6 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.R.id.list;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 
 /**
  * Created by Ivan on 9/28/2016.
@@ -19,13 +25,14 @@ public class Utils {
     public static final String PREFS_NAME = "AOP_PREFS";
     public static final String PREFS_KEY = "AOP_PREFS_String";
 
-
+    private static List<Game> widgetGameList;
 
     public static Utils getInstance()
     {
         if (UtilSharedPrefs == null)
         {
             UtilSharedPrefs = new Utils();
+            widgetGameList=new ArrayList<>();
         }
         return UtilSharedPrefs;
     }
@@ -34,7 +41,36 @@ public class Utils {
         super();
     }
 
-    public void save(Context context, String text , String Key) {
+
+    public void addGamesToWidgetList(List<Game> list) {
+        widgetGameList.addAll(list);
+    }
+    public void addGameToWidgetList(Game game) {
+        widgetGameList.add(game);
+    }
+    public void removeGameFromWidgetList(Game game) {
+        widgetGameList.remove(game);
+    }
+    public void clearWidgetGamesList() {
+        widgetGameList.clear();
+    }
+    public List<Game> getWidgetGameList() {
+        return widgetGameList;
+    }
+    public int getWidgetGameListCount() {
+        return widgetGameList.size();
+    }
+    public Game getWidgetGameFromList(String gameId) {
+   for(Game game:widgetGameList) {
+    if(game.getUid().equals(gameId))
+       return game;
+   }
+    return null;
+    }
+
+
+
+        public void save(Context context, String text , String Key) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 

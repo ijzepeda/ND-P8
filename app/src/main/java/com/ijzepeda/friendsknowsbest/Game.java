@@ -1,12 +1,15 @@
 package com.ijzepeda.friendsknowsbest;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Map;
 
 /**
  * Created by Ivan on 10/13/2016.
  */
 
-public class Game {
+public class Game implements Parcelable {
     int currentCard;
     String deckId;
     String name;
@@ -29,6 +32,28 @@ public class Game {
         this.uid = uid;
         this.unlimitedCounter = unlimitedCounter;
     }
+
+    protected Game(Parcel in) {
+        currentCard = in.readInt();
+        deckId = in.readString();
+        name = in.readString();
+        noUsers = in.readInt();
+        noCards = in.readInt();
+        uid = in.readString();
+        unlimitedCounter = in.readByte() != 0;
+    }
+
+    public static final Creator<Game> CREATOR = new Creator<Game>() {
+        @Override
+        public Game createFromParcel(Parcel in) {
+            return new Game(in);
+        }
+
+        @Override
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
 
     public int getNoCards() {
         return noCards;
@@ -103,5 +128,21 @@ public class Game {
 
     public void setUsers(Map<String, Object> users) {
         this.users = users;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(currentCard);
+        parcel.writeString(deckId);
+        parcel.writeString(name);
+        parcel.writeInt(noUsers);
+        parcel.writeInt(noCards);
+        parcel.writeString(uid);
+        parcel.writeByte((byte) (unlimitedCounter ? 1 : 0));
     }
 }

@@ -21,6 +21,15 @@
     </string>
     <string name="no_games">No games</string>
     <string name="title_widget_detail">Games Details</string>
+    <string name="already_registered">That email is already registered</string>
+    <string name="incorrect_data">Incorrect Data</string>
+    <string name="weak_password">Weak Password</string>
+    <string name="auth_failed">Auth failed:</string>
+
+    <string name="email" translatable="false">email</string>
+    <string name="name" translatable="false">name</string>
+    <string name="username" translatable="false">username</string>
+    <string name="press_back_to_leave">Press back again to leave.</string>
 
 
     <array name="category_romantic">

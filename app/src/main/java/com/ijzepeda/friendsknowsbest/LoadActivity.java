@@ -1,5 +1,7 @@
 package com.ijzepeda.friendsknowsbest;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,11 +20,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ijzepeda.friendsknowsbest.widget.DetailWidgetProvider;
+import com.ijzepeda.friendsknowsbest.widget.LoremViewsFactory;
+import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.attr.id;
+import static java.security.AccessController.getContext;
 
 public class LoadActivity extends AppCompatActivity {
 
@@ -86,6 +95,8 @@ public class LoadActivity extends AppCompatActivity {
                       Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
                       userGameList.add(childSnapshot.getValue().toString());
 
+
+
 // String gameuid=childSnapshot.getRef().toString();
             databaseGameRef.child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -95,7 +106,19 @@ public class LoadActivity extends AppCompatActivity {
                     gameTemp.setUid(dataSnapshot.getKey().toString());//todo need to update
 
                         gamesList.add(gameTemp);
-                        gamesRecyclerAdapter.notifyDataSetChanged();
+                    gamesRecyclerAdapter.notifyDataSetChanged();
+
+                    if(Utils.getInstance().getWidgetGameFromList(gameTemp.getUid())==null){
+                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                        {
+//it works but triggerson receive
+                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
+                            WidgetProvider myWidget = new WidgetProvider();
+                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+
+                        }
+                        Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
+                    }
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

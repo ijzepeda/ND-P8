@@ -85,6 +85,8 @@
             android:name=".widget.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.ijzepeda.friendsknowsbest.GamesRecycleAdapter.ACTION_DATA_UPDATED" />
+                <action android:name="com.ijzepeda.friendsknowsbest.widget.WidgetProvider.REFRESH_ACTION" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />

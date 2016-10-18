@@ -55,7 +55,6 @@ private static String GAME_ID="game_id";
         //missing deck > "DeckId: "+game.getDeckId()
         holder.deckIdTV.setText(game.getDeckId());
         holder.gameidTV.setText(game.getUid());
-        Log.e("~~~>>>>","game.getUid()"+game.getUid());
         holder.gameidTV.setVisibility(View.GONE);
 
 
@@ -112,7 +111,10 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                             .setPositiveButton("SURE", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+//TODO Delete user from: deck[from current card] and Game. also game from Users
+//TODO Delete user from: deck[from current card] and Game. also game from Users
+//TODO Delete user from: deck[from current card] and Game. also game from Users
+//TODO Delete user from: deck[from current card] and Game. also game from Users
                                 }
                             })
                     .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

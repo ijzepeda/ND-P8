@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
+import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,11 +99,55 @@ int currentDeckCard;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+
+
+//FIREBASE
+        app=FirebaseApp.getInstance();
+        database=FirebaseDatabase.getInstance();
+        auth=FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
+        //        get database
+//        databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
+        // -- reference to table in database
+        databaseGameRef =database.getReference("Game");
+        databaseDeckRootRef =database.getReference("Deck");
+//        databaseDeckRef =databaseDeckRootRef.child(currentGameID);
+
+
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
         currentDeckID=getIntent().getStringExtra(DECK_ID);
         currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);//Todo check this getCurrentCard());
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
+
+//retrievegameDetailsFromWidget
+        Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider.EXTRA_GAME);
+if(gameToLoad!=null){
+    currentGameID=gameToLoad.getUid();
+    currentDeckID=gameToLoad.getDeckId();
+    currentCard=gameToLoad.getCurrentCard();
+    gameTotalCards=gameToLoad.getNoCards();
+
+}
+
+       FirebaseUser mFirebaseUser = auth.getCurrentUser();
+//        if (mFirebaseUser == null) {
+        Log.e("is null","mFirebaseUser"+mFirebaseUser);
+
+        if( mFirebaseUser==null){
+            Log.e("insidemFirebaseUser","mFirebaseUser"+mFirebaseUser);
+
+//            currentGameID==null ||
+//            return to main activity .getEmail()
+            Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+return;
+        }
+
+
+
 
         mQuotes = getResources().getStringArray(R.array.category_romantic);
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
@@ -136,17 +182,7 @@ int currentDeckCard;
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert);
 
-        //FIREBASE
-        app=FirebaseApp.getInstance();
-        database=FirebaseDatabase.getInstance();
-        auth=FirebaseAuth.getInstance();
-        storage=FirebaseStorage.getInstance();
-        //        get database
-//        databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
-        // -- reference to table in database
-        databaseGameRef =database.getReference("Game");
-        databaseDeckRootRef =database.getReference("Deck");
-//        databaseDeckRef =databaseDeckRootRef.child(currentGameID);
+
 
         //UserDetails
         //should I save them on the device? or keep veriifying userAuth?

@@ -1,5 +1,7 @@
 package com.ijzepeda.friendsknowsbest;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -64,12 +67,14 @@ private static String TAG="MainActivity";
             settingsBtn.setVisibility(View.GONE);
             logoutBtn.setVisibility(View.GONE);
             onlineBtn.setVisibility(View.VISIBLE);
-            //it is going to be automatic login
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish();
-//            return;
+
+            //Todo Check
+            //delete widget data
+            Utils.getInstance().clearWidgetGamesList();
+
         } else {
-                    Log.e("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
+            Utils.getInstance();
+                    Log.d("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
             Utils.getInstance().save(getApplication(),mFirebaseUser.getUid(),"uid");
             Utils.getInstance().save(getApplication(),mFirebaseUser.getDisplayName(),"name");
             Utils.getInstance().save(getApplication(),mFirebaseUser.getEmail(),"email");
@@ -186,6 +191,20 @@ private static String TAG="MainActivity";
     private void logout(){
         FirebaseAuth.getInstance().signOut();
         Utils.getInstance().clearSharedPreference(this);//.save(this,usermail,"email");
+
+        //Clear Widget data
+//        /------------------------------------------------
+        Log.e("Widget Logout","Cleaning data");
+        Utils.getInstance().clearWidgetGamesList();
+//it works but triggerson receive
+
+                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
+                WidgetProvider myWidget = new WidgetProvider();
+                myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+//        /------------------------------------------------
+
+
+
         LoginManager.getInstance().logOut();
 //        firebaseAuth.signOut();// if you are in this part, you can only logout
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

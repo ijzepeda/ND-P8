@@ -30,7 +30,7 @@ public class LoremActivity extends Activity {
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
-        String word=getIntent().getStringExtra(WidgetProvider.EXTRA_WORD);
+        String word=getIntent().getStringExtra(WidgetProvider.EXTRA_GAME);
 
         if (word==null) {
             word="We did not get a word!";

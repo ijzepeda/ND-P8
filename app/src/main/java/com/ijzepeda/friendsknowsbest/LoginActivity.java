@@ -115,12 +115,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseUser mFirebaseUser;
+    FirebaseUser firebaseUser;
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        FirebaseAuth.getInstance().signOut();
-//    }
+    User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //        get database
         databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
         firebaseDatabaseRootReference = FirebaseDatabase.getInstance().getReference().child("Users");
-
 
 
         // Set up the login form.
@@ -300,25 +297,50 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         //TODO somehow verify that if the user exists, then create/fill the user details in database
 
-                            Toast.makeText(LoginActivity.this, "Authentication with Facebook Success!",
+                            Toast.makeText(LoginActivity.this, R.string.suth_facebook_success,
                                     Toast.LENGTH_SHORT).show();
 
-                            FirebaseUser firebaseUser=auth.getCurrentUser();
+//                            FirebaseUser firebaseUser=auth.getCurrentUser();
+                             firebaseUser=auth.getCurrentUser();
                             Map<String,Object> friendsMap=new HashMap<String, Object>();
                             Map<String,Object>cardsMap=new HashMap<String, Object>();
                             Map<String,Object>gamesMap=new HashMap<String, Object>();
+
+                            //TODO DELETE HARDCODED STUFF
                             friendsMap.put("Friend0","");
                             cardsMap.put("FavCard1","");
                             gamesMap.put("game0","GAME123");//GameUID123
-                            User user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
+                             user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
                                     friendsMap,cardsMap,gamesMap);
                             databaseRef=database.getReference("Users");
 
-                            //TODO KEY CANT BE AN EMAIL!
-                            Map<String,Object> map=new HashMap<String,Object>();
+
+//TODO if user doesnt exist, then create it
+                            databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if(!dataSnapshot.hasChild(firebaseUser.getUid())){
+                                                                    Map<String,Object> map=new HashMap<String,Object>();
                             map.put(firebaseUser.getUid(),"");
                             databaseRef.updateChildren(map);
+                            //Each login all user values get replaced, then I need to update, not set
                             databaseRef.child(firebaseUser.getUid()).setValue(user);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            //TODO KEY CANT BE AN EMAIL!
+//                            Map<String,Object> map=new HashMap<String,Object>();
+//                            map.put(firebaseUser.getUid(),"");
+//                            databaseRef.updateChildren(map);
+//                            //Each login all user values get replaced, then I need to update, not set
+//                            databaseRef.child(firebaseUser.getUid()).setValue(user);
 
 
 

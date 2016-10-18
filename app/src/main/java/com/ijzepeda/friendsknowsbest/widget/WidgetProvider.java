@@ -49,11 +49,7 @@ public class WidgetProvider extends AppWidgetProvider {
     private static final String REFRESH_ACTION = "com.ijzepeda.friendsknowsbest.appwidget.action.REFRESH";
     private static final String SYNC_CLICKED    = "automaticWidgetSyncButtonClick";
 
-    public static void sendRefreshBroadcast(Context context) {
-        Intent intent = new Intent(REFRESH_ACTION);
-        intent.setComponent(new ComponentName(context, DetailWidgetProvider.class));
-        context.sendBroadcast(intent);
-    }
+
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, getClass());
         intent.setAction(action);

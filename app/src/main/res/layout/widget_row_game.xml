@@ -8,26 +8,11 @@
     <!--android:background="@drawable/touch_selector_white"-->
 
     <RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
+        android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:layout_margin="10dp">
 
-<TextView
-    android:id="@+id/game_id"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="game_id"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true" />
-<TextView
-    android:id="@+id/deck_id"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="game_id"
-    android:visibility="invisible"/>
-<TextView
+        <TextView
     android:id="@+id/game_name"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -37,27 +22,27 @@ android:layout_margin="10dp">
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
-<TextView
-    android:id="@+id/cardsdrawn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Cards drown:"
-    android:layout_marginTop="19dp"
-    android:layout_below="@+id/game_name"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/players"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Players:"
+            android:lines="1"
+            android:ellipsize="marquee"
+            android:layout_below="@+id/game_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/players"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Players:"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:lines="1"
-        android:ellipsize="marquee"
-        android:layout_alignBottom="@+id/cardsdrawn"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/cardsdrawn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cards drown:"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="23dp"
+            android:layout_marginEnd="23dp" />
 
     </RelativeLayout>
 </FrameLayout>

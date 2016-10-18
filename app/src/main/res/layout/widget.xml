@@ -6,17 +6,19 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-        <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight=".1"
-            android:id="@+id/button3"
-            android:background="@mipmap/logo"
+    <FrameLayout
+        android:id="@+id/widget"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:background="@color/colorPrimary">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
             android:layout_gravity="center"
-            android:textAlignment="center" />
-
+            android:src="@mipmap/logo"
+            />
+    </FrameLayout>
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -231,6 +231,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Utils.getInstance().save(getApplication(),user.getUid(),"uid");
                     Utils.getInstance().save(getApplication(),user.getDisplayName(),"username");
                     Utils.getInstance().save(getApplication(),user.getEmail(),"email");
+                    //Add pictureUrl to sharedPrefs
+                    Utils.getInstance().save(getApplication(),user.getPhotoUrl().toString(),getString(R.string.shared_userphotourl_key));
+
                     Log.e("mauthlistener","name is:"+user.getDisplayName());
                     Log.e("mauthlistener","email is:"+user.getEmail());
                     Log.e("mauthlistener","uid is:"+user.getUid());
@@ -313,7 +316,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                              user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
                                     friendsMap,cardsMap,gamesMap);
                             databaseRef=database.getReference("Users");
-
+                            Log.e("mauthlistener","name is:"+firebaseUser.getDisplayName());
+                            Log.e("mauthlistener","email is:"+firebaseUser.getEmail());
+                            Log.e("mauthlistener","uid is:"+firebaseUser.getUid());
+                            Log.e("mauthlistener","provider is:"+firebaseUser.getProviderId());
+                            Log.e("mauthlistener","photourl is:"+firebaseUser.getPhotoUrl());
 
 //TODO if user doesnt exist, then create it
                             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {

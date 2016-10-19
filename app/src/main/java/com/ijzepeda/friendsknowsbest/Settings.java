@@ -1,18 +1,16 @@
 package com.ijzepeda.friendsknowsbest;
 
-import android.*;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +26,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -37,11 +34,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.data;
-import static com.ijzepeda.friendsknowsbest.R.id.editImageBtn;
-import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
-import static com.ijzepeda.friendsknowsbest.R.id.saveBtn;
 
 
 public class Settings extends AppCompatActivity {
@@ -101,7 +93,7 @@ public class Settings extends AppCompatActivity {
                 if (uploadFinished) {
                     //Update user to firebase
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setPhotoUri(mFileUri)
+                            .setPhotoUri(downloadUri)
 //                            .setDisplayName()
 //                        .setPhotoUri(downloadUri)
                             .build();
@@ -118,6 +110,8 @@ public class Settings extends AppCompatActivity {
                                         Map<String,Object> photoUrl=new HashMap<String, Object>();
                                         photoUrl.put("photoUrl",downloadUri.toString());
                                         database.getReference().child("Users").child(firebaseUser.getUid()).updateChildren(photoUrl);//child("photoUrl").setValue(downloadUri.toString());//mFileUri);//TODO UPDATE NOT SETVALUE
+                                        //Add pictureUrl to sharedPrefs
+                                        Utils.getInstance().save(getApplication(),downloadUri.toString(),getString(R.string.shared_userphotourl_key));
 
                                     }
                                 }

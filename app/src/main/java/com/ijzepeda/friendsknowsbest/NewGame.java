@@ -91,9 +91,14 @@ private GoogleApiClient mGoogleApiClient;
         userUid=Utils.getInstance().getValue(getApplication(),"uid");
         userName=Utils.getInstance().getValue(getApplication(),"username");
         userEmail=Utils.getInstance().getValue(getApplication(),"email");
-if(auth.getCurrentUser().getPhotoUrl()!=null)
-    userPic=auth.getCurrentUser().getPhotoUrl().toString();
+if(auth.getCurrentUser().getPhotoUrl()!=null) {
+    Log.e("NewGame","auth.getCurrentUser().getPhotoUrl().toString():"+auth.getCurrentUser().getPhotoUrl().toString());
+    Log.e("NewGame","auth.getCurrentUser().getPhotoUrl():"+auth.getCurrentUser().getPhotoUrl());
+//    userPic = auth.getCurrentUser().getPhotoUrl().toString();
+//    LOAD FROM USERS DB or sharedprefs
+    userPic =Utils.getInstance().getValue(getApplication(),getResources().getString(R.string.shared_userphotourl_key));
 
+}
 
 //Generate the random UID
         deckId=deckId+"123";
@@ -198,8 +203,8 @@ public void createDeck(){
          databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
          databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
         //CREATE UserVote
-        Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
-        UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);
+        Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo+", userPic"+userPic);
+        UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","nomineePicUrl",false);
         databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
 
 

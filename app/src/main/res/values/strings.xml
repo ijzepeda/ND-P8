@@ -35,6 +35,7 @@
     <string name="wait_player_vote">You already voted! Wait for other players!</string>
     <string name="thanks_for_playing">Wait for next version to see detailed results and more features. Thanks for playing!</string>
     <string name="game_over">Game Over</string>
+    <string name="shared_userphotourl_key">userPhotoUrl</string>
 
 
     <array name="category_romantic">

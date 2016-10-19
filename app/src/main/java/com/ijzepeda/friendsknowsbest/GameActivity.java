@@ -1,21 +1,15 @@
 package com.ijzepeda.friendsknowsbest;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.IntegerRes;
-import android.support.constraint.solver.widgets.Snapshot;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
-import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
 import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;
@@ -366,15 +359,15 @@ public void loadDeck(){
         databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                totalUsers=(int)dataSnapshot.getChildrenCount(); //TODO is giving me error.. actually returns 0
-                Log.e("totalUsers","totalUsers cant be 0, but now is:"+totalUsers+" -----------------------------------------------------------");
-                Log.e("totalUsers","dataSnapshot.getChildrenCount()"+dataSnapshot.getChildrenCount()+" -----------------------------------------------------------");
-                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                totalUsers=(int)dataSnapshot.getChildrenCount();
+                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                    //                    gameUserNamesList.add(childSnapshot.getValue());
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK, y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto, y enviarlos al adapter
+                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK,
+                     // todo y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto,
+                     // todo y enviarlos al adapter
                     playersList.add(childSnapshot.getValue().toString());
                     Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
                     Log.e("databaseGameRef","playerlist just added"+playersList.get(0));

@@ -88,9 +88,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/saveBtn"
+        android:background="@color/bel_grey_text"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
+
+        android:clickable="false"
         />
+
     <Button
         android:text="Logout"
         android:layout_width="match_parent"

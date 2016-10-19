@@ -31,6 +31,10 @@
     <string name="username" translatable="false">username</string>
     <string name="press_back_to_leave">Press back again to leave.</string>
     <string name="suth_facebook_success">Authentication with Facebook Success!</string>
+    <string name="wait_player_see_result">Wait for all players to view the results!</string>
+    <string name="wait_player_vote">You already voted! Wait for other players!</string>
+    <string name="thanks_for_playing">Wait for next version to see detailed results and more features. Thanks for playing!</string>
+    <string name="game_over">Game Over</string>
 
 
     <array name="category_romantic">

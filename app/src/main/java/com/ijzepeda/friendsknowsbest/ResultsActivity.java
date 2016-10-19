@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,7 +78,7 @@ public class ResultsActivity extends AppCompatActivity {
     private DatabaseReference databaseGameRef;
     private DatabaseReference databaseDeckRef;
 
-    private Game currentGame;
+   // private Game currentGame;
 
     //Results Variables & elements
 //    String winnerName;
@@ -96,6 +97,7 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        context=this;
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
         currentDeckID=getIntent().getStringExtra(DECK_ID);
@@ -123,7 +125,10 @@ public class ResultsActivity extends AppCompatActivity {
         userPic=auth.getCurrentUser().getPhotoUrl().toString();
         userPicURI=auth.getCurrentUser().getPhotoUrl();
 
-         winnerPic=(ImageView)findViewById(R.id.winnerPicImageView);
+        Log.e("ResultsActivity","Oncreate on  gameuid:"+currentGameID+", card:"+currentCard);
+
+
+        winnerPic=(ImageView)findViewById(R.id.winnerPicImageView);
          cardWinnerTextView=(TextView)findViewById(R.id.cardWinnerTextView);
         winnerNameTextView=(TextView)findViewById(R.id.winnerTextView);
         continueBtn=(Button)findViewById(R.id.continueBtn);
@@ -144,7 +149,7 @@ public class ResultsActivity extends AppCompatActivity {
 //                    UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayer + "UID", selectedPlayer,selectedPlayer+"userPic",false);
                     databaseDeckRef.child(currentDeckID).child("card" +currentCard).child("users").child(useruid).child("acceptResult").setValue(alreadyAccepted);
                 }else{
-
+                    Toast.makeText(context, R.string.wait_player_see_result, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -155,7 +160,8 @@ public class ResultsActivity extends AppCompatActivity {
 
 
         fetchUserVotes();
-        //CheckPlayersAcceptanceStatus();
+
+//        CheckPlayersAcceptanceStatus(); //Moved to inside of fetchUserVotes()>Processvotes()
 
     }
 
@@ -165,9 +171,14 @@ public class ResultsActivity extends AppCompatActivity {
                 databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        totalUsers=(int)dataSnapshot.getChildrenCount();//todo added on 19-10-0003
                         int i=0;
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                            userVotesList.add(i++,childSnapshot.getValue(UserVote.class));
+                            Log.d("fetchUserVotes,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
+                            Log.d("fetchUserVotes,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
+                            Log.d("fetchUserVotes,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
+
+                            userVotesList.add(i++,childSnapshot.getValue(UserVote.class));//TODO aqui exite un error cuando el usuario aun no vota. y solo tiene un STRING y no un USERVOTE
                         }
                         processVotes();
                     }
@@ -211,7 +222,7 @@ int maxVotes=0,winningPlayerIndex=0;
                 maxVotes=value;
                 winningPlayerUID=userVote.getNomineeUID();
                 winningPlayerName=userVote.getNomineeName();
-                winningPlayerPic=userVote.getNomineePicUrl();
+                winningPlayerPic=""+userVote.getNomineePicUrl();
 //                winningPlayerIndex=index;
                 winningPlayer=userVote;
             }
@@ -219,11 +230,11 @@ int maxVotes=0,winningPlayerIndex=0;
         }
 
 
-//        winningPlayer=userVotesList.get(winningPlayerIndex);
-//        userVotesList.contains()
-
 
         refreshWinnerDetails();
+
+//        CheckPlayersAcceptanceStatus();
+
     }
 
 
@@ -237,7 +248,7 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
         String completeMessage;
         String winnerTitle;
         if(username.equals(winningPlayerName)) { //TODO CHANGE TO UID
-            completeMessage="Your Friend thout that You are more likely to " + quote.substring(2);
+            completeMessage="Your Friend thought that You are more likely to " + quote.substring(2);
             winnerTitle="You won";
             }else{
             completeMessage = "Your friends thought that " + winningPlayerName + " is more likely to :" + quote.substring(2);
@@ -330,9 +341,9 @@ List<UserVote>userVotesList=new ArrayList<>();
         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                currentGame = dataSnapshot.getValue(Game.class);
-                totalUsers=currentGame.getUsers().size();
-
+               ////todo testin  currentGame = dataSnapshot.getValue(Game.class);
+              /////todo testing  totalUsers=currentGame.getUsers().size();
+Log.e("FETCHING USERS","~~~~~~~~~~PLAYERS LOADED ARE totalUsers:"+totalUsers);
                 CheckPlayersAcceptanceStatus();
 //                totalUsers=(int)dataSnapshot.getChildrenCount();
             }
@@ -364,6 +375,8 @@ List<UserVote>userVotesList=new ArrayList<>();
                 }
 //              todo      teniendo esa lista, hacer un llamado a USERS y sacar objetos de usuarios, y mandarlos al recycler, no la lista de nombres... que serian uids no names
 
+        Log.e("FETCHING USERS","~~~~~~~~~~PLAYERS LOADED ARE totalUsers:"+totalUsers);
+        CheckPlayersAcceptanceStatus();
                 }
             }
 
@@ -396,26 +409,43 @@ List<UserVote>userVotesList=new ArrayList<>();
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 alreadyAccepted=false; //startloading and return to false, if found the match, then is true
                 //refresh recyclerview adapter.
-//                playersRecyclerAdapter.notifyDataSetChanged();
+                playersRecyclerAdapter.notifyDataSetChanged();//it was commented on 18-10-16.2344
                 //determine if all players have voted
                 boolean userAccepted=false;
-                if(dataSnapshot.child("acceptResult").exists())
-                    userAccepted=Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
-                if(userAccepted){
-                    //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
-                    if(dataSnapshot.child("name").equals(username)){
-                        alreadyAccepted=true;
-                    }else{
-                        alreadyAccepted=true;//you just voted!
+                if(dataSnapshot.child("acceptResult").exists()) { //extended to bottom
+                    userAccepted = Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                    if (userAccepted) {
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyAccepted = true;
+                        }
                         totalAccepted++;
                     }
-                }
-                if(totalAccepted>=totalUsers){
-                    Log.e(">>checkGame...()","onChildAdded All players have accepted! continue");
-//                    showResult();
-endCard();
+                    if (totalAccepted >= totalUsers) {
+                        Log.e("~~~RESULTS","~~~~~~~~~~Calling endcard from Added totalAccepted:"+totalAccepted+" totalUsers:"+totalUsers);
 
-                }
+                        endCard();
+                    }
+
+
+                    /*if (userAccepted) {
+                        //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyAccepted = true;
+                        } else {
+                            alreadyAccepted = true;//you just voted!
+                            totalAccepted++;
+                        }
+                        Log.e("ResultActivity","onChildAdded Parsing uservotes, totalAccepted"+totalAccepted+", totalUsers:"+totalUsers);
+
+                        if (totalAccepted >= totalUsers) {
+                            Log.e(">>checkGame...()", "onChildAdded All players have accepted! continue");
+//                    showResult();
+                            endCard();
+
+                        }
+                    }*/
+
+                }//extended up tohere
             }
 
 
@@ -427,22 +457,34 @@ endCard();
 //                playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
                 boolean userAccepted=false;
-                if(dataSnapshot.child("acceptResult").exists())
-                    userAccepted=Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
-                if(userAccepted){
-                    if(dataSnapshot.child("name").equals(username)){
-                        alreadyAccepted=true;
-                    }else{
-                        alreadyAccepted=true;//you just voted!
+                if(dataSnapshot.child("acceptResult").exists()) {//extend to bottom
+                    userAccepted = Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                    if (userAccepted) {
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyAccepted = true;
+                        }
                         totalAccepted++;
                     }
-                }
-
-                if(totalAccepted>=totalUsers){
-                    Log.e(">>checkGame...()","onChildChanged All players have accepted! continue");
+                    if (totalAccepted >= totalUsers) {
+                        Log.e("~~~RESULTS","~~~~~~~~~~Calling endcard from Changed totalAccepted:"+totalAccepted+" totalUsers:"+totalUsers);
+                        endCard();
+                    }
+                    /** if (userAccepted) {
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyAccepted = true;
+                        } else {
+                            alreadyAccepted = true;//you just voted!
+                            totalAccepted++;
+                        }
+//AHUEVO DEBE CHECAR SI ESTE USER HA VOTADO, si aun no vota, todavia no votan todos
+                        Log.e("ResultActivity","onChildChanged Parsing uservotes, totalAccepted"+totalAccepted+", totalUsers:"+totalUsers);
+                        if (totalAccepted >= totalUsers) {
+                            Log.e(">>checkGame...()", "onChildChanged All players have accepted! continue");
 //                    showResult();
-                    endCard();
-                }
+                            endCard();
+                        }
+                    }*/
+                } //extended up to here
                 //trigger next move
             }
 
@@ -464,12 +506,13 @@ endCard();
     }
 
     public void endCard(){
-
         //TODO debo quitar este ffalse para terminar la prueba
-
-if(false)
-if(gameTotalCards>currentCard) {
-    databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard + 1);
+//if(false)
+        Log.e("End card","gameTotalCards:"+gameTotalCards+", currentCard:"+currentCard);
+        //Si es igual o mayor, el numero de cartas, si llegue al tope, mandar a game over
+        currentCard++;
+if(currentCard<gameTotalCards) {
+    databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard);
     Intent intent = new Intent(this, GameActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
     intent.putExtra(DECK_ID, currentDeckID + "");
@@ -479,16 +522,19 @@ if(gameTotalCards>currentCard) {
     startActivity(intent);
     finish();
 }else{
-//    Intent intent=new Intent(this,GameOver.class);
-    Intent intent=new Intent(this,MainActivity.class);
+    Intent intent=new Intent(this,GameOverResults.class);
+//    Intent intent=new Intent(this,MainActivity.class);
     startActivity(intent);
+    finish();
 }
     }
 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
         finish();
     }
 }

@@ -104,7 +104,7 @@ private static String TAG="MainActivity";
             public void onClick(View v) {
                 Intent offlineMode=new Intent(getApplication(), LoginActivity.class);
                 startActivity(offlineMode);
-                finish();
+//                finish();
                 return;
 //                Toast.makeText(getApplication(),getString(R.string.login_first),Toast.LENGTH_SHORT).show();
             }
@@ -114,7 +114,7 @@ private static String TAG="MainActivity";
             public void onClick(View v) {
                 Intent offlineMode=new Intent(getApplication(), Offline.class);
                 startActivity(offlineMode);
-                finish();
+//                finish();
                 return;
             }
         });
@@ -124,7 +124,7 @@ private static String TAG="MainActivity";
             public void onClick(View v) {
                 Intent newGame=new Intent(getApplication(), NewGame.class);
                 startActivity(newGame);
-                finish();
+//                finish();
                 return;
             }
         });
@@ -134,7 +134,7 @@ private static String TAG="MainActivity";
             public void onClick(View v) {
                 Intent loadGame=new Intent(getApplication(), LoadActivity.class);
                 startActivity(loadGame);
-                finish();
+//                finish();
                 return;
             }
         });

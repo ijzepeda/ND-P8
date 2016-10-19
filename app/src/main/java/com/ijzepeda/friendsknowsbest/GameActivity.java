@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daprlabs.cardstack.SwipeDeck;
 import com.google.firebase.FirebaseApp;
@@ -132,7 +133,7 @@ if(gameToLoad!=null){
     gameTotalCards=gameToLoad.getNoCards();
 
 }
-
+Log.e("GameActivity","Oncreate on  gameuid:"+currentGameID+", card:"+currentCard);//TODO CHECK BORRAR DELETE
        FirebaseUser mFirebaseUser = auth.getCurrentUser();
 //        if (mFirebaseUser == null) {
         Log.e("is null","mFirebaseUser"+mFirebaseUser);
@@ -161,28 +162,28 @@ return;
 //        commentTextView.setFocusable(false);//avoid writting message before selecting
 
         //DIALOG
-        alertDialog=  new AlertDialog.Builder(this)
-                .setTitle("Game Over")
-                .setMessage("You should start a new game")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        Intent intent=new Intent(getApplication(),NewGame.class);
-                        startActivity(intent);
-                        finish();
-                        return;
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-//                        Intent intent=new Intent(getApplication(),MainActivity.class);
+//        alertDialog=  new AlertDialog.Builder(this)
+//                .setTitle("Game Over")
+//                .setMessage("You should start a new game")
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        Intent intent=new Intent(getApplication(),NewGame.class);
 //                        startActivity(intent);
-//                        finish();
+////                        finish();
 //                        return;
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert);
+//                    }
+//                })
+//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // do nothing
+////                        Intent intent=new Intent(getApplication(),MainActivity.class);
+////                        startActivity(intent);
+////                        finish();
+////                        return;
+//                    }
+//                })
+//                .setIcon(android.R.drawable.ic_dialog_alert);
 
 
 
@@ -191,7 +192,7 @@ return;
         usermail=auth.getCurrentUser().getEmail();
         username=auth.getCurrentUser().getDisplayName();
         useruid=auth.getCurrentUser().getUid();
-        userPic=auth.getCurrentUser().getPhotoUrl().toString();
+        userPic=auth.getCurrentUser().getPhotoUrl()!=null?auth.getCurrentUser().getPhotoUrl().toString():"";
 
         //GetCurrentGame details
 //        databaseGameRef.child(currentGameID)
@@ -234,7 +235,7 @@ return;
         fetchPlayers();
 
         //StartGAME Interaction
-        checkGameAndPlayerStatus();
+//        checkGameAndPlayerStatus();//Load after fectch player is done
     }
 
 
@@ -261,7 +262,7 @@ public void loadDeck(){
             int noOfCurrentCardToCreate=0;
             for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                 if(noOfCurrentCardToCreate<currentCard || currentCard==0) {
-                    int cardNo = Integer.parseInt("" + childSnapshot.child("card").getValue());
+                    int cardNo =0+( Integer.parseInt("" + childSnapshot.child("card").getValue()));
                     createCard(cardNo);
                     if(currentCard==noOfCurrentCardToCreate){
                         currentDeckCard=cardNo;
@@ -347,15 +348,13 @@ public void loadDeck(){
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 //        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
+
 //Load players
-Log.e("ANTES DE EEROR","currentGameID:"+currentGameID);
         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 //                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                Log.e("~~~>>>>","About to place GAME object from DB,currentGameID:"+currentGameID);
                 currentGame = dataSnapshot.getValue(Game.class);
-                Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
                 Map<String,Object> gameUsers= currentGame.getUsers();
   }
                     @Override
@@ -367,11 +366,11 @@ Log.e("ANTES DE EEROR","currentGameID:"+currentGameID);
         databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                totalUsers=(int)dataSnapshot.getChildrenCount();
+                totalUsers=(int)dataSnapshot.getChildrenCount(); //TODO is giving me error.. actually returns 0
+                Log.e("totalUsers","totalUsers cant be 0, but now is:"+totalUsers+" -----------------------------------------------------------");
+                Log.e("totalUsers","dataSnapshot.getChildrenCount()"+dataSnapshot.getChildrenCount()+" -----------------------------------------------------------");
                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                    Log.e("databaseGameRef","onDataChange happening here"+childSnapshot.getKey());
-
-//                    gameUserNamesList.add(childSnapshot.getValue());
+                   //                    gameUserNamesList.add(childSnapshot.getValue());
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -382,12 +381,18 @@ Log.e("ANTES DE EEROR","currentGameID:"+currentGameID);
                     playersRecyclerAdapter.notifyDataSetChanged();
 
                 }
+
+                //Having players fetched continue
+                checkGameAndPlayerStatus();
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
 
 //settign up the adapters
@@ -432,15 +437,19 @@ public void fetchPlayersCommented(){
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendBtn.setClickable(false);
+//                sendBtn.setClickable(false);
                 sendBtn.setColorFilter((R.color.bel_lightgrey_text));
-
+                commentTextView.setFocusable(false);
                 if(!alreadyVoted) {
                     alreadyVoted=true;
                     UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayer + "UID", selectedPlayer,selectedPlayer+"userPic",false);
                     databaseDeckRootRef.child(currentDeckID).child("card" + currentGame.getCurrentCard()).child("users").child(useruid).setValue(userVote);
                 }else{
-
+                    Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
+                    if (totalVotes >= totalUsers) {
+                        Log.e("clicked button", "verify if the users have voted");
+                        showResult();
+                    }
                 }
             }
         });
@@ -456,55 +465,94 @@ public void fetchPlayersCommented(){
         databaseDeckRootRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                alreadyVoted=false; //startloading and return to false, if found the match, then is true
-                //refresh recyclerview adapter.
+                 alreadyVoted=false; //startloading and return to false, if found the match, then is true
                 playersRecyclerAdapter.notifyDataSetChanged();
+
                 //determine if all players have voted
                 boolean userVoted=false;
-                if(dataSnapshot.child("voted").exists())
-                 userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                if(userVoted){
-                    //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
-                    if(dataSnapshot.child("name").equals(username)){
-                        alreadyVoted=true;
-                    }else{
-                        alreadyVoted=true;//you just voted!
+                if(dataSnapshot.child("voted").exists()) {
+                    userVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
+                    Log.e("GAME ACTIVITY","checkgame&players onchild added userVoted:"+userVoted);
+//                } extiendo este if, hasta abajo... si no existe el userVote, no checar ni subir, ni avanzar... esperar hasta que lo haga
+                    if (userVoted) {
+                        Log.e("GAME ACTIVITY","checkg onchild Added: inside if because he VOTED"+userVoted);
+//                       else
+//                        {
+//                            alreadyVoted = true;//you just voted!
+//                          //  totalVotes++;
+//                        }
+//                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+//                    }else{
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyVoted = true;
+                        }
                         totalVotes++;
                     }
-                }
-                if(totalVotes>=totalUsers){
-                    Log.e(">>checkGame...()","onChildAdded All players have voted! continue");
+                    //                    if (!userVoted) {
+//                        //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
+//                        if (dataSnapshot.child("name").equals(username)) {
+//                            alreadyVoted = true;
+//                        } else {
+//                            alreadyVoted = true;//you just voted!
+//                            totalVotes++;
+//                        }
+//                    }
+//                    Log.e("GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+//                    if (totalVotes >= totalUsers) {
+//                        Log.e(">>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
+//                        showResult();
+//                    }
+                }  //hasta aqui lo expandi
+//                156165165
+                Log.e("GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+                if (totalVotes >= totalUsers) {
+                    Log.e(">>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
                     showResult();
-
-
                 }
             }
 
-
+//Asunto aqui
 /**Snapshot retrives only the child [in this case the USer] that changed. therefore, I just need to look for voted, not users/voted*/
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d("checkGameAndPlayer","onChildChanged,User key"+ dataSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
+                Log.d("checkGameAndPlayer","onChildChanged,User ref"+ dataSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
+                Log.d("checkGameAndPlayer","onChildChanged,User val"+ dataSnapshot.getValue().toString()); //< Contains the whole json:.
+
+
                 alreadyVoted=false; //startloading and return to false, if found the match, then is true
 
                 playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
-                boolean userVoted=false;
-                if(dataSnapshot.child("voted").exists())
-                    userVoted=Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                if(userVoted){
-                    if(dataSnapshot.child("name").equals(username)){
-                        alreadyVoted=true;
-                    }else{
-                        alreadyVoted=true;//you just voted!
-                        totalVotes++;
-                    }
-                }
+                boolean readingUserVoted=false;
+                if(dataSnapshot.child("voted").exists()) {//expandido hasta abajo
+                    readingUserVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
+                    Log.e("GAME ACTIVITY","checkgame&players onchild Changed userVoted:"+readingUserVoted);
 
-                if(totalVotes>=totalUsers){
-                    Log.e(">>checkGame...()","onChildChanged All players have voted! continue");
+                    if (readingUserVoted) {
+//                       else
+//                        {
+//                            alreadyVoted = true;//you just voted!
+//                          //  totalVotes++;
+//                        }
+//                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+//                    }else{
+                        if (dataSnapshot.child("name").equals(username)) {
+                            alreadyVoted = true;
+                        } totalVotes++;
+                    }
+//                        if (totalVotes >= totalUsers) {
+//                            Log.e(">>checkGame...()", "onChildChanged All players have voted! continue****************************************");
+//                            showResult();
+//                        }
+
+                   //delete erase check debug todo el if totalvotes>=totalusers iba aqui
+                } //se expadio hasta aqui
+                //trigger next move
+                if (totalVotes >= totalUsers) {
+                    Log.e(">>checkGame...()", "onChildChanged All players have voted! continue****************************************");
                     showResult();
                 }
-                //trigger next move
             }
 
             @Override
@@ -531,10 +579,18 @@ public void showResult(){
     intent.putExtra(CURRENT_CARD_ID,  currentCard);
     intent.putExtra(TOTAL_CARDS_ID,  gameTotalCards);
     intent.putExtra(CURRENT_DECK_CARD_ID,  currentDeckCard);
-    startActivity(intent);
+    //////////
+    startActivity(intent);///todo not enble to debug
     finish();
 
 }
+
+    //todo
+    //Fill Widget Data!
+    public void fillWidgetData(){
+
+    }
+
 
 
     int fetchedCurrentCard;
@@ -562,7 +618,9 @@ public void showResult(){
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
         finish();
     }
 

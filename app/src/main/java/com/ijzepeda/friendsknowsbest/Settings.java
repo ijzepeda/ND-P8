@@ -35,6 +35,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static android.R.attr.data;
 import static com.ijzepeda.friendsknowsbest.R.id.editImageBtn;
 import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
@@ -51,7 +54,7 @@ public class Settings extends AppCompatActivity {
     private FirebaseAuth auth;
     FirebaseUser firebaseUser;
 
-
+    Button saveBtn;
     ImageView userImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class Settings extends AppCompatActivity {
 
 
         userImage=(ImageView)findViewById(R.id.userImageView);
-        Button saveBtn=(Button)findViewById(R.id.saveBtn);
+         saveBtn=(Button)findViewById(R.id.saveBtn);
         ImageButton editBtn=(ImageButton)findViewById(R.id.editImageBtn);
 
 //FIREBASE
@@ -112,13 +115,15 @@ public class Settings extends AppCompatActivity {
                                         Log.d("USER PHOTO"," firebaseUser.getPhotoUrl() IS:"+firebaseUser.getPhotoUrl());//content://media/external/images/media/99898
                                         Log.d("USER PHOTO","downloadUri IS:"+downloadUri.toString());//https://firebasestorage.googleapis.com/v0/b/nd-p7-7d3b1.appspot.com/o/photos%2F99898?alt=media&token=c7b722d3-feb7-474b-a8b6-354b4af1492e
                                         Log.d("USER PHOTO","mFileUri IS:"+mFileUri.toString());//content://media/external/images/media/99898
-                                        database.getReference().child("Users").child(firebaseUser.getUid()).child("photoUrl").setValue(downloadUri.toString());//mFileUri);//
+                                        Map<String,Object> photoUrl=new HashMap<String, Object>();
+                                        photoUrl.put("photoUrl",downloadUri.toString());
+                                        database.getReference().child("Users").child(firebaseUser.getUid()).updateChildren(photoUrl);//child("photoUrl").setValue(downloadUri.toString());//mFileUri);//TODO UPDATE NOT SETVALUE
 
                                     }
                                 }
                             });
 
-//                finish();
+                finish();
                 }
             }
         });
@@ -141,9 +146,11 @@ public class Settings extends AppCompatActivity {
                 if (resultCode != RESULT_OK) {
                     return;
                 }
+
                 if (requestCode == 1) {
                     final Bundle extras = data.getExtras();
                     if (extras != null) {
+
                         //Get image
                         Bitmap newProfilePic = extras.getParcelable("data");
                          userImage.setImageBitmap(newProfilePic);
@@ -193,6 +200,9 @@ public class Settings extends AppCompatActivity {
                         downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
                         uploadFinished=true;
 
+                        //setButton clicable and with color
+                        saveBtn.setClickable(true);
+                        saveBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
                     }
                 })

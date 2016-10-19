@@ -2,28 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/apk/res-auto"
     package="com.ijzepeda.friendsknowsbest">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--No need to add internet permissions for Firebase :) -->
 
+    <!-- No need to add internet permissions for Firebase :) -->
     <!-- <uses-sdk tools:overrideLibrary="com.facebook"/> -->
     <application
         android:allowBackup="true"
+        android:configChanges="orientation"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:configChanges="orientation"
         android:screenOrientation="portrait"
-        >
-
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,19 +39,20 @@
         <activity android:name=".RegisterUser" />
         <activity android:name=".NewGame" />
         <activity android:name=".LoadActivity" />
-        <activity android:name=".Settings" >
+        <activity android:name=".Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".FavoriteCards" />
-        <activity android:name=".GameActivity" android:exported="true"/>
+        <activity
+            android:name=".GameActivity"
+            android:exported="true" />
         <activity android:name=".ResultsActivity" />
         <activity
             android:name=".AddPlayerToGameActivity"
             android:launchMode="singleInstance"
-            android:noHistory="true"
-            >
+            android:noHistory="true">
 
             <!-- android:theme="@android:style/Theme.NoDisplay" -->
             <intent-filter>
@@ -79,37 +78,43 @@
             </intent-filter>
         </activity>
 
-<!--WIDGET-->
-        <!--<receiver android:icon="@mipmap/logo"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:name=".widget.WidgetProvider">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
-                <!--<action android:name="com.ijzepeda.friendsknowsbest.GamesRecycleAdapter.ACTION_DATA_UPDATED" />-->
-                <!--<action android:name="com.ijzepeda.friendsknowsbest.widget.WidgetProvider.REFRESH_ACTION" />-->
-            <!--</intent-filter>-->
-            <!--<meta-data android:name="android.appwidget.provider"-->
-                <!--android:resource="@xml/widget_provider" />-->
-        <!--</receiver>-->
-        <!--<service android:name=".widget.WidgetService"-->
-            <!--android:permission="android.permission.BIND_REMOTEVIEWS" />-->
+        <!-- WIDGET -->
+        <!-- <receiver android:icon="@mipmap/logo" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:name=".widget.WidgetProvider"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.appwidget.action.APPWIDGET_UPDATE" /> -->
+        <!-- <action android:name="com.ijzepeda.friendsknowsbest.GamesRecycleAdapter.ACTION_DATA_UPDATED" /> -->
+        <!-- <action android:name="com.ijzepeda.friendsknowsbest.widget.WidgetProvider.REFRESH_ACTION" /> -->
+        <!-- </intent-filter> -->
+        <!-- <meta-data android:name="android.appwidget.provider" -->
+        <!-- android:resource="@xml/widget_provider" /> -->
+        <!-- </receiver> -->
+        <!-- <service android:name=".widget.WidgetService" -->
+        <!-- android:permission="android.permission.BIND_REMOTEVIEWS" /> -->
 
 
-        <!--WIDGET2-->
+        <!-- WIDGET2 -->
         <activity android:name=".widget2.LoremActivity2" />
-        <receiver android:icon="@mipmap/logo"
-            android:label="Friends2"
-            android:name=".widget2.WidgetProvider2">
+
+        <receiver
+            android:name=".widget2.WidgetProvider2"
+            android:icon="@mipmap/logo"
+            android:label="Friends2">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
-        <service android:name=".widget2.WidgetService2"
+
+        <service
+            android:name=".widget2.WidgetService2"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-
+        <activity android:name=".GameOverResults"></activity>
     </application>
 
 </manifest>

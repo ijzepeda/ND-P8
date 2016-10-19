@@ -193,7 +193,13 @@ public void createDeck(){
          collectionCardNoMap.put("users", "");
          databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
          databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
-         cardMap.clear();
+        //CREATE UserVote
+        Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
+        UserVote userVote = new UserVote(userName, userUid, "", "", false, "" + "", "","",false);
+        databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
+
+
+        cardMap.clear();
          collectionCardNoMap.clear();
      }
 //    databaseDeckRef.child(deckId).child("card9").child("users").updateChildren(playerOnCardMap);//la puse y funciono!

@@ -269,6 +269,14 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
 //                            collectionCardNoMap.put("users", "");//create the tructure
 //                            databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
+
+                            //CREATE UserVote
+                            Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
+                              UserVote userVote = new UserVote(userName, userUid, "", "", false, "" + "", "","",false);
+                            databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
+
+
+
                             cardMap.clear();
 //                            collectionCardNoMap.clear();
                         }

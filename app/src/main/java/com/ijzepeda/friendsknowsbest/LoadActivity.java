@@ -154,8 +154,8 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent inten=new Intent(this,MainActivity.class);
-        startActivity(inten);
-        finish();
+//        Intent inten=new Intent(this,MainActivity.class);
+//        startActivity(inten);
+//        finish();
     }
 }

@@ -46,6 +46,7 @@ public class NewGame extends AppCompatActivity  implements
     String userUid;
     String userName;
     String userEmail;
+    String userPic;
     User user;
 
     //GameElements
@@ -90,6 +91,9 @@ private GoogleApiClient mGoogleApiClient;
         userUid=Utils.getInstance().getValue(getApplication(),"uid");
         userName=Utils.getInstance().getValue(getApplication(),"username");
         userEmail=Utils.getInstance().getValue(getApplication(),"email");
+if(auth.getCurrentUser().getPhotoUrl()!=null)
+    userPic=auth.getCurrentUser().getPhotoUrl().toString();
+
 
 //Generate the random UID
         deckId=deckId+"123";
@@ -195,7 +199,7 @@ public void createDeck(){
          databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
         //CREATE UserVote
         Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
-        UserVote userVote = new UserVote(userName, userUid, "", "", false, "" + "", "","",false);
+        UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);
         databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
 
 

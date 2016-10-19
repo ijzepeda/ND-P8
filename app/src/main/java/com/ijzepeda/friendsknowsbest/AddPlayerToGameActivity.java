@@ -31,6 +31,7 @@ import java.util.Map;
 import static android.R.attr.data;
 import static android.R.attr.name;
 import static android.R.id.edit;
+import static android.R.id.message;
 
 public class AddPlayerToGameActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener  {
@@ -65,6 +66,7 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
     String deckId;
     String userName;
     String userUid;
+    String userPic;
 
     int currentCard;
 
@@ -86,6 +88,9 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
         userName=firebaseUser.getDisplayName();
         userUid=firebaseUser.getUid();
+        if(firebaseUser.getPhotoUrl()!=null){
+            userPic=firebaseUser.getPhotoUrl().toString();
+        }
 
         //GET INVITATION
         // Check for App Invite invitations and launch deep-link activity if possible.
@@ -269,10 +274,12 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
 //                            collectionCardNoMap.put("users", "");//create the tructure
 //                            databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
+//    (String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
 
+//obtener los valores de este usery usarlos en uservote
                             //CREATE UserVote
                             Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
-                              UserVote userVote = new UserVote(userName, userUid, "", "", false, "" + "", "","",false);
+                              UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
 
 

@@ -47,6 +47,7 @@
         <activity android:name=".FavoriteCards" />
         <activity
             android:name=".GameActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:exported="true" />
         <activity android:name=".ResultsActivity" />
         <activity

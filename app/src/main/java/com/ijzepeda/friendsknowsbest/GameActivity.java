@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
 import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
+import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,7 +123,8 @@ int currentDeckCard;
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 
 //retrievegameDetailsFromWidget
-        Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider.EXTRA_GAME);
+//        Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider.EXTRA_GAME);
+        Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider2.EXTRA_WORD);
 if(gameToLoad!=null){
     currentGameID=gameToLoad.getUid();
     currentDeckID=gameToLoad.getDeckId();

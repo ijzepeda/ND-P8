@@ -47,7 +47,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity android:name=".FavoriteCards" />
-        <activity android:name=".GameActivity" />
+        <activity android:name=".GameActivity" android:exported="true"/>
         <activity android:name=".ResultsActivity" />
         <activity
             android:name=".AddPlayerToGameActivity"
@@ -80,20 +80,34 @@
         </activity>
 
 <!--WIDGET-->
+        <!--<receiver android:icon="@mipmap/logo"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:name=".widget.WidgetProvider">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
+                <!--<action android:name="com.ijzepeda.friendsknowsbest.GamesRecycleAdapter.ACTION_DATA_UPDATED" />-->
+                <!--<action android:name="com.ijzepeda.friendsknowsbest.widget.WidgetProvider.REFRESH_ACTION" />-->
+            <!--</intent-filter>-->
+            <!--<meta-data android:name="android.appwidget.provider"-->
+                <!--android:resource="@xml/widget_provider" />-->
+        <!--</receiver>-->
+        <!--<service android:name=".widget.WidgetService"-->
+            <!--android:permission="android.permission.BIND_REMOTEVIEWS" />-->
+
+
+        <!--WIDGET2-->
+        <activity android:name=".widget2.LoremActivity2" />
         <receiver android:icon="@mipmap/logo"
-            android:label="@string/app_name"
-            android:name=".widget.WidgetProvider">
+            android:label="Friends2"
+            android:name=".widget2.WidgetProvider2">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.ijzepeda.friendsknowsbest.GamesRecycleAdapter.ACTION_DATA_UPDATED" />
-                <action android:name="com.ijzepeda.friendsknowsbest.widget.WidgetProvider.REFRESH_ACTION" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/widget_provider" />
         </receiver>
-        <service android:name=".widget.WidgetService"
+        <service android:name=".widget2.WidgetService2"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
 
 
     </application>

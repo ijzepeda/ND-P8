@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ijzepeda.friendsknowsbest.widget.LoremViewsFactory;
 import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
+import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,9 +112,19 @@ public class LoadActivity extends AppCompatActivity {
                         Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
                         {
 //it works but triggerson receive
-                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
-                            WidgetProvider myWidget = new WidgetProvider();
-                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+//                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
+//                            WidgetProvider myWidget = new WidgetProvider();
+//                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+
+//                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
+//                            WidgetProvider2 myWidget = new WidgetProvider2();
+//                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+
+                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                                    new ComponentName(context, WidgetProvider2.class));
+                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+
 
                         }
                         Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());

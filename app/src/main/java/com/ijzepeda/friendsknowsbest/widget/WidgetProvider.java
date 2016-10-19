@@ -34,6 +34,7 @@ package com.ijzepeda.friendsknowsbest.widget;
         import com.ijzepeda.friendsknowsbest.GameActivity;
         import com.ijzepeda.friendsknowsbest.GamesRecyclerAdapter;
         import com.ijzepeda.friendsknowsbest.LoadActivity;
+        import com.ijzepeda.friendsknowsbest.MainActivity;
         import com.ijzepeda.friendsknowsbest.R;
 
         import static android.R.style.Widget;
@@ -41,6 +42,8 @@ package com.ijzepeda.friendsknowsbest.widget;
 public class WidgetProvider extends AppWidgetProvider {
     public static String EXTRA_GAME=
             "com.ijzepeda.friendsknowsbes.GAME";
+    public static String EXTRA_WORD=
+            "com.ijzepeda.friendsknowsbes.WORD";
     private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";
     private static String CURRENT_CARD_ID="current_card_id";
@@ -59,12 +62,12 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager,  int[] appWidgetIds) {
         Log.e("Widget","onUpdate appWidgetsId.length:"+appWidgetIds.length);
 
-        RemoteViews remoteViews;
-        ComponentName watchWidget;
-        remoteViews = new RemoteViews(ctxt.getPackageName(), R.layout.widget_layout);
-        watchWidget = new ComponentName(ctxt, WidgetProvider.class);
-        remoteViews.setOnClickPendingIntent(R.id.syncButton, getPendingSelfIntent(ctxt, SYNC_CLICKED));
-        appWidgetManager.updateAppWidget(watchWidget, remoteViews);
+//        RemoteViews remoteViews;
+//        ComponentName watchWidget;
+//        remoteViews = new RemoteViews(ctxt.getPackageName(), R.layout.widget_layout);
+//        watchWidget = new ComponentName(ctxt, WidgetProvider.class);
+//        remoteViews.setOnClickPendingIntent(R.id.syncButton, getPendingSelfIntent(ctxt, SYNC_CLICKED));
+//        appWidgetManager.updateAppWidget(watchWidget, remoteViews);
 
         for (int i=0; i<appWidgetIds.length; i++) {
             Log.e("Widget","onUpdate appWidgetsId instance i:"+i);
@@ -74,27 +77,26 @@ public class WidgetProvider extends AppWidgetProvider {
             svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
             svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-            RemoteViews widget=new RemoteViews(ctxt.getPackageName(),
-                    R.layout.widget);
+            RemoteViews widget=new RemoteViews(ctxt.getPackageName(), R.layout.widget);
 
-            widget.setRemoteAdapter(appWidgetIds[i], R.id.words,
-                    svcIntent);
+            widget.setRemoteAdapter(appWidgetIds[i], R.id.words, svcIntent);
 
 
-//            Intent clickIntent=new Intent(ctxt, LoadActivity.class);
+            Intent clickIntent=new Intent(ctxt, LoadActivity.class);
+//            Intent clickIntent=new Intent(ctxt, MainActivity.class);
+//
+//            Intent clickIntent=new Intent(ctxt, GameActivity.class);
 
-            Intent clickIntent=new Intent(ctxt, GameActivity.class);
 //            clickIntent.putExtra(GAME_ID, gameidTV.getText());
 //            clickIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
 //            clickIntent.putExtra(CURRENT_CARD_ID,  game.getCurrentCard());
 //            clickIntent.putExtra(TOTAL_CARDS_ID,  game.getNoCards());
 //
+//            Intent clickIntent=new Intent(ctxt, LoremActivity.class);
 
-            PendingIntent clickPI=PendingIntent
-                    .getActivity(ctxt, 0,
-                            clickIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
-
+//            PendingIntent clickPI=PendingIntent.getActivity(ctxt, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent clickPI=PendingIntent.getActivity(ctxt, 0, clickIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            //PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);PendingIntent.FLAG_CANCEL_CURRENT
             widget.setPendingIntentTemplate(R.id.words, clickPI);
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
@@ -109,35 +111,35 @@ public class WidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         Log.e("Widget","onReceive");
 
-
+//instaupdate
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
                 new ComponentName(context, WidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
 
 
-        if (GamesRecyclerAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
-            Log.e("Widget","onReceive ACTION_DATA_UPDATED");
+//        if (GamesRecyclerAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+//            Log.e("Widget","onReceive ACTION_DATA_UPDATED");
+//
+//            AppWidgetManager appWidgetManager2 = AppWidgetManager.getInstance(context);
+//            int[] appWidgetIds2 = appWidgetManager2.getAppWidgetIds(
+//                    new ComponentName(context, getClass()));
+//            appWidgetManager2.notifyAppWidgetViewDataChanged(appWidgetIds2, R.id.widget_list);//widget_list
+//        }
 
-            AppWidgetManager appWidgetManager2 = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds2 = appWidgetManager2.getAppWidgetIds(
-                    new ComponentName(context, getClass()));
-            appWidgetManager2.notifyAppWidgetViewDataChanged(appWidgetIds2, R.id.widget_list);//widget_list
-        }
-
-        if (SYNC_CLICKED.equals(intent.getAction())) {
-            Log.e("Widget","onReceive SYNC_CLICKED");
-
-            AppWidgetManager appWidgetManager3 = AppWidgetManager.getInstance(context);
-            RemoteViews remoteViews;
-            ComponentName watchWidget;
-            remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-            watchWidget = new ComponentName(context, WidgetProvider.class);
-            remoteViews.setTextViewText(R.id.syncButton, "TESTING");
-
-            appWidgetManager3.updateAppWidget(watchWidget, remoteViews);
-
-        }
+//        if (SYNC_CLICKED.equals(intent.getAction())) {
+//            Log.e("Widget","onReceive SYNC_CLICKED");
+//
+//            AppWidgetManager appWidgetManager3 = AppWidgetManager.getInstance(context);
+//            RemoteViews remoteViews;
+//            ComponentName watchWidget;
+//            remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+//            watchWidget = new ComponentName(context, WidgetProvider.class);
+//            remoteViews.setTextViewText(R.id.syncButton, "TESTING");
+//
+//            appWidgetManager3.updateAppWidget(watchWidget, remoteViews);
+//
+//        }
 
 
     }

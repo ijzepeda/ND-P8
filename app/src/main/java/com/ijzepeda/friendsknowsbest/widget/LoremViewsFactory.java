@@ -105,11 +105,13 @@ public class LoremViewsFactory implements RemoteViewsService.RemoteViewsFactory 
                 R.layout.widget_row_game);
 //                R.layout.row);
 
+        //simple row
 //        row.setTextViewText(android.R.id.text1, wWidgetGamesList.get(position).getName());
+        //Complete row
         row.setTextViewText(R.id.game_name, wWidgetGamesList.get(position).getName());
         row.setTextViewText(R.id.cardsdrawn,"cards:"+ wWidgetGamesList.get(position).getCurrentCard()+"/"+ wWidgetGamesList.get(position).getNoCards());
         row.setTextViewText(R.id.players, "Players:"+wWidgetGamesList.get(position).getNoUsers());
-//        row.setTextViewText(R.id.game_name, wWidgetGamesList.get(position).getName());
+
 
         Intent i=new Intent();
         Bundle extras=new Bundle();

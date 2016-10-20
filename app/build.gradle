@@ -30,7 +30,17 @@ android {
     repositories {
         mavenCentral()
     }
+//    flavorDimensions "flavor1"
+
     productFlavors {
+        storeRelease {
+            applicationId "com.ijzepeda.fkb"
+            versionCode 1
+        }
+        releaseDebug {
+            applicationId "com.ijzepeda.friendsknowsbest"
+            versionCode 1
+        }
     }
 }
 

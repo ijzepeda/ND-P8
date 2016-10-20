@@ -180,7 +180,8 @@ Context activityContext;
             if(context instanceof ResultsActivity){
                 //                                      send playerUID or UserVote
 //                ((ResultsActivity)context).viewComment(playerNameTV.getText().toString());
-                ((ResultsActivity)context).viewComment(playersList.get(lastCheckedPosition).getNomineeName(),playersList.get(lastCheckedPosition).getNomineeUID(),playersList.get(lastCheckedPosition).getNomineePicUrl());
+//                ((ResultsActivity)context).viewComment(playersList.get(lastCheckedPosition).getNomineeName(),playersList.get(lastCheckedPosition).getNomineeUID(),playersList.get(lastCheckedPosition).getMessage());
+                ((ResultsActivity)context).viewComment(playersList.get(lastCheckedPosition).getName(),playersList.get(lastCheckedPosition).getUseruid(),playersList.get(lastCheckedPosition).getMessage());
 
             }
         }

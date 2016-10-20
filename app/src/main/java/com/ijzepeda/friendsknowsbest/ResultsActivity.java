@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.id.message;
+
 public class ResultsActivity extends AppCompatActivity {
     //Bundle details
     String currentGameID;
@@ -105,6 +107,9 @@ Log.e("ResultsActivity","currentCard from bundle is:"+currentCard);
         //should I save them on the device? or keep veriifying userAuth?
         usermail=auth.getCurrentUser().getEmail();
         username=auth.getCurrentUser().getDisplayName();
+        if(username==null || username.equals(null) || username.equals("")){
+            username=Utils.getInstance().getValue(getApplication(),"username");
+        }
         useruid=auth.getCurrentUser().getUid();
         userPic=auth.getCurrentUser().getPhotoUrl().toString();
         userPicURI=auth.getCurrentUser().getPhotoUrl();
@@ -158,11 +163,7 @@ Log.e("ResultsActivity","currentCard from bundle is:"+currentCard);
                         totalUsers=(int)dataSnapshot.getChildrenCount();//todo added on 19-10-0003
                         int i=0;
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                            Log.d("fetchUserVotes,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                            Log.d("fetchUserVotes,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                            Log.d("fetchUserVotes,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
-
-                            userVotesList.add(i++,childSnapshot.getValue(UserVote.class));//TODO aqui exite un error cuando el usuario aun no vota. y solo tiene un STRING y no un USERVOTE
+                            userVotesList.add(i++,childSnapshot.getValue(UserVote.class));
                         }
                         processVotes();
                     }
@@ -231,12 +232,13 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
         String quote= mQuotes[currentDeckCard];
         String completeMessage;
         String winnerTitle;
-        if(username.equals(winningPlayerName)) { //TODO CHANGE TO UID
-            completeMessage="Your Friend thought that You are more likely to " + quote.substring(2);
-            winnerTitle="You won";
+//        if(username.equals(winningPlayerName)) { //TODO CHANGE TO UID
+        if(useruid.equals(winningPlayerUID)) { //TODO CHANGE TO UID
+            completeMessage=getString(R.string.im_more_likely_to) + quote.substring(2);
+            winnerTitle=getString(R.string.you_won);
             }else{
             completeMessage = "Your friends thought that " + winningPlayerName + " is more likely to :" + quote.substring(2);
-            winnerTitle=winningPlayerName+" won";
+            winnerTitle=winningPlayerName+getString(R.string.friend_won);
         }
         cardWinnerTextView.setText(completeMessage);
         winnerNameTextView.setText(winnerTitle);
@@ -249,7 +251,8 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
     public void fetchCommentsForWinner(){
 
 //        childSnapshot.getValue().toString()
-        playersList.clear();
+//        playersList.clear();//NO MORE
+        userVotesList.clear();
         playersRecyclerAdapter.notifyDataSetChanged();
 
 
@@ -257,9 +260,11 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-Log.e("~~~~~~>fetchcomment","for winner childSnapshot.child(\"name\").getValue()"+childSnapshot.child("name").getValue().toString());
         if(childSnapshot.child("nomineeName").getValue().toString().equals(winningPlayerName)) {
-            playersList.add(childSnapshot.child("name").getValue().toString());//childSnapshot.getValue().toString());
+            Log.e("~~~~~~>fetchcomment","for winner childSnapshot.child(\"name\").getValue()"+childSnapshot.child("name").getValue().toString()+", voto por:"+childSnapshot.child("nomineeName").getValue().toString()+" message:"+childSnapshot.child("message"));
+
+//            playersList.add(childSnapshot.child("useruid").getValue().toString());//childSnapshot.getValue().toString());
+            userVotesList.add(childSnapshot.getValue(UserVote.class));
             playersRecyclerAdapter.notifyDataSetChanged();
         }
 
@@ -285,22 +290,24 @@ Log.e("~~~~~~>fetchcomment","for winner childSnapshot.child(\"name\").getValue()
 //    public List<UserVote> playersListFromDeck=new ArrayList<>();
 //    public List<String> playersThatCommentedToWinnerList=new ArrayList<>();//TODO!!!!!!!!
     private LinearLayoutManager linearLayoutManager;
-    public void viewComment(String selectedPlayer, String selectedPlayerUid, String photoURL){
+
+    public void viewComment(String selectedPlayer, String selectedPlayerUid, String message){
         int userVotePosition=0;
         for(int i=0;i<userVotesList.size();i++){
 //            if(userVotesList.get(i).getName().equals(selectedPlayer)) {
-            if(userVotesList.get(i).getUseruid().equals(selectedPlayerUid)) {
+            if(userVotesList.get(i).getUseruid().equals(selectedPlayerUid)) {  //Si voto por el?
                 userVotePosition = i;
             }
         }
 
 //Drawable newIcon=new BitmapDrawable(String.valueOf(android.R.drawable.ic_dialog_alert));//getDrawable(android.R.drawable.ic_dialog_alert);
 //Picasso.with(this).load(winningPlayerPic).placeholder(newIcon);
-
+        Log.e("Result:ViewComment","viewcomment() message received:"+message+", message parsed from userVotesList:"+userVotesList.get(userVotePosition).getMessage());
+        if(!message.equals(""))
         alertDialog=  new AlertDialog.Builder(this)
                 .setTitle(selectedPlayer+ " says...")
 //                .setMessage("String selectedPlayer is going to be the UserVote object, and parse elements here: userVote.getMessage()")
-                .setMessage(userVotesList.get(userVotePosition).getMessage()+"!!!")
+                .setMessage(message+"!!!")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 

@@ -232,6 +232,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Utils.getInstance().save(getApplication(),user.getDisplayName(),"username");
                     Utils.getInstance().save(getApplication(),user.getEmail(),"email");
                     //Add pictureUrl to sharedPrefs
+                    if(user.getPhotoUrl()!=null)
                     Utils.getInstance().save(getApplication(),user.getPhotoUrl().toString(),getString(R.string.shared_userphotourl_key));
 
                     Log.e("mauthlistener","name is:"+user.getDisplayName());

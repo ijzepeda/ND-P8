@@ -36,6 +36,14 @@
     <string name="thanks_for_playing">Wait for next version to see detailed results and more features. Thanks for playing!</string>
     <string name="game_over">Game Over</string>
     <string name="shared_userphotourl_key">userPhotoUrl</string>
+    <string name="deeplink_domain">https://r2qvt.app.goo.gl/</string>
+    <string name="deeplink_link">http://ijzepeda.com/</string>
+    <string name="deeplink_package">com.ijzepeda.fkb</string>
+    <string name="deeplink_not_installed_store_link">https://play.google.com/store/apps/details?id=com.ijzepeda.fkb</string>
+    <string name="deeplink_parse_url_game_id">http://ijzepeda.com/addGame/</string>
+    <string name="you_won">You won</string>
+    <string name="friend_won">" won"</string>
+    <string name="im_more_likely_to">Your Friend thought that You are more likely to :</string>
 
 
     <array name="category_romantic">

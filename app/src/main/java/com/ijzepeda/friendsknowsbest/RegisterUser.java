@@ -104,6 +104,8 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                 Utils.getInstance().save(getApplication(), uid, "uid");
 
                 //Update user to firebase
+
+
 //                FirebaseUser firebaseUser = auth.getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(nameTV.getText().toString())
@@ -135,7 +137,7 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                 friendsMap.put("Friend0","");
                 cardsMap.put("FavCard1","");
 //                gamesMap.put("game0","GameUID123");
-                gamesMap.put("GameUID123","GameUID123");
+//                gamesMap.put("GameUID123","GameUID123");
 
                 String userName="";
                 String userMail="";
@@ -155,6 +157,8 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                 map.put(firebaseUser.getUid(),"");
                 databaseRef.updateChildren(map);
                 databaseRef.child(firebaseUser.getUid()).setValue(user);
+
+//update firebase auth user
 
 
 

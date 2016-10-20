@@ -117,7 +117,7 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
                                     Log.d(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
                                     Log.d(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
                                     extraString=""+intent.getStringExtra("prueba");
-gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
+gameId=deepLink.replace(getString(R.string.deeplink_parse_url_game_id),"");
                                     inviteTv.setText("Your invite To Join:"+gameId);
 
                                     Log.d("~~~~AddGame","removing base I got gameid:"+gameId);
@@ -172,6 +172,9 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 
     Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
 
+
+
+    //Reuse this method on NewGame
     public void addGame(String gameIDNoNeed){
 
 
@@ -179,7 +182,8 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
         Map<String,Object> gamesMap=new HashMap<String, Object>();
 //        gamesMap.put("game"+1,gameID);
         gamesMap.put(gameId,gameId);
-        databaseUsersRef.child(userUid).child("games").setValue(gamesMap);
+//        databaseUsersRef.child(userUid).child("games").setValue(gamesMap);//TODO this will overwrite oldvalues
+        databaseUsersRef.child(userUid).child("games").updateChildren(gamesMap);
 
         //Add user to Game------------------------------------------
         //Get whole GAME object, edit and reupload

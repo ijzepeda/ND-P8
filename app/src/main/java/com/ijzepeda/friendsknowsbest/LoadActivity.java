@@ -101,16 +101,16 @@ public class LoadActivity extends AppCompatActivity {
             databaseGameRef.child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                        Game gameTemp = dataSnapshot.getValue(Game.class);
-
-                    gameTemp.setUid(dataSnapshot.getKey().toString());//todo need to update
+                    Game gameTemp = dataSnapshot.getValue(Game.class);
+                    if (gameTemp != null) {
+                        gameTemp.setUid(dataSnapshot.getKey());//todo need to update
 
                         gamesList.add(gameTemp);
-                    gamesRecyclerAdapter.notifyDataSetChanged();
-
-                    if(Utils.getInstance().getWidgetGameFromList(gameTemp.getUid())==null){
-                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
-                        {
+                        gamesRecyclerAdapter.notifyDataSetChanged();
+//added on 19-10
+                        if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
+                            Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                            {
 //it works but triggerson receive
 //                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
 //                            WidgetProvider myWidget = new WidgetProvider();
@@ -120,14 +120,15 @@ public class LoadActivity extends AppCompatActivity {
 //                            WidgetProvider2 myWidget = new WidgetProvider2();
 //                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
 
-                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                            int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                                    new ComponentName(context, WidgetProvider2.class));
-                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+                                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                                int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
+                                        new ComponentName(context, WidgetProvider2.class));
+                                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
 
 
+                            }
+                            Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
                         }
-                        Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
                     }
                 }
                 @Override

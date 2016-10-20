@@ -15,6 +15,45 @@
       },
       "oauth_client": [
         {
+          "client_id": "963353948393-50fuj6a1lu7ssrvibntgj687064fs4kb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ijzepeda.friendsknowsbest",
+            "certificate_hash": "DE7A2A9D357D2665886DDBA58F692F6E5B73AB9D"
+          }
+        },
+        {
+          "client_id": "963353948393-hu4en4melcj20ogbhu5fs3eh58c1p64q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDI7qUtWAxEVn4Ij2xvBcSDL7bwskEzOe0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963353948393:android:9442ec9674c7eac3",
+        "android_client_info": {
+          "package_name": "com.ijzepeda.fkb"
+        }
+      },
+      "oauth_client": [
+        {
           "client_id": "963353948393-hu4en4melcj20ogbhu5fs3eh58c1p64q.apps.googleusercontent.com",
           "client_type": 3
         }

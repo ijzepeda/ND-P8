@@ -26,6 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
+import com.ijzepeda.friendsknowsbest.Helpers.SwipeDeckAdapter;
+import com.ijzepeda.friendsknowsbest.models.Card;
+import com.ijzepeda.friendsknowsbest.models.Game;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;

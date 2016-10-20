@@ -1,7 +1,9 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.futurefeatures;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.ijzepeda.friendsknowsbest.R;
 
 public class FavoriteCards extends AppCompatActivity {
 

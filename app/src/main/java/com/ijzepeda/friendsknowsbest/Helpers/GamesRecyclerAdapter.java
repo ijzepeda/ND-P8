@@ -1,22 +1,21 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.Helpers;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.List;
+import com.ijzepeda.friendsknowsbest.GameActivity;
+import com.ijzepeda.friendsknowsbest.R;
+import com.ijzepeda.friendsknowsbest.models.Game;
 
-import static android.R.attr.name;
-import static com.ijzepeda.friendsknowsbest.R.id.gameNameTextView;
-import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
+import java.util.List;
 
 /**
  * Created by Ivan on 10/15/2016.

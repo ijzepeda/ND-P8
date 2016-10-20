@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -46,7 +47,7 @@ private static String TAG="MainActivity";
 
         setContentView(R.layout.activity_main);
 //user
-
+        loading=false; //handle backpress first click
 
         //Bind Views
         loadGameBtn=(Button)findViewById(R.id.loadGameBtn);
@@ -171,15 +172,11 @@ private static String TAG="MainActivity";
                                     String invitationId = AppInviteReferral.getInvitationId(intent);
                                     Log.e(TAG, "getInvitation:deepLink:" + deepLink);
                                     Log.e(TAG, "getInvitation:invitationId:" + invitationId);
-                                    String extraString=intent.getStringExtra("prueba");
-                                    Log.e("~~~","Your invite from:"+extraString);
                                     // Because autoLaunchDeepLink = true we don't have to do anything
                                     // here, but we could set that to false and manually choose
                                     // an Activity to launch to handle the deep link here.
                                     // ...
-                                    Log.e("~~~","OPENING INTENT:");
-
-//                                    startActivity(intent);//<< is this same one intent/activity
+//                                  startActivity(intent);//<< is this same one intent/activity
                                 }
                             }
                         });
@@ -219,4 +216,19 @@ private static String TAG="MainActivity";
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
 
     }
+
+
+    boolean loading=false;
+    @Override
+    public void onBackPressed() {
+        if(loading) {
+            Toast.makeText(this, R.string.press_back_to_leave, Toast.LENGTH_SHORT).show();
+            loading=false;
+        }
+        else {
+//            super.onBackPressed();
+            loading=true;
+        }
+    }
+
 }

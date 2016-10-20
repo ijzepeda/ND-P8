@@ -1,12 +1,15 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.Helpers;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.ijzepeda.friendsknowsbest.Offline;
+import com.ijzepeda.friendsknowsbest.R;
+import com.ijzepeda.friendsknowsbest.models.Card;
 
 import java.util.List;
 /**

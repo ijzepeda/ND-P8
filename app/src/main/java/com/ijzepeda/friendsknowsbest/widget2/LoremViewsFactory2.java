@@ -28,14 +28,12 @@ import android.widget.RemoteViewsService;
         import android.os.Bundle;
         import android.widget.RemoteViews;
 
-import com.ijzepeda.friendsknowsbest.Game;
+import com.ijzepeda.friendsknowsbest.models.Game;
 import com.ijzepeda.friendsknowsbest.R;
 import com.ijzepeda.friendsknowsbest.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.id.empty;
 
 
 public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory {

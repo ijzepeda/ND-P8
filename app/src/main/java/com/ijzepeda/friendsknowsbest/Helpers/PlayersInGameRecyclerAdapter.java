@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.ijzepeda.friendsknowsbest.GameActivity;
 import com.ijzepeda.friendsknowsbest.R;
 import com.ijzepeda.friendsknowsbest.ResultsActivity;
-import com.ijzepeda.friendsknowsbest.UserVote;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

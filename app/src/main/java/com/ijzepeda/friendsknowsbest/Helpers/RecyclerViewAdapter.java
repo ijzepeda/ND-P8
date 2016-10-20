@@ -1,4 +1,4 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.Helpers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ijzepeda.friendsknowsbest.R;
 
 /**
  * Created by ivan.zepeda on 14/10/2016.

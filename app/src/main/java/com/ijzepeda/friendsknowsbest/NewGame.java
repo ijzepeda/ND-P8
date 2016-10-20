@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.ijzepeda.friendsknowsbest.models.Game;
+import com.ijzepeda.friendsknowsbest.models.User;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -32,8 +35,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ijzepeda.friendsknowsbest.R.string.username;
 
 public class NewGame extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener {

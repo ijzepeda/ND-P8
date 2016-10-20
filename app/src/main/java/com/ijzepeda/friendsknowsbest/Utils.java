@@ -2,13 +2,11 @@ package com.ijzepeda.friendsknowsbest;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import com.ijzepeda.friendsknowsbest.models.Game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.id.list;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 
 /**

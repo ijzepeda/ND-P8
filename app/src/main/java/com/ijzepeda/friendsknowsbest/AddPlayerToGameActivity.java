@@ -24,14 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.data;
-import static android.R.attr.name;
-import static android.R.id.edit;
-import static android.R.id.message;
 
 public class AddPlayerToGameActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener  {

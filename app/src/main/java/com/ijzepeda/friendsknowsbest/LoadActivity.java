@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,15 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.ijzepeda.friendsknowsbest.Helpers.GamesRecyclerAdapter;
+import com.ijzepeda.friendsknowsbest.models.Game;
 import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static android.R.attr.id;
-import static java.security.AccessController.getContext;
 
 public class LoadActivity extends AppCompatActivity {
 

@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.ijzepeda.friendsknowsbest.Helpers.SwipeDeckAdapter;
+import com.ijzepeda.friendsknowsbest.models.Card;
 
 import java.util.ArrayList;
 import java.util.Arrays;

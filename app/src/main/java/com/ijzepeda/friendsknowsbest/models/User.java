@@ -1,4 +1,4 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.models;
 
 
 //import static com.ijzepeda.tatt.R.id.nameTV;

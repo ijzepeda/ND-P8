@@ -64,7 +64,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".FavoriteCards"
+        <activity android:name=".futurefeatures.FavoriteCards"
             android:screenOrientation="portrait"
             />
         <activity

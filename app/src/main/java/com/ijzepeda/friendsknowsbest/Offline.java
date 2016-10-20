@@ -40,18 +40,12 @@ int i=4;
 
         //Not that useful
        alertDialog=  new AlertDialog.Builder(this)
-                .setTitle("Game Over")
-                .setMessage("You should start a new game")
+                .setTitle(getString(R.string.game_over))
+                .setMessage(R.string.should_start_new_game)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-//                        loadDeck(getString(R.string.categoryromantic));
-                        /*cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));
-                        cards.add(new Card(0,0,"","",true));*/
-//                        final SwipeDeckAdapter adapter = new SwipeDeckAdapter(cards, getApplication());
-//                        cardStack.setAdapter(adapter);
-                        Intent intent=new Intent(getApplication(),Offline.class);
+
+                       Intent intent=new Intent(getApplication(),Offline.class);
                         startActivity(intent);
                         finish();
 return;

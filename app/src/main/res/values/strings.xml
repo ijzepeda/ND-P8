@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Friends Knows Best</string>
+    <string name="app_name">Broasted</string>
+    <!--<string name="app_name">Friends Knows Best</string>-->
     <!--<string name="facebook_app_id">156564188127616</string>-->
 
     <string name="login_first">Login or Register first!</string>
@@ -36,6 +37,27 @@
     <string name="thanks_for_playing">Wait for next version to see detailed results and more features. Thanks for playing!</string>
     <string name="game_over">Game Over</string>
     <string name="shared_userphotourl_key">userPhotoUrl</string>
+    <string name="deeplink_domain">https://r2qvt.app.goo.gl/</string>
+    <string name="deeplink_link">http://ijzepeda.com/</string>
+    <string name="deeplink_package">com.ijzepeda.fkb</string>
+    <string name="deeplink_not_installed_store_link">https://play.google.com/store/apps/details?id=com.ijzepeda.fkb</string>
+    <string name="deeplink_parse_url_game_id">http://ijzepeda.com/addGame/</string>
+    <string name="you_won">You won</string>
+    <string name="friend_won">" won"</string>
+    <string name="im_more_likely_to">Your Friend thought that You are more likely to :</string>
+    <string name="your_invite_to_join">Your invite To Join:</string>
+    <string name="you_are_in_that_game">You are in that game</string>
+    <string name="should_start_new_game">You should start a new game</string>
+    <string name="leave_game">Leave Game</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="sure">SURE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="invalid_mail">invalid email.</string>
+    <string name="at_least_6_chars">At least 6 character.</string>
+    <string name="your_friends_though_that">"Your friends thought that "</string>
+    <string name="is_more_likely_to">" is more likely to :"</string>
+    <string name="says">" says..."</string>
+    <string name="exclamation_marks">!!!</string>
 
 
     <array name="category_romantic">

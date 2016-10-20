@@ -21,7 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
+import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -95,7 +95,6 @@ private static String TAG="MainActivity";
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("","---------------psolsalgo");
                 logout();
             }
         });
@@ -106,7 +105,6 @@ private static String TAG="MainActivity";
                 startActivity(offlineMode);
 //                finish();
                 return;
-//                Toast.makeText(getApplication(),getString(R.string.login_first),Toast.LENGTH_SHORT).show();
             }
         });
         quickGameBtn.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +148,7 @@ private static String TAG="MainActivity";
         });
 
         //GET INVITATION
+        //THIS PART IS HANDLED IN ADDPLAYERTOGAMEACTIVITY
         // Check for App Invite invitations and launch deep-link activity if possible.
         // Requires that an Activity is registered in AndroidManifest.xml to handle
         // deep-link URLs.
@@ -197,9 +196,9 @@ private static String TAG="MainActivity";
         Log.e("Widget Logout","Cleaning data");
         Utils.getInstance().clearWidgetGamesList();
 //it works but triggerson receive
-
-                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
-                WidgetProvider myWidget = new WidgetProvider();
+//Not sure if I need this????..TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
+                WidgetProvider2 myWidget = new WidgetProvider2();
                 myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
 //        /------------------------------------------------
 

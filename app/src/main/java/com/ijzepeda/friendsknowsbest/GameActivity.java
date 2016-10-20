@@ -88,6 +88,7 @@ int currentDeckCard;
     //Game Variables
     int totalVotes;
     boolean alreadyVoted=true;
+    boolean finishReadingUsers=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,44 +152,22 @@ return;
         //Link Views
         commentTextView=(TextView)findViewById(R.id.commentTV);
         sendBtn=(ImageButton) findViewById(R.id.SendImageButton);
-//        commentTextView.setFocusable(false);//avoid writting message before selecting
-
-        //DIALOG
-//        alertDialog=  new AlertDialog.Builder(this)
-//                .setTitle("Game Over")
-//                .setMessage("You should start a new game")
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        Intent intent=new Intent(getApplication(),NewGame.class);
-//                        startActivity(intent);
-////                        finish();
-//                        return;
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // do nothing
-////                        Intent intent=new Intent(getApplication(),MainActivity.class);
-////                        startActivity(intent);
-////                        finish();
-////                        return;
-//                    }
-//                })
-//                .setIcon(android.R.drawable.ic_dialog_alert);
-
+        sendBtn.setClickable(false);//available until it is sure that the user hasnt voted and has selected a nominee
 
 
         //UserDetails
         //should I save them on the device? or keep veriifying userAuth?
         usermail=auth.getCurrentUser().getEmail();
         username=auth.getCurrentUser().getDisplayName();
+        if(username==null || username.equals(null) || username.equals("")){
+            username=Utils.getInstance().getValue(getApplication(),"username");
+        }
         useruid=auth.getCurrentUser().getUid();
         userPic=auth.getCurrentUser().getPhotoUrl()!=null?auth.getCurrentUser().getPhotoUrl().toString():"";
 
         //GetCurrentGame details
 //        databaseGameRef.child(currentGameID)
-      loadGame();
+//      loadGame();
 
      //AQUI IBA EL Loader del DECK
      loadDeck();
@@ -210,7 +189,10 @@ return;
             @Override
             public void cardsDepleted() {
                 Log.e("MainActivity", "no more cards");
-                alertDialog.show();
+//                alertDialog.show();
+Intent intent=new Intent(getApplication(),GameActivity.class);
+                startActivity(intent);
+                finish();
             }
             @Override
             public void cardActionDown() {
@@ -403,7 +385,6 @@ public void loadDeck(){
 
     }*/
     public void fetchPlayersFromDeck(){
-        fetchPlayersCommented();
         playersFromDeckRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
         linearLayoutManager=new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
@@ -422,11 +403,11 @@ public void loadDeck(){
 
 //                once having the current game users and deckid, load deck id
                 //Load users and details for specific card. bring vote and image. use it to create a better recyclerView
-//                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addValueEventListener(new ValueEventListener() {
-                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addValueEventListener(new ValueEventListener() {
+//                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {//switched back on 10-192305
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        playersListFromDeck.clear();// TODO for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
+                        playersListFromDeck.clear();// TODO for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
                         totalUsers=(int)dataSnapshot.getChildrenCount();
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
 //String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
@@ -503,63 +484,17 @@ public void loadDeck(){
 
 
 
-    public void fetchPlayersCommented(){
-    //currentGameID
-//        databaseGameRef.child("GAME123").addListenerForSingleValueEvent(new ValueEventListener() {
-    /**Log.e("~~~>","currentGameID;"+currentGameID);
-     databaseGameRef.child(currentGameID+"").addListenerForSingleValueEvent(new ValueEventListener() {
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-    //                currentGame = dataSnapshot.getValue(Game.class);
-    //                Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
-    Log.e("~~~>>>>","Just place GAME object from DB:"+dataSnapshot.getKey().toString());
-    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-    Log.d("gameA,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-    Log.d("gameA,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-    Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
-    }
-    }
 
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
 
-    }
-    });*/
 
-}
-//TOdo chcar y borrar, sera remplazado por un selectedPlayer userVote..Maybe?
-    public void selectedPlayer(final String selectedPlayer){
-//        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
-//        commentTextView.setFocusable(true);
-        commentTextView.setHint("Why would you vote for \n"+selectedPlayer);
-        sendBtn.setClickable(true);
-
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                sendBtn.setClickable(false);
-                sendBtn.setColorFilter((R.color.bel_lightgrey_text));
-                commentTextView.setFocusable(false);
-                if(!alreadyVoted) {
-                    alreadyVoted=true;
-                    UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayer + "UID", selectedPlayer,selectedPlayer+"userPic",false);
-                    databaseDeckRootRef.child(currentDeckID).child("card" + currentGame.getCurrentCard()).child("users").child(useruid).setValue(userVote);
-                }else{
-                    Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
-//                    if (totalVotes >= totalUsers) {
-//                        Log.e("clicked button", "verify if the users have voted");
-//                        showResult();
-//                    }
-                }
-            }
-        });
-    }
    public void selectedPlayer(final String selectedPlayer,final String selectedPlayerUID,final String selectedPlayerPHOTOURL){
 //        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
 //        commentTextView.setFocusable(true);
        //TODO ~~~~ Error aqui , no esta recibiendo valores!!!
        commentTextView.setHint("Why would you vote for \n"+selectedPlayer);
+//       sendBtn.setClickable(false);
        sendBtn.setClickable(true);
+
 
        sendBtn.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -567,6 +502,7 @@ public void loadDeck(){
 //                sendBtn.setClickable(false);
                sendBtn.setColorFilter((R.color.bel_lightgrey_text));
                commentTextView.setFocusable(false);
+               if(finishReadingUsers){
                if(!alreadyVoted) {
                    alreadyVoted=true;
                    UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayerUID, selectedPlayer,selectedPlayerPHOTOURL,false);
@@ -574,9 +510,10 @@ public void loadDeck(){
                }else{
                    Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
                    if (totalVotes >= totalUsers) {
-                       Log.e("clicked button", "verify if the users have voted");
+                       Log.e("0clicked button", "verify if the users have voted");
                        showResult();
                    }
+               }
                }
            }
        });
@@ -585,7 +522,10 @@ public void loadDeck(){
 
     /**
      * Using this method i might encounter a problem if i edit a value and leave. because noone will notice the change on the already voted users
-     * I can use a read all voted, and then the listener for changes. I believe added, is in this instance. so I dont need to do it twice*/
+     * I can use a read all voted, and then the listener for changes. I believe added, is in this instance. so I dont need to do it twice
+     *
+     * Remember that Added is run first, and changed is a continuous listener. therefore. the If user have already voted will be available since added
+     * */
     public void checkGameAndPlayerStatus(){
         Log.e("checkGame()","About to start reading changes");
         totalVotes=0;
@@ -599,10 +539,10 @@ public void loadDeck(){
                 boolean userVoted=false;
                 if(dataSnapshot.child("voted").exists()) {
                     userVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                    Log.e("GAME ACTIVITY","checkgame&players onchild added userVoted:"+userVoted);
+                    Log.e("1.1.GAME ACTIVITY","checkgame&players onchild added "+dataSnapshot.child("name").getValue().toString() +"userVoted:"+userVoted);
 //                } extiendo este if, hasta abajo... si no existe el userVote, no checar ni subir, ni avanzar... esperar hasta que lo haga
                     if (userVoted) {
-                        Log.e("GAME ACTIVITY","checkg onchild Added: inside if because he VOTED"+userVoted);
+                        Log.e("1.2.GAME ACTIVITY","checkg onchild Added: inside if because he VOTED"+userVoted);
 //                       else
 //                        {
 //                            alreadyVoted = true;//you just voted!
@@ -610,8 +550,15 @@ public void loadDeck(){
 //                        }
 //                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
 //                    }else{
+                        Log.e("1.2.1.FUUUDGE!","is user name empty to check if has voted?"+username+": ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
                         if (dataSnapshot.child("name").equals(username)) {
                             alreadyVoted = true;
+                            finishReadingUsers=false;
+                            commentTextView.setFocusable(false);
+                            sendBtn.setClickable(false);
+                            sendBtn.setColorFilter((R.color.bel_lightgrey_text));
+
                         }
                         totalVotes++;
                     }
@@ -629,11 +576,13 @@ public void loadDeck(){
 //                        Log.e(">>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
 //                        showResult();
 //                    }
+
+                    finishReadingUsers=true;
                 }  //hasta aqui lo expandi
 //                156165165
-                Log.e("GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+                Log.e("1.3.GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
                 if (totalVotes >= totalUsers) {
-                    Log.e(">>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
+                    Log.e("1>>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
                     showResult();
                 }
             }
@@ -642,19 +591,13 @@ public void loadDeck(){
 /**Snapshot retrives only the child [in this case the USer] that changed. therefore, I just need to look for voted, not users/voted*/
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("checkGameAndPlayer","onChildChanged,User key"+ dataSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                Log.d("checkGameAndPlayer","onChildChanged,User ref"+ dataSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                Log.d("checkGameAndPlayer","onChildChanged,User val"+ dataSnapshot.getValue().toString()); //< Contains the whole json:.
-
-
-                alreadyVoted=false; //startloading and return to false, if found the match, then is true
-
+                 alreadyVoted=false; //startloading and return to false, if found the match, then is true
                 playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
                 boolean readingUserVoted=false;
                 if(dataSnapshot.child("voted").exists()) {//expandido hasta abajo
                     readingUserVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                    Log.e("GAME ACTIVITY","checkgame&players onchild Changed userVoted:"+readingUserVoted);
+                    Log.e("2.1.GAME ACTIVITY","checkgame&players onchild Changed userVoted:"+readingUserVoted);
 
                     if (readingUserVoted) {
 //                       else
@@ -664,9 +607,15 @@ public void loadDeck(){
 //                        }
 //                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
 //                    }else{
+                        Log.e("2.1.1.FUUUDGE!","is user name empty to check if has voted?"+username+": ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                         if (dataSnapshot.child("name").equals(username)) {
                             alreadyVoted = true;
-                        } totalVotes++;
+
+                            commentTextView.setFocusable(false);
+                            sendBtn.setClickable(false);
+                            sendBtn.setColorFilter((R.color.bel_lightgrey_text));
+                        }
+                        totalVotes++;
                     }
 //                        if (totalVotes >= totalUsers) {
 //                            Log.e(">>checkGame...()", "onChildChanged All players have voted! continue****************************************");
@@ -676,8 +625,10 @@ public void loadDeck(){
                    //delete erase check debug todo el if totalvotes>=totalusers iba aqui
                 } //se expadio hasta aqui
                 //trigger next move
+                Log.e("2.3.GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
+
                 if (totalVotes >= totalUsers) {
-                    Log.e(">>checkGame...()", "onChildChanged All players have voted! continue****************************************");
+                    Log.e("2>>checkGame...()", "onChildChanged All players have voted! continue****************************************");
                     showResult();
                 }
             }
@@ -700,7 +651,7 @@ public void loadDeck(){
     }
 
 public void showResult(){
-    Log.e("GameActivity","Sending to resutls currentCard is:"+currentCard);
+    Log.e("GameActivity","Sending to resutls currentCard is:"+currentCard+", totalVotes"+totalVotes+", totalusers"+totalUsers);
 
     Intent intent=new Intent(this,ResultsActivity.class);
     intent.putExtra(GAME_ID, currentGameID);

@@ -114,11 +114,24 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
                                      deepLink = AppInviteReferral.getDeepLink(intent);
                                      invitationId = AppInviteReferral.getInvitationId(intent);
 
+                                    String deeplinkbase=getString(R.string.deeplink_domain)+
+                                            "?link="+
+                                    getString(R.string.deeplink_link)+
+                                            "&apn="+
+                                            getString(R.string.deeplink_package)+
+                                            "&amv=1"+
+                                            "&afl="+
+                                            getString(R.string.deeplink_not_installed_store_link)+
+                                            "&al="+
+                                            getString(R.string.deeplink_parse_url_game_id);
+
+
+
                                     Log.d(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
                                     Log.d(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
                                     extraString=""+intent.getStringExtra("prueba");
-gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
-                                    inviteTv.setText("Your invite To Join:"+gameId);
+                                gameId=deepLink.replace(deeplinkbase,"");
+                                    inviteTv.setText(getString(R.string.your_invite_to_join)+gameId);
 
                                     Log.d("~~~~AddGame","removing base I got gameid:"+gameId);
 
@@ -134,7 +147,7 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
                                                 addGame(gameId);
 
                                             }else{
-                                                Toast.makeText(AddPlayerToGameActivity.this, "You are in that game", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddPlayerToGameActivity.this, R.string.you_are_in_that_game, Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(AddPlayerToGameActivity.this,LoadActivity.class);
                                                 startActivity(intent);
                                                 finish();
@@ -146,15 +159,7 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 
                                         }
                                     });
-//                                    if user doesnt exists , then open register/
-//                                    addGame(gameId);
-//TODO------------------------------------------------------------------------------------------------------------------
 
-
-                                    // Because autoLaunchDeepLink = true we don't have to do anything
-                                    // here, but we could set that to false and manually choose
-                                    // an Activity to launch to handle the deep link here.
-                                    // ...
                                 }
                             }
                         });
@@ -172,25 +177,18 @@ gameId=deepLink.replace("http://ijzepeda.com/addGame/","");
 
     Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
 
+
+
+    //Reuse this method on NewGame
     public void addGame(String gameIDNoNeed){
 
 
         //Addgame to UsersDetails-----------------------
         Map<String,Object> gamesMap=new HashMap<String, Object>();
-//        gamesMap.put("game"+1,gameID);
         gamesMap.put(gameId,gameId);
-        databaseUsersRef.child(userUid).child("games").setValue(gamesMap);
+        databaseUsersRef.child(userUid).child("games").updateChildren(gamesMap);
 
-        //Add user to Game------------------------------------------
-        //Get whole GAME object, edit and reupload
-//        Game gameObject=new Game(currentCard,deckId,name,noUsers,noCards,uid,unlimitedCounter,userMap);
-//        databaseGameRef.updateChildren(map);
-//        databaseGameRef.child(uid).push().setValue(gameObject);//Todo what is this for?!
-//        databaseGameRef.child(uid).setValue(gameObject);
 
-        //edit noUsers
-//databaseGameRef.child(gameID).child("users").child(userUid)
-//databaseGameRef.child(gameId).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
 databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(new ValueEventListener() {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -253,36 +251,20 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
         databaseGameRef.child(gameId).child("deckId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("getDeckId", dataSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                Log.d("getDeckId", dataSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                Log.d("getDeckId", dataSnapshot.getValue().toString()); //< Contains the whole json:.
                 deckId=dataSnapshot.getValue().toString();
                 playerOnCardMap.put(userUid,userName);
                 databaseDeckRef.child(deckId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        currentGame.getCurrentCard()//todo: no empezar de 0 sino de current card, asi no hay error en cartas anteriores cuando no estaba el jugador
-//                        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-//                            childSnapshot.child("users").updateChildren(playerOnCardMap);
-//                        }
-//                        for( int i =0;i<noOfCards;i++) {
                         for( int i =currentCard;i<noOfCards;i++) {
                            String cardNo = "card" + i;
                             cardMap.put(cardNo, ""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
-//                            databaseDeckRef.child(deckId).updateChildren(cardMap);
-//                            collectionCardNoMap.put("card", randomCardOrder[i]);//NO NEED ~~DO NOT~~ tTO UPDATE THIS VALUE
-//                            collectionCardNoMap.put("users", "");//create the tructure
-//                            databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
-//    (String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
 
-//obtener los valores de este usery usarlos en uservote
                             //CREATE UserVote
                             Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
                               UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
-
-
 
                             cardMap.clear();
 //                            collectionCardNoMap.clear();
@@ -301,15 +283,6 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
 
             }
         });
-//        playerOnCardMap.put(userUid,userName);
-//        databaseDeckRef.child(deckId)
-
-
-
-
-
-
-
 
     }
 

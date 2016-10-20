@@ -132,8 +132,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         database= FirebaseDatabase.getInstance();
         auth=FirebaseAuth.getInstance();
         storage= FirebaseStorage.getInstance();
-        // -- reference to table in database
-//    databaseRef=database.getReference("Ordenes");
 //        get database
         databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
         firebaseDatabaseRootReference = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -191,7 +189,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
 
-        //Todo load user session from sharedPrefs, if exists, it was logged in, then skip
         Button mEmailLogInButton = (Button) findViewById(R.id.email_sign_in_button);
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
@@ -235,11 +232,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if(user.getPhotoUrl()!=null)
                     Utils.getInstance().save(getApplication(),user.getPhotoUrl().toString(),getString(R.string.shared_userphotourl_key));
 
-                    Log.e("mauthlistener","name is:"+user.getDisplayName());
-                    Log.e("mauthlistener","email is:"+user.getEmail());
-                    Log.e("mauthlistener","uid is:"+user.getUid());
-                    Log.e("mauthlistener","provider is:"+user.getProviderId());
-                    Log.e("mauthlistener","photourl is:"+user.getPhotoUrl());
+                    Log.d("mauthlistener","name is:"+user.getDisplayName());
+                    Log.d("mauthlistener","email is:"+user.getEmail());
+                    Log.d("mauthlistener","uid is:"+user.getUid());
+                    Log.d("mauthlistener","provider is:"+user.getProviderId());
+                    Log.d("mauthlistener","photourl is:"+user.getPhotoUrl());
                     //No need to ask for email again, go directly
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     showProgress(false);
@@ -317,11 +314,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                              user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
                                     friendsMap,cardsMap,gamesMap);
                             databaseRef=database.getReference("Users");
-                            Log.e("mauthlistener","name is:"+firebaseUser.getDisplayName());
-                            Log.e("mauthlistener","email is:"+firebaseUser.getEmail());
-                            Log.e("mauthlistener","uid is:"+firebaseUser.getUid());
-                            Log.e("mauthlistener","provider is:"+firebaseUser.getProviderId());
-                            Log.e("mauthlistener","photourl is:"+firebaseUser.getPhotoUrl());
+                            Log.d("mauthlistener","name is:"+firebaseUser.getDisplayName());
+                            Log.d("mauthlistener","email is:"+firebaseUser.getEmail());
+                            Log.d("mauthlistener","uid is:"+firebaseUser.getUid());
+                            Log.d("mauthlistener","provider is:"+firebaseUser.getProviderId());
+                            Log.d("mauthlistener","photourl is:"+firebaseUser.getPhotoUrl());
 
 //TODO if user doesnt exist, then create it
                             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -343,21 +340,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             });
 
-                            //TODO KEY CANT BE AN EMAIL!
-//                            Map<String,Object> map=new HashMap<String,Object>();
-//                            map.put(firebaseUser.getUid(),"");
-//                            databaseRef.updateChildren(map);
-//                            //Each login all user values get replaced, then I need to update, not set
-//                            databaseRef.child(firebaseUser.getUid()).setValue(user);
-
-
-
-
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             showProgress(false);
                             finish();
                             startActivity(intent);
-
                         }
                     }
                 });
@@ -471,70 +457,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
     }
-//    private void attemptRegister(){
-////        if (mAuthTask != null) {
-////            return;
-////        }
-//
-//        // Reset errors.
-//        mEmailView.setError(null);
-//        mPasswordView.setError(null);
-//
-//        // Store values at the time of the login attempt.
-//        String email = mEmailView.getText().toString();
-//        String password = mPasswordView.getText().toString();
-//
-//        boolean cancel = false;
-//        View focusView = null;
-//
-//        // Check for a valid password, if the user entered one.
-//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-//            mPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
-//
-//        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
-//            mEmailView.setError(getString(R.string.error_field_required));
-//            focusView = mEmailView;
-//            cancel = true;
-//        } else if (!isEmailValid(email)) {
-//            mEmailView.setError(getString(R.string.error_invalid_email));
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            focusView.requestFocus();
-//        } else {
-//            // Show a progress spinner, and kick off a background task to
-//            // perform the user login attempt.
-//            showProgress(true);
-//            /**TODO: THIS WAS on the base activity
-//             *
-//            mAuthTask = new UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
-//             */
-////        startLogin();
-//            register(email, password);
-//
-//        }
-//    }
-
-
 
     private boolean validateForm() {
         boolean valid = true;
         // Store values at the time of the login attempt.
         String email = mEmailTextView.getText().toString();
-//        String password = mPasswordView.getText().toString();
 
-//        String email = mail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailTextView.setError("Email invlaido.");
+            mEmailTextView.setError(getString(R.string.invalid_mail));
             valid = false;
         } else {
             mEmailTextView.setError(null);
@@ -542,7 +472,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         String password = mPasswordView.getText().toString();
         if (TextUtils.isEmpty(password) || password.length()<6) {
-            mPasswordView.setError("Minimo 6 caracteres.");
+            mPasswordView.setError(getString(R.string.at_least_6_chars));
             valid = false;
         } else {
             mPasswordView.setError(null);
@@ -653,10 +583,8 @@ public void getUser(String mail){
         public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                 String name = (String) childSnapshot.child(getString(R.string.name)).getValue();
-//                String mail = (String) childSnapshot.child("mail").getValue();///todo added on 109161617
                Utils utils= Utils.getInstance();
                 utils.save(getApplication(),name,getString(R.string.username));
-//                utils.save(getApplication(),mail,"email");
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 showProgress(false);
@@ -674,7 +602,6 @@ public void getUser(String mail){
             }
 
 private void saveUserSession(String usermail,String resultTask){
-//todo checar el result task, si regresa el que paso? y como obtener el uid
 Utils utils= Utils.getInstance();
     utils.save(this,usermail,"email");
 
@@ -857,57 +784,6 @@ boolean loading=false;
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
 //     */
-//    public class UserLoginTask2 extends AsyncTask<Void, Void, Boolean> {
-//
-//        private final String mEmail;
-//        private final String mPassword;
-//
-//        UserLoginTask2(String email, String password) {
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO: attempt authentication against a network service.
-//
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-//
-//            // TODO: register the new account here.
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//
-//            if (success) {
-//                finish();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
+
 }
 

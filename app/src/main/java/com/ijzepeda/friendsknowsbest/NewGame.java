@@ -39,8 +39,6 @@ public class NewGame extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener {
     private static String TAG="NewGameActivity";
     private static final int REQUEST_INVITE = 1;
-    private static final String MESSAGE_SENT_EVENT = "message_sent";
-    public static final String MESSAGES_CHILD = "messages";
 
     //firebase
     private FirebaseApp app;
@@ -81,7 +79,6 @@ private GoogleApiClient mGoogleApiClient;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
-//TODO: create the game first, before sending the invite. to add the game url maybe
 //        create a game object, and invite with the gameobject
         mGoogleApiClient=new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,this)
@@ -105,8 +102,6 @@ private GoogleApiClient mGoogleApiClient;
         }
 
         userEmail=Utils.getInstance().getValue(getApplication(),"email");
-//        String userName2=""+auth.getCurrentUser().getDisplayName();
-//        Toast.makeText(this, "userName:"+userName+", userName2:"+userName2, Toast.LENGTH_SHORT).show();
 
         if(auth.getCurrentUser().getPhotoUrl()!=null) {
 //    LOAD FROM USERS DB or sharedprefs
@@ -130,11 +125,6 @@ int randomSeed=(int)(Math.random());
         inviteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO for now it will send to load game
-//                Intent TempIntent= new Intent(NewGame.this, LoadActivity.class);
-//                startActivity(TempIntent);
-//                finish();
-//                return;
 
               String gameId=  createGame();
                 sendInvitation(gameId);
@@ -145,18 +135,12 @@ int randomSeed=(int)(Math.random());
             @Override
             public void onClick(View view) {
                 createDeck();
-//                createGame();// needs to invite friends before set the game
-
                 Intent TempIntent= new Intent(NewGame.this, LoadActivity.class);
                 startActivity(TempIntent);
                 finish();
                 return;
             }
         });
-
-        //TODO: here send the invites to friends, when they respond to them they will be guided to
-        //load game, where it is going to be added to their games.
-
 
 
     }
@@ -242,50 +226,24 @@ public void createDeck(){
 
 
     public String createGame(){
-  //        databaseGameRef.push().setValue(user);
-//        databaseGameRef.updateChildren("Game1");
-//        Map<String,Object> users=new HashMap<String,Object>();
-//        users.put("users","");
-//        databaseGameRef.updateChildren(users);
 name=gameNameTV.getText().toString();
-        //Todo add Validation to dont leave it empty
         if(Integer.parseInt(noCardsTV.getText().toString())>0) {
             noCards = Integer.parseInt(noCardsTV.getText().toString());
-            //
-            if(noCards>(getResources().getStringArray(R.array.category_romantic)).length){
+             if(noCards>(getResources().getStringArray(R.array.category_romantic)).length){
                 noCards=(getResources().getStringArray(R.array.category_romantic)).length;
             }
 
         }else{
             noCards=(getResources().getStringArray(R.array.category_romantic)).length;
-        }
-
-//        userMap.put(userName,userEmail);
-        userMap.put(userUid,userName);
-//        Toast.makeText(this, "2userName:"+userName, Toast.LENGTH_SHORT).show();
-//TODO CREATE NAME OF UID
-        Map<String,Object> map=new HashMap<String,Object>();
-        int i=123;
-//        map.put("GAME"+i,"");
+        } userMap.put(userUid,userName);
+     Map<String,Object> map=new HashMap<String,Object>();
         map.put(uid,"");
         Game gameObject=new Game(currentCard,deckId,name,noUsers,noCards,uid,unlimitedCounter,userMap);
-
        databaseGameRef.updateChildren(map);
-
-databaseGameRef.child(uid).push().setValue(gameObject);//Todo what is this for?!
-                        //usar el updateChildren con un Map , en vez de un objeto
-//                        databaseGameRef.child("GAME"+i).updateChildren(gameObjectMAP);
+databaseGameRef.child(uid).push().setValue(gameObject);
 databaseGameRef.child(uid).setValue(gameObject);
-//        databaseGameRef.child("GAME"+i).
-//TODO ~~~~~~~~~~~~~~~~~ THis methos needs to be added when user receive the link to be added to a game
         userMap.clear();
-//        userMap.put("UserUID2","User NAme 2");
-//        userMap.put("UserUID3","User name 3");
-        //ADD A NEW USER USING THE GAMEID
-       // databaseGameRef.child("GAME"+i).child("users").updateChildren(userMap);
-//        databaseGameRef.child("GAME"+i).child("noUsers").setValue(3); //todo get current value and extra 1
-
-        addGameToUser();// maybe just this do the job: databaseUserRef.child(userUid).child("games").updateChildren(gamesMap);
+ addGameToUser();// maybe just this do the job: databaseUserRef.child(userUid).child("games").updateChildren(gamesMap);
 return uid;
     }
 
@@ -295,12 +253,9 @@ return uid;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.child(uid).exists()) {
-//                    addGame(uid);
                     Map<String,Object> gamesMap=new HashMap<String, Object>();
                     gamesMap.put(uid,uid);
-//        databaseUsersRef.child(userUid).child("games").setValue(gamesMap);//TODO this will overwrite oldvalues
                     databaseUserRef.child(userUid).child("games").updateChildren(gamesMap);
-
                 }else{
                     Toast.makeText(NewGame.this, "You are in that game", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewGame.this,LoadActivity.class);
@@ -318,7 +273,7 @@ return uid;
 
 
     private void sendInvitation(String gameid){
-        //Remember to have the correct Json for the testing/release build, on this i am using the storeReleaseRelease
+        //Remember : to have the correct Json for the testing/release build, on this i am using the storeReleaseRelease
         //https://r2qvt.app.goo.gl/?
         String deeplink=getString(R.string.deeplink_domain)+
                 "?link="+
@@ -334,32 +289,14 @@ return uid;
         Log.e("<<deeplink>>","is:"+deeplink);
         Intent intent = new AppInviteInvitation.IntentBuilder("Add some friends")
                 .setMessage("Lets play!")
-//                .setCallToActionText("Call to action text")
-//                .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
-
-//                .setDeepLink(Uri.parse("http://example.com/offer/five_dollar_offer"))//TODO WORKS!~~~~~
-//                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))//TODO WORKS!
+//                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))// WORKS!
 //https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME123
-//                .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://ijzepeda/&al=http://ijzepeda.com/addGame/GAME123"))
-
-//                .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.fkb&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME_161020_005051_0"))
                 .setDeepLink(Uri.parse(deeplink))
-//""+
-//                        "http://ijzepeda.com/addGame/&apn=com.ijzepeda.fkb&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb[&ad=1][&al=android_link]"
-//                        +gameid))//TODOWORKS! https://domain/?link=your_deep_link&apn=package_name[&amv=minimum_version][&ad=1][&al=android_link][&afl=fallback_link]
-
-
-//  .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/Q8OH"))
-                .setCustomImage(Uri.parse("android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo"))//getString(R.string.invitation_custom_image)))
-
+               .setCustomImage(Uri.parse("android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo"))//getString(R.string.invitation_custom_image)))
 //        .setEmailSubject("You are invited to a FriendsKnowsBest game")
 //        .setEmailHtmlContent("Just click %%APPINVITE_LINK_PLACEHOLDER%% and lets play")
-
                 .build();
-//        intent.putExtra("prueba","con exito");
         startActivityForResult(intent, REQUEST_INVITE);
-
-        //TODO Once sent, block gamename!
 
     }
 

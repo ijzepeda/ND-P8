@@ -189,7 +189,10 @@ return;
             @Override
             public void cardsDepleted() {
                 Log.e("MainActivity", "no more cards");
-                alertDialog.show();
+//                alertDialog.show();
+Intent intent=new Intent(getApplication(),GameActivity.class);
+                startActivity(intent);
+                finish();
             }
             @Override
             public void cardActionDown() {

@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import java.util.ArrayList;
@@ -99,34 +98,40 @@ public class LoadActivity extends AppCompatActivity {
             databaseGameRef.child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Game gameTemp = dataSnapshot.getValue(Game.class);
-                    if (gameTemp != null) {
-                        gameTemp.setUid(dataSnapshot.getKey());//todo need to update
+                        Game gameTemp = dataSnapshot.getValue(Game.class);
+
+                    gameTemp.setUid(dataSnapshot.getKey().toString());//todo need to update
 
                         gamesList.add(gameTemp);
-                        gamesRecyclerAdapter.notifyDataSetChanged();
-//added on 19-10
-                        if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
-                            Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
-                            {
+                    gamesRecyclerAdapter.notifyDataSetChanged();
+
+                    if(Utils.getInstance().getWidgetGameFromList(gameTemp.getUid())==null){
+                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                        {
+                            // reload widget
+//                            Context context = getApplication();
+//                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+//                            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+//                            ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
+//                            remoteViews.setTextViewText(R.id.text1, "myText" + System.currentTimeMillis());
+//                            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
 //it works but triggerson receive
-//                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
-//                            WidgetProvider myWidget = new WidgetProvider();
-//                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
+                            WidgetProvider2 myWidget = new WidgetProvider2();
+                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
 
-//                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
-//                            WidgetProvider2 myWidget = new WidgetProvider2();
-//                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
+//                            ComponentName thisWidget = new ComponentName( getApplication(), DetailWidgetProvider.class );
+//                            AppWidgetManager.getInstance( getApplication() ).updateAppWidget( thisWidget, R.id.widget );
 
-                                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                                int appWidgetIds[] = appWidgetManager.getAppWidgetIds(
-                                        new ComponentName(context, WidgetProvider2.class));
-                                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.words);
+//                            int widgetIDs[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
+//                            AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(widgetIDs, R.id.widget);
 
+//                            notifyAppWidgetViewDataChanged();
+//                            AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(id, R.id.widget_view);
 
-                            }
-                            Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
                         }
+                        Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
                     }
                 }
                 @Override
@@ -153,8 +158,8 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent inten=new Intent(this,MainActivity.class);
-//        startActivity(inten);
-//        finish();
+        Intent inten=new Intent(this,MainActivity.class);
+        startActivity(inten);
+        finish();
     }
 }

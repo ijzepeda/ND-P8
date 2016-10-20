@@ -46,9 +46,13 @@ public class SwipeDeckAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //            LayoutInflater inflater = getLayoutInflater();
             // normally use a viewholder
-            v = inflater.inflate(R.layout.cardview, parent, false);
+            if(context instanceof Offline)
+            v = inflater.inflate(R.layout.cardview_offline, parent, false);
+            else
+                v = inflater.inflate(R.layout.cardview, parent, false);
+
+
         }
-        Log.e("~~~~~","qaqui"+data.get(position).getNumber());
         ((TextView) v.findViewById(R.id.cardNumber)).setText(data.get(position).getNumber()+"");
         ((TextView) v.findViewById(R.id.cardText)).setText(data.get(position).getQuote());
 

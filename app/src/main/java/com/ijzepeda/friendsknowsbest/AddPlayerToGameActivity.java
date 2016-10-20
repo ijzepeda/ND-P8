@@ -159,15 +159,7 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
                                         }
                                     });
-//                                    if user doesnt exists , then open register/
-//                                    addGame(gameId);
-//TODO------------------------------------------------------------------------------------------------------------------
 
-
-                                    // Because autoLaunchDeepLink = true we don't have to do anything
-                                    // here, but we could set that to false and manually choose
-                                    // an Activity to launch to handle the deep link here.
-                                    // ...
                                 }
                             }
                         });
@@ -193,21 +185,10 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
         //Addgame to UsersDetails-----------------------
         Map<String,Object> gamesMap=new HashMap<String, Object>();
-//        gamesMap.put("game"+1,gameID);
         gamesMap.put(gameId,gameId);
-//        databaseUsersRef.child(userUid).child("games").setValue(gamesMap);//TODO this will overwrite oldvalues
         databaseUsersRef.child(userUid).child("games").updateChildren(gamesMap);
 
-        //Add user to Game------------------------------------------
-        //Get whole GAME object, edit and reupload
-//        Game gameObject=new Game(currentCard,deckId,name,noUsers,noCards,uid,unlimitedCounter,userMap);
-//        databaseGameRef.updateChildren(map);
-//        databaseGameRef.child(uid).push().setValue(gameObject);//Todo what is this for?!
-//        databaseGameRef.child(uid).setValue(gameObject);
 
-        //edit noUsers
-//databaseGameRef.child(gameID).child("users").child(userUid)
-//databaseGameRef.child(gameId).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
 databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(new ValueEventListener() {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -275,28 +256,15 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
                 databaseDeckRef.child(deckId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-//                        currentGame.getCurrentCard()//todo: no empezar de 0 sino de current card, asi no hay error en cartas anteriores cuando no estaba el jugador
-//                        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-//                            childSnapshot.child("users").updateChildren(playerOnCardMap);
-//                        }
-//                        for( int i =0;i<noOfCards;i++) {
                         for( int i =currentCard;i<noOfCards;i++) {
                            String cardNo = "card" + i;
                             cardMap.put(cardNo, ""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
-//                            databaseDeckRef.child(deckId).updateChildren(cardMap);
-//                            collectionCardNoMap.put("card", randomCardOrder[i]);//NO NEED ~~DO NOT~~ tTO UPDATE THIS VALUE
-//                            collectionCardNoMap.put("users", "");//create the tructure
-//                            databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
-//    (String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
 
-//obtener los valores de este usery usarlos en uservote
                             //CREATE UserVote
                             Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo);
                               UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);
                             databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
-
-
 
                             cardMap.clear();
 //                            collectionCardNoMap.clear();
@@ -315,15 +283,6 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
 
             }
         });
-//        playerOnCardMap.put(userUid,userName);
-//        databaseDeckRef.child(deckId)
-
-
-
-
-
-
-
 
     }
 

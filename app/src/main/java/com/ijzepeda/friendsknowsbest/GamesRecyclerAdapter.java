@@ -106,18 +106,14 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                 @Override
                 public void onClick(View view) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle ("Leave Game")
-                            .setMessage ("Are you sure?" + String.valueOf(getAdapterPosition()))
-                            .setPositiveButton("SURE", new DialogInterface.OnClickListener() {
+                    builder.setTitle (context.getString(R.string.leave_game))
+                            .setMessage (context.getString(R.string.are_you_sure) + String.valueOf(getAdapterPosition()))
+                            .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-//TODO Delete user from: deck[from current card] and Game. also game from Users
-//TODO Delete user from: deck[from current card] and Game. also game from Users
-//TODO Delete user from: deck[from current card] and Game. also game from Users
-//TODO Delete user from: deck[from current card] and Game. also game from Users
                                 }
                             })
-                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 

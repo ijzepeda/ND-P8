@@ -109,9 +109,7 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
 //                FirebaseUser firebaseUser = auth.getCurrentUser();
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(nameTV.getText().toString())
-
-                        .setPhotoUri(mFileUri)//Uri.fromFile())//TODO CREATE THE BUTTON TO PICKUP the PHOTO
-//                        .setPhotoUri(downloadUri)//Uri.fromFile())//TODO CREATE THE BUTTON TO PICKUP the PHOTO
+                        .setPhotoUri(mFileUri)
                         .build();
                 firebaseUser.updateProfile(profileUpdates)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -130,14 +128,12 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
             }
 
 
-                //TODO BEFORE GOING TO MENU AGAIN, CREATE USER IN DATABSE, That includes game
+                // BEFORE GOING TO MENU AGAIN, CREATE USER IN DATABSE, That includes game
                 Map<String,Object> friendsMap=new HashMap<String, Object>();
                 Map<String,Object>cardsMap=new HashMap<String, Object>();
                 Map<String,Object>gamesMap=new HashMap<String, Object>();
                 friendsMap.put("Friend0","");
                 cardsMap.put("FavCard1","");
-//                gamesMap.put("game0","GameUID123");
-//                gamesMap.put("GameUID123","GameUID123");
 
                 String userName="";
                 String userMail="";
@@ -159,10 +155,7 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                 databaseRef.child(firebaseUser.getUid()).setValue(user);
 
 //update firebase auth user
-
-
-
-                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
@@ -241,9 +234,6 @@ public void uploadPicture(Uri fileUri){
                 }
             });
 }
-
-
-
 
 
 

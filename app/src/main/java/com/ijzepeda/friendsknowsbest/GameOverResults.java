@@ -9,6 +9,8 @@ public class GameOverResults extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         setContentView(R.layout.activity_game_over_results);
     }
 

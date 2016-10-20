@@ -2,14 +2,17 @@ package com.ijzepeda.friendsknowsbest;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -437,6 +440,13 @@ public void showResult(){
 //    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
+    // inside your activity (if you did not enable transitions in your theme)
+    getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+// set an exit transition
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        getWindow().setExitTransition(new Explode());
+    }
+
     startActivity(intent);///todo not enble to debug
     finish();
 

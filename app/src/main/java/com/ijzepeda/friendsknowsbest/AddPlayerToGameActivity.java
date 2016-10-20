@@ -114,11 +114,24 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
                                      deepLink = AppInviteReferral.getDeepLink(intent);
                                      invitationId = AppInviteReferral.getInvitationId(intent);
 
+                                    String deeplinkbase=getString(R.string.deeplink_domain)+
+                                            "?link="+
+                                    getString(R.string.deeplink_link)+
+                                            "&apn="+
+                                            getString(R.string.deeplink_package)+
+                                            "&amv=1"+
+                                            "&afl="+
+                                            getString(R.string.deeplink_not_installed_store_link)+
+                                            "&al="+
+                                            getString(R.string.deeplink_parse_url_game_id);
+
+
+
                                     Log.d(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
                                     Log.d(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
                                     extraString=""+intent.getStringExtra("prueba");
-gameId=deepLink.replace(getString(R.string.deeplink_parse_url_game_id),"");
-                                    inviteTv.setText("Your invite To Join:"+gameId);
+                                gameId=deepLink.replace(deeplinkbase,"");
+                                    inviteTv.setText(getString(R.string.your_invite_to_join)+gameId);
 
                                     Log.d("~~~~AddGame","removing base I got gameid:"+gameId);
 
@@ -134,7 +147,7 @@ gameId=deepLink.replace(getString(R.string.deeplink_parse_url_game_id),"");
                                                 addGame(gameId);
 
                                             }else{
-                                                Toast.makeText(AddPlayerToGameActivity.this, "You are in that game", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddPlayerToGameActivity.this, R.string.you_are_in_that_game, Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(AddPlayerToGameActivity.this,LoadActivity.class);
                                                 startActivity(intent);
                                                 finish();
@@ -257,9 +270,6 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
         databaseGameRef.child(gameId).child("deckId").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("getDeckId", dataSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                Log.d("getDeckId", dataSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                Log.d("getDeckId", dataSnapshot.getValue().toString()); //< Contains the whole json:.
                 deckId=dataSnapshot.getValue().toString();
                 playerOnCardMap.put(userUid,userName);
                 databaseDeckRef.child(deckId).addListenerForSingleValueEvent(new ValueEventListener() {

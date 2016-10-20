@@ -21,7 +21,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ijzepeda.friendsknowsbest.widget.WidgetProvider;
+import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -197,9 +197,9 @@ private static String TAG="MainActivity";
         Log.e("Widget Logout","Cleaning data");
         Utils.getInstance().clearWidgetGamesList();
 //it works but triggerson receive
-
-                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
-                WidgetProvider myWidget = new WidgetProvider();
+//Esto deberia estar aqui????..TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PDKFOSDFSDFDSOFDS
+                int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
+                WidgetProvider2 myWidget = new WidgetProvider2();
                 myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
 //        /------------------------------------------------
 

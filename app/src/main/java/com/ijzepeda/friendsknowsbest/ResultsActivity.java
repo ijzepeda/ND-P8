@@ -303,23 +303,24 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
 //Drawable newIcon=new BitmapDrawable(String.valueOf(android.R.drawable.ic_dialog_alert));//getDrawable(android.R.drawable.ic_dialog_alert);
 //Picasso.with(this).load(winningPlayerPic).placeholder(newIcon);
         Log.e("Result:ViewComment","viewcomment() message received:"+message+", message parsed from userVotesList:"+userVotesList.get(userVotePosition).getMessage());
-        if(!message.equals(""))
-        alertDialog=  new AlertDialog.Builder(this)
-                .setTitle(selectedPlayer+ " says...")
+        if(!message.equals("")) {
+            alertDialog = new AlertDialog.Builder(this)
+                    .setTitle(selectedPlayer + " says...")
 //                .setMessage("String selectedPlayer is going to be the UserVote object, and parse elements here: userVote.getMessage()")
-                .setMessage(message+"!!!")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    .setMessage(message + "!!!")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
+                        }
+                    })
 //                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 //                    public void onClick(DialogInterface dialog, int which) {
 //                    }
 //                })
-                .setIcon(android.R.drawable.ic_dialog_info);
+                    .setIcon(android.R.drawable.ic_dialog_info);
 //                .setIcon(newIcon);
-alertDialog.show();
+            alertDialog.show();
+        }
     }
 
 List<UserVote>userVotesList=new ArrayList<>();

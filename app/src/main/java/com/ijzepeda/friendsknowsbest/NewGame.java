@@ -117,10 +117,10 @@ private GoogleApiClient mGoogleApiClient;
 //Generate the random UID
         String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 int randomSeed=(int)(Math.random());
-//        deckId=deckId+timeStamp+"_"+randomSeed;
-//        uid="GAME_"+timeStamp+"_"+randomSeed;
-        deckId=deckId+"123";
-        uid="GAME123";
+        deckId=deckId+timeStamp+"_"+randomSeed;
+        uid="GAME_"+timeStamp+"_"+randomSeed;
+//        deckId=deckId+"123";
+//        uid="GAME123";
 
 
         gameNameTV=(TextView)findViewById(R.id.gameNameTextView);
@@ -318,7 +318,20 @@ return uid;
 
 
     private void sendInvitation(String gameid){
+        //Remember to have the correct Json for the testing/release build, on this i am using the storeReleaseRelease
         //https://r2qvt.app.goo.gl/?
+        String deeplink=getString(R.string.deeplink_domain)+
+                "?link="+
+                getString(R.string.deeplink_link)+
+                "&apn="+
+                getString(R.string.deeplink_package)+
+                "&amv=1"+
+                "&afl="+
+                getString(R.string.deeplink_not_installed_store_link)+
+                "&al="+
+                getString(R.string.deeplink_parse_url_game_id)+
+                gameid;
+        Log.e("<<deeplink>>","is:"+deeplink);
         Intent intent = new AppInviteInvitation.IntentBuilder("Add some friends")
                 .setMessage("Lets play!")
 //                .setCallToActionText("Call to action text")
@@ -327,18 +340,10 @@ return uid;
 //                .setDeepLink(Uri.parse("http://example.com/offer/five_dollar_offer"))//TODO WORKS!~~~~~
 //                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))//TODO WORKS!
 //https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME123
-                .setDeepLink(Uri.parse(""+
-getString(R.string.deeplink_domain)+
-"?link="+
-getString(R.string.deeplink_link)+
-"&apn="+
-getString(R.string.deeplink_package)+
-"&amv=1"+
-"&afl="+
-getString(R.string.deeplink_not_installed_store_link)+
-"&al="+
-getString(R.string.deeplink_parse_url_game_id)+
-gameid))
+//                .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://ijzepeda/&al=http://ijzepeda.com/addGame/GAME123"))
+
+//                .setDeepLink(Uri.parse("https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.fkb&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME_161020_005051_0"))
+                .setDeepLink(Uri.parse(deeplink))
 //""+
 //                        "http://ijzepeda.com/addGame/&apn=com.ijzepeda.fkb&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb[&ad=1][&al=android_link]"
 //                        +gameid))//TODOWORKS! https://domain/?link=your_deep_link&apn=package_name[&amv=minimum_version][&ad=1][&al=android_link][&afl=fallback_link]

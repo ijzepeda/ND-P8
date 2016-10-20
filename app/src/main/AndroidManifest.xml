@@ -100,6 +100,12 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
+                    android:host="r2qvt.app.goo.gl"
+                    android:scheme="http" />
+                <data
+                    android:host="r2qvt.app.goo.gl"
+                    android:scheme="https" />
+                <data
                     android:host="ijzepeda.com"
                     android:scheme="http" />
                 <data
@@ -148,7 +154,7 @@
             android:name=".widget2.WidgetService2"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity android:name=".GameOverResults"></activity>
+        <activity android:name=".GameOverResults"/>
     </application>
 
 </manifest>

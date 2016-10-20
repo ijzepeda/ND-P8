@@ -20,7 +20,12 @@
             android:layout_height="50dp"
             card_view:srcCompat="@drawable/placeholder"
             android:id="@+id/playerImage"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+
+            android:contentDescription="@string/player_card"
+            android:nextFocusDown="@+id/playerName"
+            android:nextFocusRight="@+id/playerName"
+            />
 
         <LinearLayout
             android:orientation="vertical"
@@ -31,7 +36,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nombre de Jugador"
+                android:text="@string/name_of_player"
                 android:id="@+id/playerName"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="1dp"
@@ -40,7 +45,13 @@ android:minHeight="15dp"
                 android:layout_weight="1"
                 android:layout_marginBottom="10dp"
                 android:maxLines="2"
-                android:lineSpacingExtra="8sp" />
+                android:lineSpacingExtra="8sp"
+
+                android:contentDescription="@string/player_name_on_card"
+                android:nextFocusDown="@+id/playerImage"
+                android:nextFocusRight="@+id/playerImage"
+                android:nextFocusUp="@+id/selectPlayerCheckBox"
+                android:nextFocusLeft="@+id/selectPlayerCheckBox" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -53,7 +64,13 @@ android:minHeight="15dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/selectPlayerCheckBox"
                     android:layout_gravity="end"
-                    android:gravity="end"/>
+                    android:gravity="end"
+
+                    android:contentDescription="@string/check_to_select_this_player"
+                    android:nextFocusDown="@+id/playerName"
+                    android:nextFocusRight="@+id/playerName"
+                    android:nextFocusUp="@+id/alreadyVotedPlayer"
+                    android:nextFocusLeft="@+id/alreadyVotedPlayer"/>
 
                 <RadioButton
                     android:layout_width="match_parent"
@@ -68,7 +85,11 @@ android:minHeight="15dp"
                     card_view:srcCompat="@android:drawable/checkbox_on_background"
                     android:id="@+id/alreadyVotedPlayer"
                     android:paddingTop="5dp"
-                    android:visibility="invisible" />
+                    android:visibility="invisible"
+
+                    android:contentDescription="@string/already_voted_mark_description"
+                    android:nextFocusUp="@id/selectPlayerCheckBox"
+                    android:nextFocusLeft="@id/selectPlayerCheckBox"/>
             </LinearLayout>
 
         </LinearLayout>

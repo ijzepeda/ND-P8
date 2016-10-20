@@ -3,7 +3,6 @@ package com.ijzepeda.friendsknowsbest;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +33,6 @@ public class LoadActivity extends AppCompatActivity {
     private static String usermail="";
     private static String username="";
     private static String useruid="";
-    private static String uid="FAKEUID123";
     private RecyclerView ordersRecyclerView;
     private LinearLayoutManager linearLayoutManager;
     public List<Game> gamesList=new ArrayList<>();
@@ -50,9 +48,11 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_load);
         context = getApplicationContext();
        // loadGameRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //RecyclerView
         ordersRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
@@ -101,33 +101,16 @@ public class LoadActivity extends AppCompatActivity {
                         gamesList.add(gameTemp);
                     gamesRecyclerAdapter.notifyDataSetChanged();
 
+                    //Move it to main activty
                     if(Utils.getInstance().getWidgetGameFromList(gameTemp.getUid())==null){
                         Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
                         {
-                            // reload widget
-//                            Context context = getApplication();
-//                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-//                            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-//                            ComponentName thisWidget = new ComponentName(context, WidgetProvider.class);
-//                            remoteViews.setTextViewText(R.id.text1, "myText" + System.currentTimeMillis());
-//                            appWidgetManager.updateAppWidget(thisWidget, remoteViews);
-
 //it works but triggerson receive
                             int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
                             WidgetProvider2 myWidget = new WidgetProvider2();
                             myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
 
-//                            ComponentName thisWidget = new ComponentName( getApplication(), DetailWidgetProvider.class );
-//                            AppWidgetManager.getInstance( getApplication() ).updateAppWidget( thisWidget, R.id.widget );
-
-//                            int widgetIDs[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider.class));
-//                            AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(widgetIDs, R.id.widget);
-
-//                            notifyAppWidgetViewDataChanged();
-//                            AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(id, R.id.widget_view);
-
                         }
-                        Log.e("Saved value", "for widget on loadActivity having Utils.getGame:" + Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()).getName());
                     }
                 }
                 @Override
@@ -154,8 +137,8 @@ public class LoadActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent inten=new Intent(this,MainActivity.class);
-        startActivity(inten);
+//        Intent inten=new Intent(this,MainActivity.class);
+//        startActivity(inten);
         finish();
     }
 }

@@ -15,8 +15,12 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/nameTV"
-        android:hint="Name"
-        android:layout_marginTop="20dp" />
+        android:hint="@string/name_of_the_game"
+        android:layout_marginTop="20dp"
+
+        android:nextFocusDown="@+id/userProfilePicView"
+        android:nextFocusRight="@+id/userProfilePicView"
+        />
 
     <ImageView
         android:layout_gravity="center"
@@ -24,7 +28,13 @@
         android:src="@drawable/placeholder"
         android:layout_width="195dp"
         android:layout_height="196dp"
-        android:id="@+id/userProfilePicView" />
+        android:id="@+id/userProfilePicView"
+        android:contentDescription="@string/profile_pic_preview"
+        android:nextFocusDown="@+id/editImageBtn"
+        android:nextFocusRight="@+id/editImageBtn"
+        android:nextFocusUp="@id/nameTV"
+        android:nextFocusLeft="@id/nameTV"
+        />
 
     <ImageButton
         android:gravity="center"
@@ -33,7 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editImageBtn"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:contentDescription="@string/select_new_profile_image"
+        android:nextFocusDown="@+id/saveBtn"
+        android:nextFocusRight="@+id/saveBtn"
+        android:nextFocusUp="@id/userProfilePicView"
+        android:nextFocusLeft="@id/userProfilePicView"/>
 
     <Button
         android:text="Save"
@@ -42,5 +57,8 @@
         android:id="@+id/saveBtn"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
+        android:contentDescription="@string/save_new_profile_picture"
+        android:nextFocusUp="@id/editImageBtn"
+        android:nextFocusLeft="@id/editImageBtn"
          />
 </LinearLayout>

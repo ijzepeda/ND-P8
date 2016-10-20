@@ -41,13 +41,19 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:nextFocusDown="@+id/textinputlyout"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/textinputlyout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+
+                android:nextFocusDown="@+id/password"
+                android:nextFocusRight="@+id/password">
 
                 <EditText
                     android:id="@+id/password"
@@ -59,7 +65,14 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+
+                    android:nextFocusDown="@+id/email_register_button"
+                    android:nextFocusRight="@+id/email_register_button"
+
+                    android:nextFocusUp="@id/email"
+                    android:nextFocusLeft="@id/email"
+                    />
 
             </android.support.design.widget.TextInputLayout>
             <!--style="?android:textAppearanceSmall"-->
@@ -72,7 +85,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_register"
+                android:hint="@string/action_register"
                 android:textStyle="bold"
+                android:nextFocusDown="@+id/email_sign_in_button"
+                android:nextFocusRight="@+id/email_sign_in_button"
+
+                android:nextFocusUp="@id/password"
+                android:nextFocusLeft="@id/password"
                 />
             <Button
                 android:id="@+id/email_sign_in_button"
@@ -82,7 +101,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:hint="@string/action_sign_in"
+                android:textStyle="bold"
+                android:nextFocusDown="@+id/fbLogin"
+                android:nextFocusRight="@+id/fbLogin"
+
+                android:nextFocusUp="@id/email_register_button"
+                android:nextFocusLeft="@id/email_register_button"/>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/fbLogin"
@@ -92,6 +117,10 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
                 android:layout_gravity="center"
+                android:hint="@string/facebook_login"
+
+                android:nextFocusUp="@id/email_sign_in_button"
+                android:nextFocusLeft="@id/email_sign_in_button"
                 />
         </LinearLayout>
     </ScrollView>

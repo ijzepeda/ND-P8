@@ -20,11 +20,15 @@
         android:layout_gravity="center"
         android:textAlignment="center"
         android:layout_weight="1"
+
+        android:contentDescription="@string/winner_profile_picture"
+        android:nextFocusDown="@+id/winnerTextView"
+        android:nextFocusRight="@+id/winnerTextView"
         />
 
     <TextView
         android:layout_weight="0.2"
-        android:text="WON"
+        android:text="@string/won"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/winnerTextView"
@@ -32,31 +36,51 @@
 
         android:textStyle="normal|bold"
         android:layout_gravity="center"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+
+        android:hint="@string/winner_of_this_card_title_description"
+        android:nextFocusDown="@+id/cardWinnerTextView"
+        android:nextFocusRight="@+id/cardWinnerTextView"
+        android:nextFocusUp="@id/winnerPicImageView"
+        android:nextFocusLeft="@id/winnerPicImageView" />
 
     <TextView
         android:layout_weight="0.3"
-        android:text="Your friend thought tat PLAYER is/are more likely to be LIKE THAT CARD"
+        android:text="@string/default_winner_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/AppTheme.ActionBarStyle"
         android:layout_gravity="center"
         android:textAlignment="center"
-        android:id="@+id/cardWinnerTextView" />
+        android:id="@+id/cardWinnerTextView"
+
+        android:hint="@string/default_winner_text"
+        android:nextFocusDown="@+id/playerCommentsRecyclerView"
+        android:nextFocusRight="@+id/playerCommentsRecyclerView"
+        android:nextFocusUp="@id/winnerTextView"
+        android:nextFocusLeft="@id/winnerTextView" />
 
     <TextView
         android:layout_weight="0.2"
-        android:text="They are to blame:"
+        android:text="@string/they_are_to_blame"
+        android:hint="@string/they_are_to_blame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_weight="0.5"
         android:id="@+id/playerCommentsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+
+        android:contentDescription="@string/show_all_the_voters"
+        android:nextFocusDown="@+id/continueBtn"
+        android:nextFocusRight="@+id/continueBtn"
+        android:nextFocusUp="@id/cardWinnerTextView"
+        android:nextFocusLeft="@id/cardWinnerTextView" />
 
     <LinearLayout
         android:layout_weight="0.5"
@@ -65,21 +89,25 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:text="Counter"
+            android:text="@string/counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/counterBtn"
             android:layout_weight="1"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:theme="@style/menuButton" />
 
         <Button
-            android:text="Continue"
+            android:text="@string/continue_btn"
+            android:hint="@string/continue_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/continueBtn"
             android:layout_weight="1"
-            android:theme="@style/menuButton"/>
+            android:theme="@style/menuButton"
+
+            android:nextFocusUp="@id/playerCommentsRecyclerView"
+            android:nextFocusLeft="@id/playerCommentsRecyclerView" />
 
     </LinearLayout>
 
@@ -89,6 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:visibility="gone"
         >
 
         <ImageButton

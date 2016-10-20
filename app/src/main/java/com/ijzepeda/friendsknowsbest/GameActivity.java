@@ -72,19 +72,16 @@ int currentDeckCard;
     private FirebaseStorage storage;
     private DatabaseReference databaseGameRef;
     private DatabaseReference databaseDeckRootRef;
-//    private DatabaseReference databaseDeckRef;
-//    private DatabaseReference databaseRootRef;
 
     //CardSwipe
     AlertDialog.Builder alertDialog;
     SwipeDeckAdapter adapter;
     SwipeDeck cardStack;
     ArrayList<Card> cards=new ArrayList<>();
-    private String[] mQuotes ;//= getResources().getStringArray(R.array.category_romantic);
+    private String[] mQuotes ;
     int displayCardNo=0;
     String category="Misc";
 
-//int currentCard; //Priority to Update and sync
 //Views
     TextView commentTextView;
     ImageButton sendBtn;
@@ -99,6 +96,7 @@ int currentDeckCard;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 //FIREBASE
@@ -106,22 +104,17 @@ int currentDeckCard;
         database=FirebaseDatabase.getInstance();
         auth=FirebaseAuth.getInstance();
         storage=FirebaseStorage.getInstance();
-        //        get database
-//        databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
-        // -- reference to table in database
         databaseGameRef =database.getReference("Game");
         databaseDeckRootRef =database.getReference("Deck");
-//        databaseDeckRef =databaseDeckRootRef.child(currentGameID);
 
 
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
         currentDeckID=getIntent().getStringExtra(DECK_ID);
-        currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);//Todo check this getCurrentCard());
+        currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);// check this getCurrentCard());
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 
 //retrievegameDetailsFromWidget
-//        Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider.EXTRA_GAME);
         Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider2.EXTRA_WORD);
 if(gameToLoad!=null){
     currentGameID=gameToLoad.getUid();
@@ -130,16 +123,14 @@ if(gameToLoad!=null){
     gameTotalCards=gameToLoad.getNoCards();
 
 }
+        //if(gameTotalCards>=0)
+        isGameover();
+
+
 Log.e("GameActivity","Oncreate on  gameuid:"+currentGameID+", card:"+currentCard);//TODO CHECK BORRAR DELETE
        FirebaseUser mFirebaseUser = auth.getCurrentUser();
-//        if (mFirebaseUser == null) {
-        Log.e("is null","mFirebaseUser"+mFirebaseUser);
 
         if( mFirebaseUser==null){
-            Log.e("insidemFirebaseUser","mFirebaseUser"+mFirebaseUser);
-
-//            currentGameID==null ||
-//            return to main activity .getEmail()
             Intent intent=new Intent(this,MainActivity.class);
             startActivity(intent);
             finish();
@@ -169,9 +160,6 @@ return;
         useruid=auth.getCurrentUser().getUid();
         userPic=auth.getCurrentUser().getPhotoUrl()!=null?auth.getCurrentUser().getPhotoUrl().toString():"";
 
-        //GetCurrentGame details
-//        databaseGameRef.child(currentGameID)
-//      loadGame();
 
      //AQUI IBA EL Loader del DECK
      loadDeck();
@@ -194,9 +182,9 @@ return;
             public void cardsDepleted() {
                 Log.e("MainActivity", "no more cards");
 //                alertDialog.show();
-Intent intent=new Intent(getApplication(),GameActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent=new Intent(getApplication(),GameActivity.class);//Missing currennt game Bundle
+//                startActivity(intent);
+//                finish();
             }
             @Override
             public void cardActionDown() {
@@ -206,15 +194,8 @@ Intent intent=new Intent(getApplication(),GameActivity.class);
             }
         });
 
-//       adapter = new SwipeDeckAdapter(cards, this);
-//        cardStack.setAdapter(adapter);
+     fetchPlayersFromDeck();
 
-        //FETCHPLAYERS
-       /// fetchPlayers();//Todo,now fetchPlayersFromGame> works but recycler wont fill images, and will malfunction if there is a repeated name
-        fetchPlayersFromDeck();
-
-        //StartGAME Interaction
-//        checkGameAndPlayerStatus();//Load after fectch player is done
     }
 
 
@@ -267,54 +248,7 @@ public void loadDeck(){
 
 }
 
-    public void loadGame(){
 
-        //GetCurrentGame details
-
-//        databaseGameRef.child(currentGameID)
-
-        //-----*****
-        /**
-         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-        //                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-        Log.e("~~~>>>>","About to place GAME object from DB");
-        currentGame = dataSnapshot.getValue(Game.class);
-        Log.e("~~~>>>>","Just place GAME object from DB:"+currentGame.getName());
-
-        //--
-        //Aqui puse el LOADER del DECK
-        databaseDeckRootRef.child(currentGame.getDeckId()).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-        Log.e(">>~~>>","Posible condition to stop on current card:"+childSnapshot.getKey());
-        int cardNo=(int) childSnapshot.child("card").getValue();
-        createCard(cardNo);
-        }
-        adapter = new SwipeDeckAdapter(cards, context);
-        cardStack.setAdapter(adapter);
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-        });
-        //--
-        //                }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-        });
-         */
-        /////---------------------------------****
-
-    }
 
     //-------    Players RecyclerView
     PlayersInGameRecyclerAdapter playersRecyclerAdapter;
@@ -323,99 +257,23 @@ public void loadDeck(){
     public List<String> playersList=new ArrayList<>(); //todo commented to test user object trecyclerview 19-10
     public List<UserVote> playersListFromDeck=new ArrayList<>();
 
-    /** Commented to test userVoteObject recyclerview
-     public void fetchPlayersFromGame(){
-        fetchPlayersCommented();
-        playersRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
-        linearLayoutManager=new LinearLayoutManager(this);
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
-
-//Load players
-        databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                currentGame = dataSnapshot.getValue(Game.class);
-                Map<String,Object> gameUsers= currentGame.getUsers();
-  }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-//final List gameUserNamesList=new ArrayList();
-        databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                totalUsers=(int)dataSnapshot.getChildrenCount();
-                 for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                   //                    gameUserNamesList.add(childSnapshot.getValue());
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK,
-                     // todo y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto,
-                     // todo y enviarlos al adapter
-//     todo
-//                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
-                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
-                    Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
-                    Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
-                    playersRecyclerAdapter.notifyDataSetChanged();
-
-                }
-
-                //Having players fetched continue
-                checkGameAndPlayerStatus();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
-        });
-
-//settign up the adapters
-//        playersRecyclerView.setLayoutManager(linearLayoutManager);
-        playersRecyclerView.setLayoutManager(gridLayoutManager);
-        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersList,getApplication());
-        playersRecyclerAdapter.notifyDataSetChanged();
-        playersRecyclerView.setAdapter(playersRecyclerAdapter);
-
-    }*/
     public void fetchPlayersFromDeck(){
         playersFromDeckRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
         linearLayoutManager=new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
-
 //Load players
-        //No need to load GAMEOBJECT, because I have all current details from bundle. such as, get deckID
-        //TODO try to: quita el deck de este gameobject, sacalo, y borra el gameobject. la unica vez que se usa, reemplaza por el bundle.currentgame
         databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                 currentGame = dataSnapshot.getValue(Game.class);
-//                Map<String,Object> gameUsers= currentGame.getUsers(); //no use for it
 
-//                once having the current game users and deckid, load deck id
-                //Load users and details for specific card. bring vote and image. use it to create a better recyclerView
                 databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addValueEventListener(new ValueEventListener() {
-//                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {//switched back on 10-192305
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         playersListFromDeck.clear();// TODO for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
                         totalUsers=(int)dataSnapshot.getChildrenCount();
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-//String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
-
                             UserVote userToRecyclerView=childSnapshot.getValue(UserVote.class);  //CREO QUE ya: mando el uservote, pero debo llenarle los datos de nominee
                             playersListFromDeck.add(userToRecyclerView); //todo commented to test user object trecyclerview 19-10
                             playersRecyclerAdapter.notifyDataSetChanged();
@@ -437,43 +295,6 @@ public void loadDeck(){
 
             }
         });
-//final List gameUserNamesList=new ArrayList();
-//        databaseDeckRootRef.child()
-/** //this listener fills the recycler with users from game, I require userVotes from Deck
-  databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                totalUsers=(int)dataSnapshot.getChildrenCount();
-                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-                    //                    gameUserNamesList.add(childSnapshot.getValue());
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK,
-                    // todo y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto,
-                    // todo y enviarlos al adapter
-//     todo
-                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
-//                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
-                    Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
-                    Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
-                    playersRecyclerAdapter.notifyDataSetChanged();
-
-                }
-
-                //Having players fetched continue
-                checkGameAndPlayerStatus();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-
-        });
-*/
 
 
 //settign up the adapters
@@ -495,7 +316,7 @@ public void loadDeck(){
 //        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
 //        commentTextView.setFocusable(true);
        //TODO ~~~~ Error aqui , no esta recibiendo valores!!!
-       commentTextView.setHint("Why would you vote for \n"+selectedPlayer);
+       commentTextView.setHint(getString(R.string.why_would_you_vote_him)+selectedPlayer);
 //       sendBtn.setClickable(false);
        sendBtn.setClickable(true);
 
@@ -514,7 +335,6 @@ public void loadDeck(){
                }else{
                    Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
                    if (totalVotes >= totalUsers) {
-                       Log.e("0clicked button", "verify if the users have voted");
                        showResult();
                    }
                }
@@ -524,14 +344,7 @@ public void loadDeck(){
    }
 
 
-    /**
-     * Using this method i might encounter a problem if i edit a value and leave. because noone will notice the change on the already voted users
-     * I can use a read all voted, and then the listener for changes. I believe added, is in this instance. so I dont need to do it twice
-     *
-     * Remember that Added is run first, and changed is a continuous listener. therefore. the If user have already voted will be available since added
-     * */
     public void checkGameAndPlayerStatus(){
-        Log.e("checkGame()","About to start reading changes");
         totalVotes=0;
         databaseDeckRootRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
             @Override
@@ -543,18 +356,7 @@ public void loadDeck(){
                 boolean userVoted=false;
                 if(dataSnapshot.child("voted").exists()) {
                     userVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                    Log.e("1.1.GAME ACTIVITY","checkgame&players onchild added "+dataSnapshot.child("name").getValue().toString() +"userVoted:"+userVoted);
-//                } extiendo este if, hasta abajo... si no existe el userVote, no checar ni subir, ni avanzar... esperar hasta que lo haga
                     if (userVoted) {
-                        Log.e("1.2.GAME ACTIVITY","checkg onchild Added: inside if because he VOTED"+userVoted);
-//                       else
-//                        {
-//                            alreadyVoted = true;//you just voted!
-//                          //  totalVotes++;
-//                        }
-//                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
-//                    }else{
-                        Log.e("1.2.1.FUUUDGE!","is user name empty to check if has voted?"+username+": ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                         if (dataSnapshot.child("name").equals(username)) {
                             alreadyVoted = true;
@@ -566,33 +368,15 @@ public void loadDeck(){
                         }
                         totalVotes++;
                     }
-                    //                    if (!userVoted) {
-//                        //TODO CMABIAR QUE CHEQUE POR NOMBRE A UID!!!!!!!~~~~~~~~~~~~~~~~####################################************5t
-//                        if (dataSnapshot.child("name").equals(username)) {
-//                            alreadyVoted = true;
-//                        } else {
-//                            alreadyVoted = true;//you just voted!
-//                            totalVotes++;
-//                        }
-//                    }
-//                    Log.e("GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
-//                    if (totalVotes >= totalUsers) {
-//                        Log.e(">>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
-//                        showResult();
-//                    }
+
 
                     finishReadingUsers=true;
                 }  //hasta aqui lo expandi
-//                156165165
-                Log.e("1.3.GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
                 if (totalVotes >= totalUsers) {
-                    Log.e("1>>checkGame...()", "onChildAdded All players have voted! continue**********************************************");
                     showResult();
                 }
             }
 
-//Asunto aqui
-/**Snapshot retrives only the child [in this case the USer] that changed. therefore, I just need to look for voted, not users/voted*/
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                  alreadyVoted=false; //startloading and return to false, if found the match, then is true
@@ -601,17 +385,9 @@ public void loadDeck(){
                 boolean readingUserVoted=false;
                 if(dataSnapshot.child("voted").exists()) {//expandido hasta abajo
                     readingUserVoted = Boolean.parseBoolean(dataSnapshot.child("voted").getValue().toString());
-                    Log.e("2.1.GAME ACTIVITY","checkgame&players onchild Changed userVoted:"+readingUserVoted);
 
                     if (readingUserVoted) {
-//                       else
-//                        {
-//                            alreadyVoted = true;//you just voted!
-//                          //  totalVotes++;
-//                        }
-//                        Log.e("GameActivity","checkGameAndPlayerStatus onChildChanged totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
-//                    }else{
-                        Log.e("2.1.1.FUUUDGE!","is user name empty to check if has voted?"+username+": ~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
                         if (dataSnapshot.child("name").equals(username)) {
                             alreadyVoted = true;
 
@@ -621,18 +397,12 @@ public void loadDeck(){
                         }
                         totalVotes++;
                     }
-//                        if (totalVotes >= totalUsers) {
-//                            Log.e(">>checkGame...()", "onChildChanged All players have voted! continue****************************************");
-//                            showResult();
-//                        }
 
-                   //delete erase check debug todo el if totalvotes>=totalusers iba aqui
+
                 } //se expadio hasta aqui
                 //trigger next move
-                Log.e("2.3.GameActivity","checkGameAndPlayerStatus onChildAdded totalVotes:"+totalVotes+", totalUsers:"+totalUsers);
 
                 if (totalVotes >= totalUsers) {
-                    Log.e("2>>checkGame...()", "onChildChanged All players have voted! continue****************************************");
                     showResult();
                 }
             }
@@ -655,7 +425,6 @@ public void loadDeck(){
     }
 
 public void showResult(){
-    Log.e("GameActivity","Sending to resutls currentCard is:"+currentCard+", totalVotes"+totalVotes+", totalusers"+totalUsers);
 
     Intent intent=new Intent(this,ResultsActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
@@ -664,6 +433,10 @@ public void showResult(){
     intent.putExtra(TOTAL_CARDS_ID,  gameTotalCards);
     intent.putExtra(CURRENT_DECK_CARD_ID,  currentDeckCard);
     //////////
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     startActivity(intent);///todo not enble to debug
     finish();
 
@@ -680,29 +453,37 @@ public void showResult(){
     int fetchedCurrentCard;
     public int getCurrentCard(){
         fetchedCurrentCard=0;
-        //Load the card from Child.
-        //TODO FIX ERROR Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'com.google.firebase.database.DatabaseReference com.google.firebase.database.DatabaseReference.child(java.lang.String)' on a null object reference
-//    at com.ijzepeda.friendsknowsbest.GameActivity.getCurrentCard(GameActivity.java:277)
-
         databaseGameRef.child(currentGameID).child("currentCard").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fetchedCurrentCard=Integer.parseInt(dataSnapshot.getValue().toString());
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
         return fetchedCurrentCard;
-
     }
 
+    public boolean isGameover(){
+
+        if(currentCard>=gameTotalCards) {
+            Intent intent = new Intent(this, GameOverResults.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
+            startActivity(intent);
+            finish();
+
+        }
+        return false;
+    }
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
+        super.onBackPressed();
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();

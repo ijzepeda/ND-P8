@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -22,6 +21,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.ijzepeda.friendsknowsbest.models.Game;
 import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
@@ -47,7 +51,7 @@ private static String TAG="MainActivity";
 
         setContentView(R.layout.activity_main);
 //user
-        loading=false; //handle backpress first click
+        loading=true; //handle backpress first click
 
         //Bind Views
         loadGameBtn=(Button)findViewById(R.id.loadGameBtn);
@@ -60,6 +64,8 @@ private static String TAG="MainActivity";
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             //hide buttons
@@ -90,7 +96,7 @@ private static String TAG="MainActivity";
             if (mFirebaseUser.getPhotoUrl() != null) {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
-
+//            fillWidgetGameList();
         }
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +128,7 @@ private static String TAG="MainActivity";
             @Override
             public void onClick(View v) {
                 Intent newGame=new Intent(getApplication(), NewGame.class);
+
                 startActivity(newGame);
 //                finish();
                 return;
@@ -218,17 +225,73 @@ private static String TAG="MainActivity";
     }
 
 
-    boolean loading=false;
+
+    public void fillWidgetGameList(){
+
+        FirebaseDatabase.getInstance().getReference("User").child(mFirebaseUser.getUid()).child("games").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                            Log.d("gameA,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
+                            Log.d("gameA,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
+                            Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
+//                            userGameList.add(childSnapshot.getValue().toString());
+
+
+// String gameuid=childSnapshot.getRef().toString();
+                            FirebaseDatabase.getInstance().getReference("Games").child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Game gameTemp = dataSnapshot.getValue(Game.class);
+
+                                    gameTemp.setUid(dataSnapshot.getKey());
+
+//                                    gamesList.add(gameTemp);
+//                                    gamesRecyclerAdapter.notifyDataSetChanged();
+
+                                    if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
+                                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                                        {
+//it works but triggerson receive
+                                            int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
+                                            WidgetProvider2 myWidget = new WidgetProvider2();
+                                            myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()), ids);
+
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
+
+
+    boolean loading=true;
     @Override
     public void onBackPressed() {
-        if(loading) {
-            Toast.makeText(this, R.string.press_back_to_leave, Toast.LENGTH_SHORT).show();
-            loading=false;
-        }
-        else {
-//            super.onBackPressed();
-            loading=true;
-        }
+//        if(loading) {
+//            Toast.makeText(this, R.string.press_back_to_leave, Toast.LENGTH_SHORT).show();
+//            loading=false;
+//        }
+//        else {
+            super.onBackPressed();
+//            loading=true;
+            finish();
+//        }
     }
 
 }

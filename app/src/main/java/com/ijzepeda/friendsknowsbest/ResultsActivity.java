@@ -77,6 +77,8 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         context=this;
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
@@ -390,11 +392,21 @@ if(currentCard<=gameTotalCards) {
     intent.putExtra(CURRENT_CARD_ID, currentCard );//+1
     intent.putExtra(TOTAL_CARDS_ID, gameTotalCards);
     intent.putExtra(CURRENT_DECK_CARD_ID, currentDeckCard);
+
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     startActivity(intent);
     finish();
 }else{
     Intent intent=new Intent(this,GameOverResults.class);
 //    Intent intent=new Intent(this,MainActivity.class);
+
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     startActivity(intent);
     finish();
 }
@@ -403,7 +415,7 @@ if(currentCard<=gameTotalCards) {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
+        super.onBackPressed();
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();

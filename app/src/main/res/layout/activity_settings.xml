@@ -15,7 +15,11 @@
         android:src="@drawable/placeholder"
         android:layout_width="195dp"
         android:layout_height="196dp"
-        android:id="@+id/userImageView" />
+        android:id="@+id/userImageView"
+        android:contentDescription="@string/profile_pic_preview"
+        android:nextFocusDown ="@+id/editImageBtn"
+        android:nextFocusRight ="@+id/editImageBtn"
+       />
 
     <ImageButton
         android:gravity="center"
@@ -24,7 +28,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editImageBtn"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+
+        android:contentDescription="@string/select_image_from_gallery_button"
+        android:nextFocusDown="@+id/saveBtn"
+        android:nextFocusRight="@+id/saveBtn"
+        android:nextFocusUp="@id/userImageView"
+        android:nextFocusLeft="@id/userImageView"
+        />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -33,7 +44,7 @@
         android:visibility="gone">
 
         <TextView
-            android:text="Earned cards:"
+            android:text="@string/earned_cards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/earnedCards"
@@ -41,7 +52,7 @@
             style="@style/TextAppearance.AppCompat.Large" />
 
         <TextView
-            android:text="0"
+            android:text="@string/earned_cards_default_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/earnedCardsTextView"
@@ -54,10 +65,10 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <TextView
-            android:text="Favorite cards:"
+            android:text="@string/favorite_cards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/favCards"
@@ -65,7 +76,7 @@
             style="@style/TextAppearance.AppCompat.Large" />
 
         <Button
-            android:text="View"
+            android:text="@string/favorite_cards_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/favCardsBtn"
@@ -76,7 +87,7 @@
     </LinearLayout>
 
     <Switch
-        android:text="Notifications"
+        android:text="@string/notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/NotificationSwitch"
@@ -84,7 +95,7 @@
         style="@style/TextAppearance.AppCompat.Large"
         android:visibility="gone" />
     <Button
-        android:text="Save"
+        android:text="@string/save_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/saveBtn"
@@ -93,14 +104,24 @@
         style="@style/Widget.AppCompat.Button.Small"
 
         android:clickable="false"
+
+        android:contentDescription="@string/save_settings_button"
+        android:nextFocusDown="@+id/LogoutBtn"
+        android:nextFocusRight="@+id/LogoutBtn"
+        android:nextFocusUp="@id/editImageBtn"
+        android:nextFocusLeft="@id/editImageBtn"
         />
 
     <Button
-        android:text="Logout"
+        android:text="@string/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/LogoutBtn"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
+
+        android:contentDescription="@string/logout_button"
+        android:nextFocusUp ="@id/saveBtn"
+        android:nextFocusLeft ="@id/saveBtn"
         />
 </LinearLayout>

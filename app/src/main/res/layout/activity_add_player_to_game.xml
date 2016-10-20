@@ -11,7 +11,8 @@
     tools:context="com.ijzepeda.friendsknowsbest.AddPlayerToGameActivity">
 
     <TextView
-        android:text="TextView"
+        android:text=""
+        android:hint="@string/you_have_been_invited_to_a_game_it_is_available_in_load_game_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

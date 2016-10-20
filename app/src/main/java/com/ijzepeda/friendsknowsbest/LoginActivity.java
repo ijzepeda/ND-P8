@@ -127,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //FIREBASE
         app=FirebaseApp.getInstance();
@@ -311,7 +312,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             //TODO DELETE HARDCODED STUFF
                             friendsMap.put("Friend0","");
                             cardsMap.put("FavCard1","");
-                            gamesMap.put("game0","GAME123");//GameUID123
+//                            gamesMap.put("game0","GAME123");//GameUID123
                              user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
                                     friendsMap,cardsMap,gamesMap);
                             databaseRef=database.getReference("Users");

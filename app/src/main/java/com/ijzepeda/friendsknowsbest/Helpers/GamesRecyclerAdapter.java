@@ -97,6 +97,12 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                     gameIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
                     gameIntent.putExtra(CURRENT_CARD_ID,  game.getCurrentCard());
                     gameIntent.putExtra(TOTAL_CARDS_ID,  game.getNoCards());
+
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
+
                     context.startActivity(gameIntent);
                 }
             });

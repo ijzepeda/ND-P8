@@ -38,7 +38,6 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
     String deepLink ;
     String invitationId;
-    String extraString;
     String gameId;
 
     //firebase
@@ -70,6 +69,8 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_player_to_game);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         inviteTv=(TextView)findViewById(R.id.inviteResultTextView);
 
         app= FirebaseApp.getInstance();
@@ -125,7 +126,6 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
                                     Log.d(TAG, "getInvitation:deepLink:" + deepLink);//:http://ijzepeda.com/addGame/GAME123
                                     Log.d(TAG, "getInvitation:invitationId:" + invitationId);//963353948393-d5a521f4-b0e0-47d7-8f6e-986dbc76c348
-                                    extraString=""+intent.getStringExtra("prueba");
                                 gameId=deepLink.replace(deeplinkbase,"");
                                     inviteTv.setText(getString(R.string.your_invite_to_join)+gameId);
 
@@ -203,7 +203,7 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
         databaseGameRef.child(gameId).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                inviteTv.setText("Your invite To Join:"+dataSnapshot.getValue());
+                inviteTv.setText(getString(R.string.your_invite_to_join)+dataSnapshot.getValue());
 
             }
 

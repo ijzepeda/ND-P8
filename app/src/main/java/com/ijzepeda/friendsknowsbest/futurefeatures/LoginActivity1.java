@@ -79,7 +79,7 @@ CallbackManager callbackManager;
             @Override
             public void onClick(View view) {
                 if(TextUtils.isEmpty(emailEditText.getText().toString()) && TextUtils.isEmpty(passwordEditText.getText().toString()) ){
-                    Toast.makeText(getApplication(),"Please fill all fields",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(), R.string.fill_fields,Toast.LENGTH_SHORT).show();
                 }
                 else{
                     register(emailEditText.getText().toString(),passwordEditText.getText().toString());
@@ -139,11 +139,11 @@ Log.d(TAG,"facebookLogin Handling");
                    Log.d(TAG,"signInWithCredential:onComplete"+task.isSuccessful());
                         if(!task.isSuccessful()){
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity1.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity1.this, R.string.auth_failed_login1,
                                     Toast.LENGTH_SHORT).show();
 
                         }else{
-                            Toast.makeText(LoginActivity1.this, "Authentication with Facebook Success!",
+                            Toast.makeText(LoginActivity1.this, R.string.fb_auth_success,
                                     Toast.LENGTH_SHORT).show();
 
                         }

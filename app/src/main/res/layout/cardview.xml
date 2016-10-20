@@ -18,12 +18,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test Text"
+            android:text="@string/card_title"
             android:id="@+id/cardNumber"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/card_number_size"
+            android:hint="@string/card_title"
+            android:nextFocusDown="@+id/cardText"
+            android:nextFocusRight="@+id/cardText"
+
             />
         <TextView
             android:layout_width="wrap_content"
@@ -31,11 +35,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="@dimen/card_text_size"
 
-            android:text="Large Text"
+            android:text="@string/card_text"
             android:id="@+id/cardText"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+
+            android:hint="@string/card_text"
+            android:nextFocusUp="@id/cardNumber"
+            android:nextFocusLeft="@id/cardNumber"
+            />
         <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
 
     </LinearLayout>

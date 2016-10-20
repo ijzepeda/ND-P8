@@ -37,6 +37,8 @@ int i=4;
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
 
 

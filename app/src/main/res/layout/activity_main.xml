@@ -10,7 +10,8 @@ android:orientation="vertical"
     >
 
         <Button
-            android:text="Quick Game"
+            android:text="@string/quick_game"
+            android:hint="@string/quick_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="62dp"
@@ -19,7 +20,8 @@ android:orientation="vertical"
            android:theme="@style/menuButton"/>
 
     <Button
-        android:text="Online"
+        android:text="@string/online"
+        android:hint="@string/online"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/online"
@@ -27,7 +29,7 @@ android:orientation="vertical"
         android:theme="@style/menuButton"/>
 
     <Button
-        android:text="New Game"
+        android:text="@string/new_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/newGameBtn"

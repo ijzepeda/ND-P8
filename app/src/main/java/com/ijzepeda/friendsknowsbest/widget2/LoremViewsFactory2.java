@@ -37,16 +37,7 @@ import java.util.List;
 
 
 public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory {
-    private static final String[] items={"lorem", "ipsum", "dolor",
-            "sit", "amet", "consectetuer",
-            "adipiscing", "elit", "morbi",
-            "vel", "ligula", "vitae",
-            "arcu", "aliquet", "mollis",
-            "etiam", "vel", "erat",
-            "placerat", "ante",
-            "porttitor", "sodales",
-            "pellentesque", "augue",
-            "purus"};
+
     private Context ctxt=null;
     private int appWidgetId;
 
@@ -91,15 +82,16 @@ public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory
         }
 
         RemoteViews row=new RemoteViews(ctxt.getPackageName(),
-                R.layout.row);
+                R.layout.widget_row_game);
+//                R.layout.row);
 
 
         //simple row
-        row.setTextViewText(android.R.id.text1, wWidgetGamesList.get(position).getName());
+//        row.setTextViewText(android.R.id.text1, wWidgetGamesList.get(position).getName());
         //Complete row
-//        row.setTextViewText(R.id.game_name, wWidgetGamesList.get(position).getName());
-//        row.setTextViewText(R.id.cardsdrawn,"cards:"+ wWidgetGamesList.get(position).getCurrentCard()+"/"+ wWidgetGamesList.get(position).getNoCards());
-//        row.setTextViewText(R.id.players, "Players:"+wWidgetGamesList.get(position).getNoUsers());
+        row.setTextViewText(R.id.game_name, wWidgetGamesList.get(position).getName());
+        row.setTextViewText(R.id.cardsdrawn,"cards:"+ wWidgetGamesList.get(position).getCurrentCard()+"/"+ wWidgetGamesList.get(position).getNoCards());
+        row.setTextViewText(R.id.players, "Players:"+wWidgetGamesList.get(position).getNoUsers());
 
 
 //        row.setTextViewText(android.R.id.text1, items[position]);
@@ -111,7 +103,8 @@ public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory
 
 //        extras.putString(WidgetProvider2.EXTRA_WORD, items[position]);
         i.putExtras(extras);
-        row.setOnClickFillInIntent(android.R.id.text1, i);
+//        row.setOnClickFillInIntent(android.R.id.text1, i);
+        row.setOnClickFillInIntent(R.id.widget_list_item, i);
 
         return(row);
     }

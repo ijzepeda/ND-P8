@@ -5,8 +5,6 @@ package com.ijzepeda.friendsknowsbest;
 
 import java.util.Map;
 
-import static android.os.Build.VERSION_CODES.M;
-
 /**
  * Created by Ivan on 10/3/2016.
  */
@@ -32,6 +30,11 @@ public class User {
         this.games = games;
     }
 
+    public User(String name, String uid, String photoUrl) {
+        this.name = name;
+        this.uid = uid;
+        this.photoUrl = photoUrl;
+    }
 //    public User(String name, String age, String earnedCards, String email, String uid, Map<String, Object> friends, Map<String, Object> cards, Map<String, Object> games) {
 //        this.name = name;
 //        this.age = age;

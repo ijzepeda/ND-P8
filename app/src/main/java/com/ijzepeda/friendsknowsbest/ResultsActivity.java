@@ -1,17 +1,12 @@
 package com.ijzepeda.friendsknowsbest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,20 +31,9 @@ import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.attr.data;
-import static android.R.attr.name;
-import static android.R.attr.process;
-import static android.R.attr.y;
-import static android.R.id.message;
-import static android.R.string.no;
-import static com.ijzepeda.friendsknowsbest.R.id.favBtn;
-import static com.ijzepeda.friendsknowsbest.R.id.playersRecyclerView;
-import static com.ijzepeda.friendsknowsbest.R.id.winnerTextView;
 
 public class ResultsActivity extends AppCompatActivity {
     //Bundle details
@@ -105,7 +89,7 @@ public class ResultsActivity extends AppCompatActivity {
         currentDeckCard=getIntent().getIntExtra(CURRENT_DECK_CARD_ID,0);
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 //        gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
-
+Log.e("ResultsActivity","currentCard from bundle is:"+currentCard);
 
         //FIREBASE
         app=FirebaseApp.getInstance();
@@ -295,14 +279,17 @@ Log.e("~~~~~~>fetchcomment","for winner childSnapshot.child(\"name\").getValue()
 
     //-------    Players RecyclerView
     PlayersInGameRecyclerAdapter playersRecyclerAdapter;
-    RecyclerView playersRecyclerView;
+//    RecyclerView playersRecyclerView;
+    RecyclerView playersFromDeckRecyclerView;
     public List<String> playersList=new ArrayList<>();
-    public List<String> playersThatCommentedToWinnerList=new ArrayList<>();
+//    public List<UserVote> playersListFromDeck=new ArrayList<>();
+//    public List<String> playersThatCommentedToWinnerList=new ArrayList<>();//TODO!!!!!!!!
     private LinearLayoutManager linearLayoutManager;
-    public void viewComment(String selectedPlayer){
+    public void viewComment(String selectedPlayer, String selectedPlayerUid, String photoURL){
         int userVotePosition=0;
         for(int i=0;i<userVotesList.size();i++){
-            if(userVotesList.get(i).getName().equals(selectedPlayer)) {
+//            if(userVotesList.get(i).getName().equals(selectedPlayer)) {
+            if(userVotesList.get(i).getUseruid().equals(selectedPlayerUid)) {
                 userVotePosition = i;
             }
         }
@@ -330,7 +317,8 @@ alertDialog.show();
 
 List<UserVote>userVotesList=new ArrayList<>();
     public void fetchPlayersFromGame(){
-        playersRecyclerView=(RecyclerView)findViewById(R.id.playerCommentsRecyclerView);
+//        playersRecyclerView=(RecyclerView)findViewById(R.id.playerCommentsRecyclerView);
+        playersFromDeckRecyclerView=(RecyclerView)findViewById(R.id.playerCommentsRecyclerView);
         linearLayoutManager=new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager gridLayoutVerticalManager=new GridLayoutManager(this,2,LinearLayoutManager.VERTICAL,false);
@@ -389,10 +377,11 @@ Log.e("FETCHING USERS","~~~~~~~~~~PLAYERS LOADED ARE totalUsers:"+totalUsers);
 //settign up the adapters
 //        playersRecyclerView.setLayoutManager(linearLayoutManager);
 //        playersRecyclerView.setLayoutManager(gridLayoutManager);
-        playersRecyclerView.setLayoutManager(gridLayoutVerticalManager);
-        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersList,getApplication());
+        playersFromDeckRecyclerView.setLayoutManager(gridLayoutVerticalManager);
+//        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersList,getApplication(),true);
+        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(userVotesList,getApplication());
         playersRecyclerAdapter.notifyDataSetChanged();
-        playersRecyclerView.setAdapter(playersRecyclerAdapter);
+        playersFromDeckRecyclerView.setAdapter(playersRecyclerAdapter);
 
     }
 
@@ -511,12 +500,12 @@ Log.e("FETCHING USERS","~~~~~~~~~~PLAYERS LOADED ARE totalUsers:"+totalUsers);
         Log.e("End card","gameTotalCards:"+gameTotalCards+", currentCard:"+currentCard);
         //Si es igual o mayor, el numero de cartas, si llegue al tope, mandar a game over
         currentCard++;
-if(currentCard<gameTotalCards) {
+if(currentCard<=gameTotalCards) {
     databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard);
     Intent intent = new Intent(this, GameActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
     intent.putExtra(DECK_ID, currentDeckID + "");
-    intent.putExtra(CURRENT_CARD_ID, currentCard + 1);
+    intent.putExtra(CURRENT_CARD_ID, currentCard );//+1
     intent.putExtra(TOTAL_CARDS_ID, gameTotalCards);
     intent.putExtra(CURRENT_DECK_CARD_ID, currentDeckCard);
     startActivity(intent);

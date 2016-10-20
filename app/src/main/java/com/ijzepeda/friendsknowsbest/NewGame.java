@@ -191,7 +191,8 @@ public void createDeck(){
     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
     //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    playerOnCardMap.put(userUid,userName);
+//    playerOnCardMap.put(userUid,userName);//todo commented on 19-10:1116
+    playerOnCardMap.put(userUid,userUid);
     Log.e("Track&Delete","    playerOnCardMap.put(userUid,userName):"+userUid+", "+userName);
 //    for( i =0;i<noOfCardsInArray;i++) {
     for( i =0;i<noCards;i++) {

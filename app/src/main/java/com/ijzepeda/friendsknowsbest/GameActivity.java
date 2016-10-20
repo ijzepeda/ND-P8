@@ -31,7 +31,6 @@ import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
     //Bundle details
@@ -225,7 +224,8 @@ return;
 //        cardStack.setAdapter(adapter);
 
         //FETCHPLAYERS
-        fetchPlayers();
+       /// fetchPlayers();//Todo,now fetchPlayersFromGame> works but recycler wont fill images, and will malfunction if there is a repeated name
+        fetchPlayersFromDeck();
 
         //StartGAME Interaction
 //        checkGameAndPlayerStatus();//Load after fectch player is done
@@ -255,7 +255,8 @@ public void loadDeck(){
             int noOfCurrentCardToCreate=0;
             for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                 if(noOfCurrentCardToCreate<currentCard || currentCard==0) {
-                    int cardNo =0+( Integer.parseInt("" + childSnapshot.child("card").getValue()));
+                    String avoidNullStringToInt=""+childSnapshot.child("card").getValue();
+                    int cardNo =0+( Integer.parseInt(avoidNullStringToInt));
                     createCard(cardNo);
                     if(currentCard==noOfCurrentCardToCreate){
                         currentDeckCard=cardNo;
@@ -331,10 +332,13 @@ public void loadDeck(){
 
     //-------    Players RecyclerView
     PlayersInGameRecyclerAdapter playersRecyclerAdapter;
-    RecyclerView playersRecyclerView;
-    public List<String> playersList=new ArrayList<>();
+//    RecyclerView playersRecyclerView;//todo commented on 19-10: 1132
+    RecyclerView playersFromDeckRecyclerView;
+    public List<String> playersList=new ArrayList<>(); //todo commented to test user object trecyclerview 19-10
+    public List<UserVote> playersListFromDeck=new ArrayList<>();
 
-    public void fetchPlayers(){
+    /** Commented to test userVoteObject recyclerview
+     public void fetchPlayersFromGame(){
         fetchPlayersCommented();
         playersRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
         linearLayoutManager=new LinearLayoutManager(this);
@@ -368,7 +372,9 @@ public void loadDeck(){
                     //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK,
                      // todo y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto,
                      // todo y enviarlos al adapter
-                    playersList.add(childSnapshot.getValue().toString());
+//     todo
+//                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
+                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
                     Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
                     Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
                     playersRecyclerAdapter.notifyDataSetChanged();
@@ -395,8 +401,109 @@ public void loadDeck(){
         playersRecyclerAdapter.notifyDataSetChanged();
         playersRecyclerView.setAdapter(playersRecyclerAdapter);
 
+    }*/
+    public void fetchPlayersFromDeck(){
+        fetchPlayersCommented();
+        playersFromDeckRecyclerView=(RecyclerView)findViewById(R.id.playersRecyclerView);
+        linearLayoutManager=new LinearLayoutManager(this);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,LinearLayoutManager.HORIZONTAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        GridLayoutManager gridLayoutManager=new GridLayoutManager(GameActivity.this, 2,LinearLayoutManager.HORIZONTAL,false);
+
+//Load players
+        //No need to load GAMEOBJECT, because I have all current details from bundle. such as, get deckID
+        //TODO try to: quita el deck de este gameobject, sacalo, y borra el gameobject. la unica vez que se usa, reemplaza por el bundle.currentgame
+        databaseGameRef.child(currentGameID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                currentGame = dataSnapshot.getValue(Game.class);
+//                Map<String,Object> gameUsers= currentGame.getUsers(); //no use for it
+
+//                once having the current game users and deckid, load deck id
+                //Load users and details for specific card. bring vote and image. use it to create a better recyclerView
+//                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addValueEventListener(new ValueEventListener() {
+                databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        playersListFromDeck.clear();// TODO for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
+                        totalUsers=(int)dataSnapshot.getChildrenCount();
+                        for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+//String name, String useruid, String picUrl, String message, boolean voted, String nomineeUID, String nomineeName, String nomineePicUrl, boolean acceptResult) {
+
+                            UserVote userToRecyclerView=childSnapshot.getValue(UserVote.class);  //CREO QUE ya: mando el uservote, pero debo llenarle los datos de nominee
+                            playersListFromDeck.add(userToRecyclerView); //todo commented to test user object trecyclerview 19-10
+                            playersRecyclerAdapter.notifyDataSetChanged();
+                        }
+                        //Having players fetched continue
+                        checkGameAndPlayerStatus();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//final List gameUserNamesList=new ArrayList();
+//        databaseDeckRootRef.child()
+/** //this listener fills the recycler with users from game, I require userVotes from Deck
+  databaseGameRef.child(currentGameID).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                totalUsers=(int)dataSnapshot.getChildrenCount();
+                for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
+                    //                    gameUserNamesList.add(childSnapshot.getValue());
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    //TODO CHECAR": Posiblemente deba cambiar el nombre por el uid en DECK,
+                    // todo y hacer un llamado aqui. y llenar los usuarios , para obtener nombre y foto,
+                    // todo y enviarlos al adapter
+//     todo
+                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
+//                    playersList.add(childSnapshot.getValue().toString()); //todo commented to test user object trecyclerview 19-10
+                    Log.e("databaseGameRef","playerlist just added"+childSnapshot.getValue().toString());
+                    Log.e("databaseGameRef","playerlist just added"+playersList.get(0));
+                    playersRecyclerAdapter.notifyDataSetChanged();
+
+                }
+
+                //Having players fetched continue
+                checkGameAndPlayerStatus();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+
+        });
+*/
+
+
+//settign up the adapters
+
+        playersFromDeckRecyclerView.setLayoutManager(gridLayoutManager);
+        playersRecyclerAdapter =new PlayersInGameRecyclerAdapter(playersListFromDeck,getApplication());
+        playersRecyclerAdapter.notifyDataSetChanged();
+        playersFromDeckRecyclerView.setAdapter(playersRecyclerAdapter);
+
     }
-public void fetchPlayersCommented(){
+
+
+
+
+    public void fetchPlayersCommented(){
     //currentGameID
 //        databaseGameRef.child("GAME123").addListenerForSingleValueEvent(new ValueEventListener() {
     /**Log.e("~~~>","currentGameID;"+currentGameID);
@@ -420,7 +527,7 @@ public void fetchPlayersCommented(){
     });*/
 
 }
-
+//TOdo chcar y borrar, sera remplazado por un selectedPlayer userVote..Maybe?
     public void selectedPlayer(final String selectedPlayer){
 //        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
 //        commentTextView.setFocusable(true);
@@ -439,14 +546,41 @@ public void fetchPlayersCommented(){
                     databaseDeckRootRef.child(currentDeckID).child("card" + currentGame.getCurrentCard()).child("users").child(useruid).setValue(userVote);
                 }else{
                     Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
-                    if (totalVotes >= totalUsers) {
-                        Log.e("clicked button", "verify if the users have voted");
-                        showResult();
-                    }
+//                    if (totalVotes >= totalUsers) {
+//                        Log.e("clicked button", "verify if the users have voted");
+//                        showResult();
+//                    }
                 }
             }
         });
     }
+   public void selectedPlayer(final String selectedPlayer,final String selectedPlayerUID,final String selectedPlayerPHOTOURL){
+//        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
+//        commentTextView.setFocusable(true);
+       //TODO ~~~~ Error aqui , no esta recibiendo valores!!!
+       commentTextView.setHint("Why would you vote for \n"+selectedPlayer);
+       sendBtn.setClickable(true);
+
+       sendBtn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+//                sendBtn.setClickable(false);
+               sendBtn.setColorFilter((R.color.bel_lightgrey_text));
+               commentTextView.setFocusable(false);
+               if(!alreadyVoted) {
+                   alreadyVoted=true;
+                   UserVote userVote = new UserVote(username, useruid, userPic, commentTextView.getText().toString(), true, selectedPlayerUID, selectedPlayer,selectedPlayerPHOTOURL,false);
+                   databaseDeckRootRef.child(currentDeckID).child("card" + currentGame.getCurrentCard()).child("users").child(useruid).setValue(userVote);
+               }else{
+                   Toast.makeText(context, R.string.wait_player_vote, Toast.LENGTH_SHORT).show();
+                   if (totalVotes >= totalUsers) {
+                       Log.e("clicked button", "verify if the users have voted");
+                       showResult();
+                   }
+               }
+           }
+       });
+   }
 
 
     /**
@@ -566,6 +700,8 @@ public void fetchPlayersCommented(){
     }
 
 public void showResult(){
+    Log.e("GameActivity","Sending to resutls currentCard is:"+currentCard);
+
     Intent intent=new Intent(this,ResultsActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
     intent.putExtra(DECK_ID,  currentDeckID+"");

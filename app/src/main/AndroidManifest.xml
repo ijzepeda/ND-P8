@@ -73,6 +73,7 @@
             android:name=".GameActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity android:name=".ResultsActivity"
             android:screenOrientation="portrait"

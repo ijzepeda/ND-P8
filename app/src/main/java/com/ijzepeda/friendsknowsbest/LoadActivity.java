@@ -100,7 +100,7 @@ public class LoadActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                         Game gameTemp = dataSnapshot.getValue(Game.class);
 
-                    gameTemp.setUid(dataSnapshot.getKey().toString());//todo need to update
+                    gameTemp.setUid(dataSnapshot.getKey());
 
                         gamesList.add(gameTemp);
                     gamesRecyclerAdapter.notifyDataSetChanged();

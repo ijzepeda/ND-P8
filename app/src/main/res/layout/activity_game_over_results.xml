@@ -12,6 +12,8 @@
 
     <TextView
         android:text="@string/game_over"
+        android:hint="@string/game_over"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
@@ -22,6 +24,7 @@
 
     <TextView
         android:text="@string/thanks_for_playing"
+        android:hint="@string/thanks_for_playing"
         android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

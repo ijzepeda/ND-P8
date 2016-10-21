@@ -38,6 +38,10 @@
         <!--AppTheme.Button-->
         <item name="buttonStyle">@style/menuButton</item>
 
+<!--Transition-->
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
     </style>
 
     <!--//Actionbar-->

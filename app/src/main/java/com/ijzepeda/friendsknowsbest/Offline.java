@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.daprlabs.cardstack.SwipeDeck;
+import com.ijzepeda.friendsknowsbest.Helpers.SwipeDeckAdapter;
+import com.ijzepeda.friendsknowsbest.models.Card;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +36,11 @@ int i=4;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_offline);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
 
 

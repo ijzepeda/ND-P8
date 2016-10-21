@@ -1,22 +1,21 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.Helpers;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.List;
+import com.ijzepeda.friendsknowsbest.GameActivity;
+import com.ijzepeda.friendsknowsbest.R;
+import com.ijzepeda.friendsknowsbest.models.Game;
 
-import static android.R.attr.name;
-import static com.ijzepeda.friendsknowsbest.R.id.gameNameTextView;
-import static com.ijzepeda.friendsknowsbest.R.id.nameTV;
+import java.util.List;
 
 /**
  * Created by Ivan on 10/15/2016.
@@ -98,6 +97,12 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                     gameIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
                     gameIntent.putExtra(CURRENT_CARD_ID,  game.getCurrentCard());
                     gameIntent.putExtra(TOTAL_CARDS_ID,  game.getNoCards());
+
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
+
                     context.startActivity(gameIntent);
                 }
             });

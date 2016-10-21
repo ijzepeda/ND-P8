@@ -36,6 +36,13 @@ public class WidgetProvider2 extends AppWidgetProvider {
 
 //            Intent clickIntent=new Intent(ctxt, LoremActivity2.class);
             Intent clickIntent=new Intent(ctxt, GameActivity.class);
+
+
+//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             PendingIntent clickPI=PendingIntent
                     .getActivity(ctxt, 0,
                             clickIntent,

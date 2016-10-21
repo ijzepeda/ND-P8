@@ -1,4 +1,4 @@
-package com.ijzepeda.friendsknowsbest;
+package com.ijzepeda.friendsknowsbest.models;
 
 /**
  * Created by ivan.zepeda on 12/07/2016.

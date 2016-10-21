@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -28,14 +27,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.ijzepeda.friendsknowsbest.Helpers.PlayersInGameRecyclerAdapter;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.id.message;
 
 public class ResultsActivity extends AppCompatActivity {
     //Bundle details
@@ -79,6 +77,8 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         context=this;
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
@@ -392,11 +392,21 @@ if(currentCard<=gameTotalCards) {
     intent.putExtra(CURRENT_CARD_ID, currentCard );//+1
     intent.putExtra(TOTAL_CARDS_ID, gameTotalCards);
     intent.putExtra(CURRENT_DECK_CARD_ID, currentDeckCard);
+
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     startActivity(intent);
     finish();
 }else{
     Intent intent=new Intent(this,GameOverResults.class);
 //    Intent intent=new Intent(this,MainActivity.class);
+
+    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
+//    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     startActivity(intent);
     finish();
 }
@@ -405,7 +415,7 @@ if(currentCard<=gameTotalCards) {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
+        super.onBackPressed();
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();

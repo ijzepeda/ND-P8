@@ -5,7 +5,8 @@ android {
         config {
             keyAlias 'keystore'
             keyPassword 'keitasama'
-            storeFile file('C:/Users/Ivan/Desktop/AndroidProyects/FriendsKnowsBest/keystore.jks')
+//            storeFile file('C:/Users/Ivan/Desktop/AndroidProyects/FriendsKnowsBest/keystore.jks')
+            storeFile file('C:/Users/ivan.zepeda/Desktop/Nanodegree/FriendsKnowsBest/keystore.jks')
             storePassword 'keitasama'
         }
     }

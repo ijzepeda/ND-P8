@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.ijzepeda.friendsknowsbest.models.Game;
+import com.ijzepeda.friendsknowsbest.models.User;
+import com.ijzepeda.friendsknowsbest.models.UserVote;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -32,8 +35,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.ijzepeda.friendsknowsbest.R.string.username;
 
 public class NewGame extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -79,6 +80,8 @@ private GoogleApiClient mGoogleApiClient;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_game);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        create a game object, and invite with the gameobject
         mGoogleApiClient=new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,this)
@@ -257,7 +260,7 @@ return uid;
                     gamesMap.put(uid,uid);
                     databaseUserRef.child(userUid).child("games").updateChildren(gamesMap);
                 }else{
-                    Toast.makeText(NewGame.this, "You are in that game", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewGame.this, getString(R.string.you_are_in_that_game), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewGame.this,LoadActivity.class);
                     startActivity(intent);
                     finish();
@@ -287,8 +290,8 @@ return uid;
                 getString(R.string.deeplink_parse_url_game_id)+
                 gameid;
         Log.e("<<deeplink>>","is:"+deeplink);
-        Intent intent = new AppInviteInvitation.IntentBuilder("Add some friends")
-                .setMessage("Lets play!")
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.add_friends_dl_main))
+                .setMessage(getString(R.string.lets_play_main))
 //                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))// WORKS!
 //https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME123
                 .setDeepLink(Uri.parse(deeplink))

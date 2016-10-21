@@ -16,33 +16,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/gameNameTextView"
-        android:hint="Name of the game"
+        android:hint="@string/name_of_the_game"
 
         android:inputType="textPersonName"
-        android:lines="1" />
+        android:lines="1"
+        android:nextFocusDown="@+id/numberCardsTextView"
+        android:nextFocusRight="@+id/numberCardsTextView"
+        />
 
     <Switch
-        android:text="Unlimited Counter"
+        android:text="@string/unlimited_counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/counterSwitch"
         android:visibility="gone" />
 
     <AutoCompleteTextView
+        android:id="@+id/numberCardsTextView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/numberCardsTextView"
-        android:hint="Number of cards"
+        android:hint="@string/number_of_cards"
         android:lines="1"
-        android:inputType="number" />
+        android:inputType="number"
+        android:nextFocusDown="@+id/inviteFriendsBtn"
+        android:nextFocusRight="@+id/inviteFriendsBtn"
+android:nextFocusUp="@id/gameNameTextView"
+android:nextFocusLeft="@id/gameNameTextView"
+        />
 
     <Button
-        android:text="Invite more friends"
+        android:text="@string/invite_more_friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inviteFriendsBtn"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
+
+        android:contentDescription="@string/invite_friends_description"
+        android:nextFocusDown="@+id/nextInviteBtn"
+        android:nextFocusRight="@+id/nextInviteBtn"
+        android:nextFocusUp="@id/numberCardsTextView"
+        android:nextFocusLeft="@id/numberCardsTextView"
         />
 
     <ImageButton
@@ -50,9 +65,12 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_arrow_forward_black_24dp"
         android:id="@+id/nextInviteBtn"
-        android:layout_gravity="bottom|right|end"
+        android:layout_gravity="bottom|end"
         android:theme="@style/AppTheme.Button"
         style="@style/Widget.AppCompat.Button.Small"
 android:tint="@color/cardview_light_background"
+        android:contentDescription="@string/create_game_button_description"
+        android:nextFocusDown="@+id/inviteFriendsBtn"
+        android:nextFocusRight="@+id/inviteFriendsBtn"
         />
 </LinearLayout>

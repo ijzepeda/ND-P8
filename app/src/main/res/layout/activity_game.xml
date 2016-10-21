@@ -50,7 +50,12 @@
             android:textAlignment="center"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="10dp"
+
+            android:descendantFocusability="afterDescendants"
+            android:nextFocusDown="@+id/commentTV"
+
+            />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -59,24 +64,29 @@
             android:layout_weight="1.5">
 
             <EditText
+                android:id="@+id/commentTV"
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:inputType="textMultiLine"
-                android:id="@+id/commentTV"
                 android:layout_weight="0.8"
-                android:hint="Select a Friend"
+                android:hint="@string/select_a_friend"
+                android:nextFocusDown="@+id/SendImageButton"
+                android:nextFocusRight="@+id/SendImageButton"
+                android:nextFocusUp="@id/playersRecyclerView"
 
                 android:maxEms="20" />
             <!--android:focusable="false"-->
             <!--android:inputType="textMultiLine"-->
 
             <ImageButton
+                android:id="@+id/SendImageButton"
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_send_black_24dp"
-                android:id="@+id/SendImageButton"
                 android:layout_weight="0.2"
-                android:layout_gravity="bottom|right|end"
+                android:layout_gravity="bottom|end"
                 android:layout_marginStart="45dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
@@ -85,6 +95,9 @@ android:clickable="false"
                 android:theme="@style/AppTheme.Button"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:tint="@color/cardview_light_background"
+                android:nextFocusLeft="@id/commentTV"
+                android:nextFocusUp="@id/commentTV"
+                android:contentDescription="@string/send_button_description"
                 />
         </LinearLayout>
 

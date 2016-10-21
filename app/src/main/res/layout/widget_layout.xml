@@ -21,7 +21,7 @@
     android:padding="@dimen/widget_margin">
 
     <FrameLayout
-        android:id="@+id/widget"
+        android:id="@+id/widget_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:background="@color/colorPrimary">
@@ -39,7 +39,7 @@
         android:layout_weight="1"
         android:background="@color/primary_light">
         <ListView
-            android:id="@+id/widget_list"
+            android:id="@+id/words"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"

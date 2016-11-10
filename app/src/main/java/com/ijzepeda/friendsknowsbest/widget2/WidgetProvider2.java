@@ -34,7 +34,7 @@ package com.ijzepeda.friendsknowsbest.widget2;
 
 public class WidgetProvider2 extends AppWidgetProvider {
     public static String EXTRA_WORD=
-            "com.commonsware.android.appwidget.lorem.WORD";
+            "com.ijzepeda.broasted.WORD";
 
     @Override
     public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager,

@@ -1,7 +1,12 @@
 package com.ijzepeda.friendsknowsbest;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ijzepeda.friendsknowsbest.models.Game;
 
@@ -25,6 +30,9 @@ public class Utils {
 
     private static List<Game> widgetGameList;
 
+    public static final String CONTENT_URL="content://com.ijzepeda.friendsknowsbest.GameProvider";//content://com.example.MyApplication.StudentsProvider";
+
+
     public static Utils getInstance()
     {
         if (UtilSharedPrefs == null)
@@ -45,6 +53,13 @@ public class Utils {
     }
     public void addGameToWidgetList(Game game) {
         widgetGameList.add(game);
+
+        //content provider
+//        ContentValues contentValues=new ContentValues();
+//        contentValues.put(GameProvider.NAME, ((EditText)findViewById(R.id.editText2)).getText().toString());
+//        contentValues.put(GameProvider.GAME_ID,((EditText)findViewById(R.id.editText3)).getText().toString());
+//        Uri uri=getContentResolver().insert(GameProvider.CONTENT_URI,contentValues);
+
     }
     public void removeGameFromWidgetList(Game game) {
         widgetGameList.remove(game);
@@ -66,7 +81,41 @@ public class Utils {
     return null;
     }
 
+    public String getWidgetGameFromListContentProvider(String gameId,Context context) {
+   /*for(Game game:widgetGameList) {
+    if(game.getUid().equals(gameId))
+       return game;
+   }*/
 
+        //content provider
+        Uri games=Uri.parse(Utils.CONTENT_URL);
+        Cursor cursor= context.getContentResolver().query(games,null,null,null,"name");//retrieve based on name //GameProvider._ID+"="+gameId
+
+        if(cursor.moveToFirst()){
+            do{
+                if(cursor.getString(cursor.getColumnIndex(GameProvider.NAME)).equals(gameId))
+                    return cursor.getString(cursor.getColumnIndex(GameProvider.NAME));
+//                        cursor.getString(cursor.getColumnIndex(GameProvider._ID))+
+//                                ", "+cursor.getString(cursor.getColumnIndex(GameProvider.NAME))+
+//                                ", "+cursor.getString(cursor.getColumnIndex(GameProvider.GAME_ID))+
+//                                "."
+
+            }while(cursor.moveToNext());
+        }
+
+    return null;
+    }
+
+    public void addGameToWidgetListContentProvider(Game game,Context context) {
+        widgetGameList.add(game);
+
+        //content provider
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(GameProvider.NAME, game.getName());
+        contentValues.put(GameProvider.GAME_ID,game.getUid());
+        Uri uri=context.getContentResolver().insert(GameProvider.CONTENT_URI,contentValues);
+
+    }
 
         public void save(Context context, String text , String Key) {
         SharedPreferences settings;

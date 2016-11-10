@@ -251,8 +251,12 @@ private static String TAG="MainActivity";
 //                                    gamesList.add(gameTemp);
 //                                    gamesRecyclerAdapter.notifyDataSetChanged();
 
-                                    if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
-                                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                                    //Widget: save games to shared prefs.
+                                    //todo instead of saving them on shared prefs do it on content provider
+//                                    if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
+//                                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
+                                        if (Utils.getInstance().getWidgetGameFromListContentProvider(gameTemp.getUid(),getApplication()) == null) {
+                                            Utils.getInstance().addGameToWidgetListContentProvider(gameTemp,getApplication());//CHECK : WIDGET LIST
                                         {
 //it works but triggerson receive
                                             int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));

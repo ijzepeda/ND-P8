@@ -16,14 +16,18 @@
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/MainAppTheme"
         >
+        <!--android:theme="@style/AppTheme.AppCompat.NoActionBar"-->
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"
+
+            android:label="@string/app_name"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
             <intent-filter>
@@ -41,6 +45,7 @@
             />
         <activity android:name=".Offline"
             android:screenOrientation="portrait"
+            android:label="@string/quick_game"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
             <meta-data
@@ -48,6 +53,7 @@
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
         <activity android:name=".LoginActivity"
+            android:label="@string/login_first"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
@@ -56,10 +62,12 @@
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
         <activity android:name=".RegisterUser"
+            android:label="@string/register"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             />
         <activity android:name=".NewGame"
+            android:label="@string/new_game"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
@@ -68,6 +76,7 @@
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
         <activity android:name=".LoadActivity"
+            android:label="@string/load_game"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
@@ -76,6 +85,7 @@
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
         <activity android:name=".Settings"
+            android:label="@string/settings"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
@@ -88,6 +98,7 @@
             />
         <activity
             android:name=".GameActivity"
+            android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait"
@@ -97,6 +108,7 @@
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
         <activity android:name=".ResultsActivity"
+            android:label="@string/results"
             android:screenOrientation="portrait"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             >
@@ -106,6 +118,7 @@
         </activity>
         <activity
             android:name=".AddPlayerToGameActivity"
+            android:label="@string/join_game"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:launchMode="singleInstance"
             android:noHistory="true"

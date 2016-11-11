@@ -1,22 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--</style>-->
+
     <style name="MainAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
     </style>
 
+    <style name="ActionBar.TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+    </style>
 
-
-    <!--style/ThemeOverlay.AppCompat.Dark-->
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
@@ -26,15 +23,8 @@
         <item name="android:button">
             @color/colorAccent
         </item>
-        <!--<item name="buttonStyle"></item>-->
-        <!--@style/Widget.AppCompat.Button.Colored-->
-        <!--<item name="android:textViewStyle">@style/AppTheme.TextView</item>-->
-        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
-
-        <!--<item name="actionBarStyle">@style/Widget.AppTheme.ActionBar</item>-->
+         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
         <item name="actionBarTheme">@style/ThemeOverlay.AppTheme.ActionBar</item>
-        <!--<item name="actionBarPopupTheme">@style/ThemeOverlay.AppTheme.PopupMenu</item>-->
-
         <!--AppTheme.Button-->
         <item name="buttonStyle">@style/menuButton</item>
 
@@ -46,11 +36,7 @@
 
     <!--//Actionbar-->
     <style name="Widget.AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
-        <!-- action bar background - without android prefix -->
-        <!--<item name="background">...</item>-->
-        <!-- action bar elevation - without android prefix -->
-        <!--<item name="elevation">4dp</item>-->
-    </style>
+      </style>
 
     <style name="ThemeOverlay.AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- title text color -->
@@ -64,11 +50,7 @@
     </style>
 
     <style name="ThemeOverlay.AppTheme.PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
-        <!-- popup menu background - NEVER "android:background" !!! in themes -->
-        <!--<item name="android:colorBackground"></item>-->
-        <!-- popup menu item text color -->
-        <!--<item name="android:textColorPrimary"></item>-->
-    </style>
+      </style>
 
     <style name="AppTheme.ActionBarStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
@@ -77,7 +59,7 @@
         <item name="android:textColor">@color/cardview_light_background</item>
     </style>
     <style name="AppTheme.TextView" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 <!--endof actionbar style-->
 
@@ -90,8 +72,6 @@
         <item name="android:button">
             @color/colorAccent
         </item>
-        <!--<item name="colorButtonNormal">#ff0000</item>-->
-        <!--<item name="android:textColor">@android:color/white</item>-->
     </style>
 
 
@@ -115,11 +95,7 @@
 
     </style>
 
-    <!--<style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">-->
-    <!--<item name="colorButtonNormal">#ff0000</item>-->
-    <!--<item name="android:textColor">@android:color/white</item>-->
-    <!--</style>-->
-    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+   <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
@@ -128,11 +104,6 @@
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <!--<style name="menuButton" parent="AppTheme.Button" >-->
-        <!--<item name="layoutWidth">match_parent</item>-->
-        <!--<item name="colorButtonNormal">@color/colorAccent</item>-->
-        <!--<item name="android:textColor">@android:color/white</item>-->
-    <!--</style>-->
     <style name="AppTheme.Label" >
         <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
         <item name="android:textColor">@color/colorPrimaryText</item>

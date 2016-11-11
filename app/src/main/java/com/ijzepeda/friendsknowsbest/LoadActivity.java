@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
@@ -53,7 +54,11 @@ public class LoadActivity extends AppCompatActivity {
         setContentView(R.layout.activity_load);
         context = getApplicationContext();
        // loadGameRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.title));
 
 //RecyclerView
         ordersRecyclerView=(RecyclerView)findViewById(R.id.loadgameRecyclerView);

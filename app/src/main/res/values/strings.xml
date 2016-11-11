@@ -112,6 +112,11 @@
     <string name="already_voted_mark_description">If is shown a gray checkmark , this player has already voted</string>
     <string name="check_to_select_this_player">Check to select this player</string>
     <string name="player_name_on_card">Player name on card</string>
+    <string name="register">Register</string>
+    <string name="load_game">Load Game</string>
+    <string name="settings">Settings</string>
+    <string name="results">Results</string>
+    <string name="join_game">Joining game</string>
 
 
     <array name="category_romantic">

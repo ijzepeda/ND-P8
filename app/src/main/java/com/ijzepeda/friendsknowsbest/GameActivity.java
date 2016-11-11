@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Explode;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -94,9 +95,22 @@ int currentDeckCard;
     boolean alreadyVoted=true;
     boolean finishReadingUsers=true;
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                //orback to mainactivity/load activity
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_game);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -441,7 +455,7 @@ public void showResult(){
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
     // inside your activity (if you did not enable transitions in your theme)
-    getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+/////    getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
 // set an exit transition
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         getWindow().setExitTransition(new Explode());

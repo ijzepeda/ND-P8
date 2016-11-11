@@ -170,6 +170,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ijzepeda.friendsknowsbest.MainActivity" />
         </activity>
+
+        <provider android:name="GameProvider"
+            android:authorities="com.ijzepeda.friendsknowsbest.GameProvider"/>
+
+
     </application>
 
 </manifest>

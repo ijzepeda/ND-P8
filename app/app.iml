@@ -60,14 +60,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/storeRelease/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/storeRelease/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/storeRelease/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/rs" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/assets" type="java-test-resource" />
@@ -76,6 +68,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testStoreRelease/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/androidTestStoreRelease/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/assets" type="java-resource" />
@@ -135,19 +135,14 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.daprlabs.aaron/cardstack/0.3.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.10.0/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads-lite/9.6.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-ads/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-appinvite/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth-base/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-auth/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.6.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-clearcut/9.6.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-gass/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-gcm/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-iid/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.6.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.firebase/firebase-ads/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.6.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.google.firebase/firebase-auth-common/9.6.1/jars" />
@@ -170,6 +165,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/reload-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/restart-dex" />
@@ -189,7 +185,6 @@
     <orderEntry type="library" exported="" name="play-services-base-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-database-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-solver-1.0.0-alpha4" level="project" />
-    <orderEntry type="library" exported="" name="firebase-ads-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="cardstack-0.3.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-impl-9.6.1" level="project" />
@@ -203,7 +198,6 @@
     <orderEntry type="library" exported="" name="firebase-storage-common-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="support-media-compat-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-9.6.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-gass-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-iid-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.10.0" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-24.2.1" level="project" />
@@ -213,16 +207,13 @@
     <orderEntry type="library" exported="" name="appcompat-v7-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-24.2.1" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-ads-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-tasks-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-basement-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-common-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="design-23.2.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-24.2.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-ads-lite-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-module-9.6.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-clearcut-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="bolts-applinks-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-auth-9.6.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-analytics-9.6.1" level="project" />

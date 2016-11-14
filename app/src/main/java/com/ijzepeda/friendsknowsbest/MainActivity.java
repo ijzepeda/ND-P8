@@ -86,7 +86,8 @@ private static String TAG="MainActivity";
 
             //Todo Check
             //delete widget data
-            Utils.getInstance().clearWidgetGamesList();
+//            Utils.getInstance().clearWidgetGamesList();//changed on 14-11
+            Utils.getInstance().clearWidgetGamesList(getApplication());
 
         } else {
             Utils.getInstance();
@@ -207,7 +208,8 @@ private static String TAG="MainActivity";
         //Clear Widget data
 //        /------------------------------------------------
         Log.e("Widget Logout","Cleaning data");
-        Utils.getInstance().clearWidgetGamesList();
+//        Utils.getInstance().clearWidgetGamesList();//changed on 14-11
+        Utils.getInstance().clearWidgetGamesList(getApplication());
 //it works but triggerson receive
 //Not sure if I need this????..TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));

@@ -170,7 +170,7 @@ int count=0;
 
             break;
         default:
-            throw new IllegalArgumentException("Uknown URI "+uri);
+            throw new IllegalArgumentException("Unknown URI "+uri);
         }
     getContext().getContentResolver().notifyChange(uri,null);
         return count;

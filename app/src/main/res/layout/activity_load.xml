@@ -14,12 +14,14 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-    <android.support.v7.widget.RecyclerView            android:layout_marginTop="?attr/actionBarSize"
-
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="?attr/actionBarSize"
+android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/loadgameRecyclerView"
         android:descendantFocusability="afterDescendants"/>
+    <!--android:layout_centerVertical="true"-->
+
 </RelativeLayout>

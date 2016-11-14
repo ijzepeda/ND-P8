@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.ijzepeda.friendsknowsbest.models.Game;
 
@@ -64,8 +62,14 @@ public class Utils {
     public void removeGameFromWidgetList(Game game) {
         widgetGameList.remove(game);
     }
-    public void clearWidgetGamesList() {
+    public void clearWidgetGamesList(Context context) {
+
         widgetGameList.clear();
+
+        //content provider clear
+        Uri games=Uri.parse(Utils.CONTENT_URL);
+        int count= context.getContentResolver().delete(games,null,null);
+
     }
     public List<Game> getWidgetGameList() {
         return widgetGameList;

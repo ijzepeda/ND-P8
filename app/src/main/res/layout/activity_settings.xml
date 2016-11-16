@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        android:elevation="@dimen/toolbar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     <ImageView
@@ -52,6 +52,7 @@
 
         <TextView
             android:text="@string/earned_cards"
+            android:hint="@string/earned_cards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/earnedCards"
@@ -76,6 +77,7 @@
 
         <TextView
             android:text="@string/favorite_cards"
+            android:hint="@string/favorite_cards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/favCards"
@@ -84,6 +86,7 @@
 
         <Button
             android:text="@string/favorite_cards_settings"
+            android:hint="@string/favorite_cards_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/favCardsBtn"
@@ -95,6 +98,7 @@
 
     <Switch
         android:text="@string/notifications"
+        android:hint="@string/notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/NotificationSwitch"
@@ -103,6 +107,7 @@
         android:visibility="gone" />
     <Button
         android:text="@string/save_btn"
+        android:hint="@string/save_settings_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/saveBtn"
@@ -128,6 +133,7 @@
         style="@style/Widget.AppCompat.Button.Small"
 
         android:contentDescription="@string/logout_button"
+        android:hint="@string/logout_button"
         android:nextFocusUp ="@id/saveBtn"
         android:nextFocusLeft ="@id/saveBtn"
         />

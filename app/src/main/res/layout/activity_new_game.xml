@@ -50,6 +50,7 @@ android:nextFocusLeft="@id/gameNameTextView"
 
     <Button
         android:text="@string/invite_more_friends"
+        android:hint="@string/invite_friends_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/inviteFriendsBtn"

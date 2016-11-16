@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        android:elevation="@dimen/toolbar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         <com.daprlabs.cardstack.SwipeDeck
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Button"
+            android:text=""
             android:visibility="invisible"/>
 
     </com.daprlabs.cardstack.SwipeFrameLayout>

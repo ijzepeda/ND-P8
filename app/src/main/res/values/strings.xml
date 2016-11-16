@@ -124,6 +124,8 @@
     <string name="authentication_failed">Authentication failed.</string>
     <string name="fotourl_placeholder">FOTOURL</string>
     <string name="romantic_cat">Romantic</string>
+    <string name="transition_profilepic">profilePic</string>
+    <string name="load_game_button">Load Game</string>
 
 
     <array name="category_romantic">

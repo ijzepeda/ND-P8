@@ -13,4 +13,17 @@
     <dimen name="widget_detail_default_height">180dp</dimen>
     <dimen name="widget_detail_min_resize_width">220dp</dimen>
     <dimen name="widget_detail_min_resize_height">@dimen/widget_detail_default_height</dimen>
+    <dimen name="row_padding">6dip</dimen>
+    <dimen name="cardview_text_subject">20sp</dimen>
+    <dimen name="cardview_margin">7dp</dimen>
+    <dimen name="cardvie_radus">6dp</dimen>
+    <dimen name="cardview_elevation">3dp</dimen>
+    <dimen name="player_cardview_margin">10dp</dimen>
+    <dimen name="player_cardview_image">50dp</dimen>
+    <dimen name="text_min_height">15dp</dimen>
+    <dimen name="image_padding_top">5dp</dimen>
+    <dimen name="gamecard_margin">5dp</dimen>
+    <dimen name="delete_button_dimens">50dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="button_menu_margin_top">62dp</dimen>
 </resources>

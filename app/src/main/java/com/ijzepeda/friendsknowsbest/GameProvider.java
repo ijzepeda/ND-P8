@@ -27,17 +27,20 @@ static final Uri CONTENT_URI=Uri.parse(URL);
 static final String _ID="_id";
 static final String NAME="name";
 static final String GAME_ID="game_id";
+static final String PATH_GAMES=    "games";
+static final String PATH_GAMES_NO="games/#";
 static final int GAMES=1;
 static final int GAMES_ID=2;
 private static HashMap<String,String> GAMES_PROJECTION_MAP;
     static final UriMatcher uriMatcher;
     static{
         uriMatcher=new UriMatcher(UriMatcher.NO_MATCH);
-//        uriMatcher.addURI(PROVIDER_NAME,"",GAMES);
-        uriMatcher.addURI(PROVIDER_NAME,"games",GAMES);
-//        uriMatcher.addURI(PROVIDER_NAME,"/games",GAMES);
-        uriMatcher.addURI(PROVIDER_NAME,"games/#",GAMES_ID);
+        uriMatcher.addURI(PROVIDER_NAME,PATH_GAMES,GAMES);
+        uriMatcher.addURI(PROVIDER_NAME,PATH_GAMES_NO,GAMES_ID);
     }
+    static final String MATCHER_GAME ="com.android.cursor.dir/com.ijzepeda.games";
+    static final String MATCHER_GAME_ID ="com.android.cursor.item/com.ijzepeda.games";
+
     /*Database stuff*/
 private SQLiteDatabase database;
 static final String DATABASE_NAME="broastedGames";
@@ -77,7 +80,7 @@ db.execSQL("DROP TABLE IF EXISTS "+GAMES_TABLE_NAME);
       Context context=getContext();
         DatabaseHelper dbHelper=new DatabaseHelper(context);
         database=dbHelper.getWritableDatabase();
-        return(database==null)?false:true;
+        return database != null;
     }
 
     @Nullable
@@ -108,11 +111,9 @@ if(sortOrder==null||sortOrder.equals("")){
     public String getType(Uri uri) {
         switch(uriMatcher.match(uri)){
             case GAMES:
-//                return "vnd.android.cursor.dir/vnd.example.students";
-                return "com.android.cursor.dir/com.ijzepeda.games";
+                return MATCHER_GAME;
             case GAMES_ID:
-//                return "vnd.android.cursor.item/vnd.example.students";
-                return "com.android.cursor.item/com.ijzepeda.games";
+                return MATCHER_GAME_ID;
             default:
                 throw new IllegalArgumentException(">Unknown URI "+uri);
         }

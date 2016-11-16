@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +50,9 @@ private static String GAME_ID="game_id";
     @Override
     public void onBindViewHolder(GamesRecyclerAdapter.ViewHolder holder, int position) {
         game=gamesList.get(position);
-        holder.noUsersTV.setText("Players: "+game.getNoUsers());
-        holder.gameNameTV.setText("Game: "+game.getName());
+        holder.noUsersTV.setText(game.getNoUsers());
+        holder.gameNameTV.setText(game.getName());
+
         //missing deck > "DeckId: "+game.getDeckId()
         holder.deckIdTV.setText(game.getDeckId());
         holder.gameidTV.setText(game.getUid());
@@ -61,7 +61,7 @@ private static String GAME_ID="game_id";
 
 
         String cardDrawn=game.getCurrentCard()+"/"+game.getNoCards();
-        holder.cardsDrawn.setText("Cards drawn:"+cardDrawn);
+        holder.cardsDrawn.setText(cardDrawn);
 
 
 
@@ -110,11 +110,6 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
-                    Log.e("Game Adapter","~~~~~~~~~~~~~~~~~~ERROR CON las tarjetas:");
-                    Log.e("Game Adapter","CURRENT_CARD_ID:"+game.getCurrentCard());
-                    Log.e("Game Adapter","gameTotalCards:"+game.getNoCards());
-                    Log.e("Game Adapter","gameid:"+gameidTV.getText());
-                    Log.e("gameadapter","en viewholder gamobj cambio de valor a:"+game.toString());
                     context.startActivity(gameIntent);
                 }
             });

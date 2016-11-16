@@ -14,19 +14,19 @@ android:layout_margin="10dp">
 
         <TextView
     android:id="@+id/game_name"
+            android:text="@string/adapter_game"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="gameName"
-    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true" />
 
         <TextView
-            android:id="@+id/players"
+            android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Players:"
+            android:text="@string/adapter_players"
             android:lines="1"
             android:ellipsize="marquee"
             android:layout_below="@+id/game_name"
@@ -34,15 +34,33 @@ android:layout_margin="10dp">
             android:layout_alignParentStart="true" />
 
         <TextView
+            android:id="@+id/players"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:lines="1"
+            android:ellipsize="marquee"
+            android:layout_below="@+id/game_name"
+            android:layout_toRightOf="@+id/textView7"
+            android:layout_toEndOf="@+id/textView7" />
+
+        <TextView
             android:id="@+id/cardsdrawn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cards drown:"
+            android:text="0/0"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="23dp"
-            android:layout_marginEnd="23dp" />
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/adapter_cards"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/cardsdrawn"
+            android:layout_toStartOf="@+id/cardsdrawn" />
 
     </RelativeLayout>
 </FrameLayout>

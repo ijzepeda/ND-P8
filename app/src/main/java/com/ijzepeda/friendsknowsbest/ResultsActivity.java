@@ -36,6 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_ACCEPTED_RESULT;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_CARD;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_CURRENT_CARD;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_NAME;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_NOMINEE_NAME;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_DECK;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_GAME;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_USERNAME;
+
 public class ResultsActivity extends AppCompatActivity {
     //Bundle details
     String currentGameID;
@@ -97,8 +107,8 @@ public class ResultsActivity extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         storage=FirebaseStorage.getInstance();
         // -- reference to table in database
-        databaseGameRef =database.getReference("Game");
-        databaseDeckRef =database.getReference("Deck");
+        databaseGameRef =database.getReference(REF_GAME);
+        databaseDeckRef =database.getReference(REF_DECK);
 
 
         //UserDetails
@@ -106,7 +116,7 @@ public class ResultsActivity extends AppCompatActivity {
         usermail=auth.getCurrentUser().getEmail();
         username=auth.getCurrentUser().getDisplayName();
         if(username==null || username.equals(null) || username.equals("")){
-            username=Utils.getInstance().getValue(getApplication(),"username");
+            username=Utils.getInstance().getValue(getApplication(),SHARED_USERNAME);
         }
         useruid=auth.getCurrentUser().getUid();
         userPic=auth.getCurrentUser().getPhotoUrl().toString();
@@ -128,7 +138,7 @@ public class ResultsActivity extends AppCompatActivity {
                 continueBtn.setClickable(false);
                 if(!alreadyAccepted) {
                     alreadyAccepted=true;
-                    databaseDeckRef.child(currentDeckID).child("card" +currentCard).child("users").child(useruid).child("acceptResult").setValue(alreadyAccepted);
+                    databaseDeckRef.child(currentDeckID).child(CHILD_CARD +currentCard).child(CHILD_USERS).child(useruid).child(CHILD_ACCEPTED_RESULT).setValue(alreadyAccepted);
                 }else{
                     Toast.makeText(context, R.string.wait_player_see_result, Toast.LENGTH_SHORT).show();
                 }
@@ -147,7 +157,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     public void fetchUserVotes(){
 //        userVotesList
-                databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseDeckRef.child(currentDeckID).child(CHILD_CARD+currentCard).child(CHILD_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         totalUsers=(int)dataSnapshot.getChildrenCount();// added on 19-10-0003
@@ -234,11 +244,11 @@ winnerNameTextView.setText(winningPlayerName);//winningPlayer.getNomineeName());
         userVotesList.clear();
         playersRecyclerAdapter.notifyDataSetChanged();
 
-        databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseDeckRef.child(currentDeckID).child(CHILD_CARD+currentCard).child(CHILD_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
-        if(childSnapshot.child("nomineeName").getValue().toString().equals(winningPlayerName)) {
+        if(childSnapshot.child(CHILD_NOMINEE_NAME).getValue().toString().equals(winningPlayerName)) {
             userVotesList.add(childSnapshot.getValue(UserVote.class));
             playersRecyclerAdapter.notifyDataSetChanged();
         }
@@ -321,7 +331,7 @@ List<UserVote>userVotesList=new ArrayList<>();
     boolean alreadyAccepted=false;
     public void CheckPlayersAcceptanceStatus(){
         totalAccepted=0;
-        databaseDeckRef.child(currentDeckID).child("card"+currentCard).child("users").addChildEventListener(new ChildEventListener() {
+        databaseDeckRef.child(currentDeckID).child(CHILD_CARD+currentCard).child(CHILD_USERS).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 alreadyAccepted=false; //startloading and return to false, if found the match, then is true
@@ -329,10 +339,10 @@ List<UserVote>userVotesList=new ArrayList<>();
                 playersRecyclerAdapter.notifyDataSetChanged();//it was commented on 18-10-16.2344
                 //determine if all players have voted
                 boolean userAccepted=false;
-                if(dataSnapshot.child("acceptResult").exists()) { //extended to bottom
-                    userAccepted = Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                if(dataSnapshot.child(CHILD_ACCEPTED_RESULT).exists()) { //extended to bottom
+                    userAccepted = Boolean.parseBoolean(dataSnapshot.child(CHILD_ACCEPTED_RESULT).getValue().toString());
                     if (userAccepted) {
-                        if (dataSnapshot.child("name").equals(username)) {
+                        if (dataSnapshot.child(CHILD_NAME).equals(username)) {
                             alreadyAccepted = true;
                         }
                         totalAccepted++;
@@ -353,10 +363,10 @@ List<UserVote>userVotesList=new ArrayList<>();
 //                playersRecyclerAdapter.notifyDataSetChanged();
                 //determine if all players have voted
                 boolean userAccepted=false;
-                if(dataSnapshot.child("acceptResult").exists()) {//extend to bottom
-                    userAccepted = Boolean.parseBoolean(dataSnapshot.child("acceptResult").getValue().toString());
+                if(dataSnapshot.child(CHILD_ACCEPTED_RESULT).exists()) {//extend to bottom
+                    userAccepted = Boolean.parseBoolean(dataSnapshot.child(CHILD_ACCEPTED_RESULT).getValue().toString());
                     if (userAccepted) {
-                        if (dataSnapshot.child("name").equals(username)) {
+                        if (dataSnapshot.child(CHILD_NAME).equals(username)) {
                             alreadyAccepted = true;
                         }
                         totalAccepted++;
@@ -389,7 +399,7 @@ List<UserVote>userVotesList=new ArrayList<>();
     public void endCard(){
         currentCard++;
 if(currentCard<=gameTotalCards) {
-    databaseGameRef.child(currentGameID).child("currentCard").setValue(currentCard);
+    databaseGameRef.child(currentGameID).child(CHILD_CURRENT_CARD).setValue(currentCard);
     Intent intent = new Intent(this, GameActivity.class);
     intent.putExtra(GAME_ID, currentGameID);
     intent.putExtra(DECK_ID, currentDeckID + "");

@@ -30,6 +30,36 @@ public class Utils {
 
     public static final String CONTENT_URL="content://com.ijzepeda.friendsknowsbest.GameProvider";//content://com.example.MyApplication.StudentsProvider";
 
+    //DEEPLINK
+    static String DEEPLINK_LOGO= "android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo";
+
+    //Strings
+     static String REF_USERS="Users";
+     static String REF_GAME="Game"; //was game?
+     static String REF_GAMES="Game"; //was game?
+     static String REF_DECK="Deck";
+     static String CHILD_GAMES="games";
+     static String CHILD_NO_USERS="noUsers";
+     static String CHILD_NAME="name";
+     static String CHILD_USERS="users";
+     static String CHILD_NO_CARDS="noCards";
+     static String CHILD_CARD="card";
+     static String CHILD_DECK_ID="currentCard";
+     static String CHILD_VOTED="voted";
+     static String CHILD_CURRENT_CARD="currentCard";
+     static String CHILD_PHOTO_URL="photoUrl";
+     static String CHILD_PHOTOS="photos";
+     static String CHILD_ACCEPTED_RESULT="acceptResult";
+     static String CHILD_NOMINEE_NAME="nomineeName";
+
+
+    //SharedPReferences
+    static String SHARED_USERNAME= "username";
+    static String SHARED_NAME= "name";
+    static String SHARED_UID= "uid";
+    static String SHARED_EMAIL= "email";
+
+
 
     public static Utils getInstance()
     {

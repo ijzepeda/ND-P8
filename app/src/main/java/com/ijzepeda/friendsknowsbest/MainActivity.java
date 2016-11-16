@@ -31,6 +31,12 @@ import com.ijzepeda.friendsknowsbest.widget2.WidgetProvider2;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_GAMES;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_GAMES;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_EMAIL;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_NAME;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_UID;
 
 
 public class MainActivity extends AppCompatActivity   implements
@@ -91,10 +97,10 @@ private static String TAG="MainActivity";
 
         } else {
             Utils.getInstance();
-                    Log.d("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
-            Utils.getInstance().save(getApplication(),mFirebaseUser.getUid(),"uid");
-            Utils.getInstance().save(getApplication(),mFirebaseUser.getDisplayName(),"name");
-            Utils.getInstance().save(getApplication(),mFirebaseUser.getEmail(),"email");
+                    Log.d(TAG,"mFirebaseUser is:"+mFirebaseUser.getDisplayName());
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getUid(),SHARED_UID);
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getDisplayName(),SHARED_NAME);
+            Utils.getInstance().save(getApplication(),mFirebaseUser.getEmail(),SHARED_EMAIL);
 
             //show buttons
             loadGameBtn.setVisibility(View.VISIBLE);
@@ -239,19 +245,13 @@ private static String TAG="MainActivity";
 
     public void fillWidgetGameList(){
 
-        FirebaseDatabase.getInstance().getReference("User").child(mFirebaseUser.getUid()).child("games").
+        FirebaseDatabase.getInstance().getReference(REF_USERS).child(mFirebaseUser.getUid()).child(CHILD_GAMES).
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                            Log.d("gameA,User key", childSnapshot.getKey());//  D/User key: -KSZqD6W_kjmOPKwh3i8
-                            Log.d("gameA,User ref", childSnapshot.getRef().toString());//   D/User ref: https://tatt-5dc00.firebaseio.com/Ordenes/-KSZqD6W_kjmOPKwh3i8
-                            Log.d("gameA,User val", childSnapshot.getValue().toString()); //< Contains the whole json:.
-//                            userGameList.add(childSnapshot.getValue().toString());
-
-
-// String gameuid=childSnapshot.getRef().toString();
-                            FirebaseDatabase.getInstance().getReference("Games").child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                           // String gameuid=childSnapshot.getRef().toString();
+                            FirebaseDatabase.getInstance().getReference(REF_GAMES).child(childSnapshot.getValue().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Game gameTemp = dataSnapshot.getValue(Game.class);

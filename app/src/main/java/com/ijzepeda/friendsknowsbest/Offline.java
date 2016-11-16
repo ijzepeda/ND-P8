@@ -23,13 +23,7 @@ import java.util.Random;
 
 public class Offline extends AppCompatActivity {
 
-//    CardModel card,card2,card3,newCard;
-//    SimpleCardStackAdapter adapter;
-//    int i=4;
-//    CardModel.OnCardDimissedListener dismissListener;
-//    CardContainer mCardContainer;
-    //    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-
+    static String TAG= "Offline";
 int i=4;
     SwipeDeck cardStack;
     ArrayList<Card> cards;
@@ -81,18 +75,18 @@ loadDeck(getString(R.string.categoryromantic));
             @Override
             public void cardSwipedLeft(int position) {
                 fetchCard();
-                Log.e("MainActivity", "card was swiped left, position in adapter: " + position);
+                Log.e(TAG, "card was swiped left, position in adapter: " + position);
             }
 
             @Override
             public void cardSwipedRight(int position) {
                 fetchCard();
-                Log.e("MainActivity", "card was swiped right, position in adapter: " + position);
+                Log.e(TAG, "card was swiped right, position in adapter: " + position);
                 //testData.add(""+i++);
             }
             @Override
             public void cardsDepleted() {
-                Log.e("MainActivity", "no more cards");
+                Log.e(TAG, "no more cards");
                 alertDialog.show();
             }
             @Override
@@ -120,7 +114,7 @@ loadDeck(getString(R.string.categoryromantic));
 int i=0;
 //        if(category.equals(R.string.categoryromantic)) {
         String[] mQuotes = getResources().getStringArray(R.array.category_romantic);
-            category="Romantic";
+            category=getString(R.string.romantic_cat);
 //        }
 
         //random list
@@ -137,87 +131,5 @@ for(String quote: mQuotes){
 
     }
 
-
-/**
-         mCardContainer = (CardContainer) findViewById(R.id.layoutview);
-        mCardContainer.setOrientation(Orientations.Orientation.fromIndex(0));
-         adapter = new SimpleCardStackAdapter(this);
-
-        card = new CardModel("Title1", "Description goes here", ContextCompat.getDrawable(getApplication(), R.drawable.picture1));//getDrawable(R.drawable.picture1));
-        card3 = new CardModel("Title3", "DisLiked or Lefted",  ContextCompat.getDrawable(getApplication(),R.drawable.picture3));
-        card2 = new CardModel("Title2", "Liked or Righted", ContextCompat.getDrawable(getApplication(),R.drawable.picture2));
-
-         dismissListener=new CardModel.OnCardDimissedListener(){
-            @Override
-            public void onLike() {
-
-                newCard = new CardModel("Title"+i++, "Liked or Righted", ContextCompat.getDrawable(getApplication(),R.drawable.picture2));
-                newCard.setOnCardDimissedListener(dismissListener);
-                adapter = new SimpleCardStackAdapter(getApplication());
-                adapter.add(newCard);
-//                mCardContainer/
-                mCardContainer.setAdapter(adapter);
-
-
-//                adapter.add(new CardModel("Title"+i++, "Description goes here", getDrawable(R.drawable.picture1)));
-                //.setOnCardDimissedListener(dismissListener);
-            }
-
-            @Override
-            public void onDislike() {
-
-                newCard = new CardModel("Title"+i++, "Liked or Righted", ContextCompat.getDrawable(getApplication(),R.drawable.picture2));
-                newCard.setOnCardDimissedListener(dismissListener);
-                adapter.add(newCard);
-
-                adapter.notifyDataSetChanged();
-//                adapter.add(new CardModel("Title"+i++, "Description goes here", getDrawable(R.drawable.picture1)));
-
-            }
-        };
-
-
-        card.setOnCardDimissedListener(dismissListener);
-        / *new CardModel.OnCardDimissedListener() {
-            @Override
-            public void onLike() {
-
-                Log.e("Swipeable Card", "I liked it");
-                card.setCardDislikeImageDrawable(getDrawable(R.drawable.like));
-                adapter.add(new CardModel("Title"+i++, "Description goes here", getDrawable(R.drawable.picture1)));
-
-            }
-
-            @Override
-            public void onDislike() {
-
-                Log.e("Swipeable Card", "I did not liked it");
-                card.setCardDislikeImageDrawable(getDrawable(R.drawable.dislike));
-                adapter.add(new CardModel("Title"+i++, "Description goes here", getDrawable(R.drawable.picture1)));
-
-
-            }
-        });
-        * /
-        card.setOnClickListener(new CardModel.OnClickListener() {
-            @Override
-            public void OnClickListener() {
-                Log.i("Swipeable Cards","I am pressing the card");
-            }
-        });
-
-
-
-
-        adapter.add(new CardModel("Title0", "Description goes here", getDrawable(R.drawable.picture1)));
-        adapter.add(card);
-        adapter.add(card2);
-        adapter.add(card2);   adapter.pop();
-        adapter.add(card2);
-        adapter.add(card3);
-        mCardContainer.setAdapter(adapter);
-
-    }
-*/
 
 }

@@ -15,9 +15,8 @@ package com.ijzepeda.friendsknowsbest.widget2;
 
 
 public class WidgetProvider2 extends AppWidgetProvider {
-    public static String EXTRA_WORD=
+    public static String EXTRA_WIDGET_GAME =
             "com.ijzepeda.fkb.widget.WORD";
-//            "com.commonsware.android.appwidget.lorem.WORD";
 
     @Override
     public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager,
@@ -34,14 +33,7 @@ public class WidgetProvider2 extends AppWidgetProvider {
             widget.setRemoteAdapter(appWidgetIds[i], R.id.words,
                     svcIntent);
 
-//            Intent clickIntent=new Intent(ctxt, LoremActivity2.class);
             Intent clickIntent=new Intent(ctxt, GameActivity.class);
-
-
-//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
-//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
-//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
-//            clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             PendingIntent clickPI=PendingIntent
                     .getActivity(ctxt, 0,

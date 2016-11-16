@@ -35,6 +35,10 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_PHOTOS;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_PHOTO_URL;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_USERS;
+
 
 public class Settings extends AppCompatActivity {
     private static String TAG="Settings";
@@ -110,8 +114,8 @@ public class Settings extends AppCompatActivity {
                                         Log.d("USER PHOTO","downloadUri IS:"+downloadUri.toString());//https://firebasestorage.googleapis.com/v0/b/nd-p7-7d3b1.appspot.com/o/photos%2F99898?alt=media&token=c7b722d3-feb7-474b-a8b6-354b4af1492e
                                         Log.d("USER PHOTO","mFileUri IS:"+mFileUri.toString());//content://media/external/images/media/99898
                                         Map<String,Object> photoUrl=new HashMap<String, Object>();
-                                        photoUrl.put("photoUrl",downloadUri.toString());
-                                        database.getReference().child("Users").child(firebaseUser.getUid()).updateChildren(photoUrl);
+                                        photoUrl.put(CHILD_PHOTO_URL,downloadUri.toString());
+                                        database.getReference().child(REF_USERS).child(firebaseUser.getUid()).updateChildren(photoUrl);
                                         //Add pictureUrl to sharedPrefs
                                         Utils.getInstance().save(getApplication(),downloadUri.toString(),getString(R.string.shared_userphotourl_key));
 
@@ -183,7 +187,7 @@ public class Settings extends AppCompatActivity {
                 mStorageRef = FirebaseStorage.getInstance().getReference();
 
 // Get a reference to store file at photos/<FILENAME>.jpg
-                final StorageReference photoRef = mStorageRef.child("photos").child(fileUri.getLastPathSegment());
+                final StorageReference photoRef = mStorageRef.child(CHILD_PHOTOS).child(fileUri.getLastPathSegment());
 
                 // Upload file to Firebase Storage
                 Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());

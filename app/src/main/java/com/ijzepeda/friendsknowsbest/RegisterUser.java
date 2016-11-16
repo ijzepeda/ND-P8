@@ -36,6 +36,12 @@ import com.ijzepeda.friendsknowsbest.models.User;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_PHOTOS;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_PHOTO_URL;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_UID;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_USERNAME;
+
 
 public class RegisterUser extends AppCompatActivity {
     private static String TAG="RegisterUser";
@@ -71,10 +77,10 @@ saveBtn=(Button)findViewById(R.id.saveBtn);
         auth= FirebaseAuth.getInstance();
         storage= FirebaseStorage.getInstance();
         // -- reference to table in database
-        databaseRef=database.getReference("Users");
+        databaseRef=database.getReference(REF_USERS);
          firebaseUser = auth.getCurrentUser();
 
-uid=Utils.getInstance().getValue(getApplication(),"uid");
+uid=Utils.getInstance().getValue(getApplication(),SHARED_UID);
 
 
         editImageBtn.setOnClickListener(new View.OnClickListener() {
@@ -99,12 +105,12 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
             @Override
             public void onClick(View view) {
                 if(uploadFinished){
-                Utils.getInstance().save(getApplication(), "username", nameTV.getText().toString());
-                Utils.getInstance().save(getApplication(), "uid", uid);
+                Utils.getInstance().save(getApplication(), SHARED_USERNAME, nameTV.getText().toString());
+                Utils.getInstance().save(getApplication(), SHARED_UID, uid);
 
                 Utils utils = Utils.getInstance();
-                utils.save(getApplication(), nameTV.getText().toString(), "username");
-                Utils.getInstance().save(getApplication(), uid, "uid");
+                utils.save(getApplication(), nameTV.getText().toString(),SHARED_USERNAME);
+                Utils.getInstance().save(getApplication(), uid, SHARED_UID);
 
                 //Update user to firebase
 
@@ -121,7 +127,7 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "User profile updated");
                                     //Set photoUrl in Users
-                                    database.getReference().child("Users").child(firebaseUser.getUid()).child("photoUrl").setValue(downloadUri.toString());//mFileUri);//
+                                    database.getReference().child(REF_USERS).child(firebaseUser.getUid()).child(CHILD_PHOTO_URL).setValue(downloadUri.toString());//mFileUri);//
 
                                 }
 
@@ -147,9 +153,9 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                     userName=nameTV.getText().toString();
                 }
 
-                User user=new User(userName,"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
+                User user=new User(userName,"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():getResources().getString(R.string.fotourl_placeholder),
                         friendsMap,cardsMap,gamesMap);
-                databaseRef=database.getReference("Users");
+                databaseRef=database.getReference(REF_USERS);
 
                 // KEY CANT BE AN EMAIL!
                 Map<String,Object> map=new HashMap<String,Object>();
@@ -210,7 +216,7 @@ public void uploadPicture(Uri fileUri){
     mStorageRef = FirebaseStorage.getInstance().getReference();
 
 // Get a reference to store file at photos/<FILENAME>.jpg
-    final StorageReference photoRef = mStorageRef.child("photos").child(fileUri.getLastPathSegment());
+    final StorageReference photoRef = mStorageRef.child(CHILD_PHOTOS).child(fileUri.getLastPathSegment());
 
     // Upload file to Firebase Storage
     Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());

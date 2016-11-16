@@ -69,6 +69,10 @@ import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_EMAIL;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_UID;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_USERNAME;
 
 
 /**
@@ -134,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         storage= FirebaseStorage.getInstance();
 //        get database
         databaseRootRef=FirebaseDatabase.getInstance().getReference().getRoot();
-        firebaseDatabaseRootReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        firebaseDatabaseRootReference = FirebaseDatabase.getInstance().getReference().child(REF_USERS);
 
 
         // Set up the login form.
@@ -165,7 +169,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
         mFirebaseUser = auth.getCurrentUser();
-//        Log.e("MainActivity","mFirebaseUser is:"+mFirebaseUser.getDisplayName());
         if (mFirebaseUser != null) {
             // Not signed in, launch the Sign In activity
 //seems it doesnt work with FACEBOOK loginned
@@ -225,9 +228,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if(user !=null){
                     //user is signed in
                     Log.d("login","onAuthStateChanfed:signed_in:"+user.getUid());
-                    Utils.getInstance().save(getApplication(),user.getUid(),"uid");
-                    Utils.getInstance().save(getApplication(),user.getDisplayName(),"username");
-                    Utils.getInstance().save(getApplication(),user.getEmail(),"email");
+                    Utils.getInstance().save(getApplication(),user.getUid(),SHARED_UID);
+                    Utils.getInstance().save(getApplication(),user.getDisplayName(),SHARED_USERNAME);
+                    Utils.getInstance().save(getApplication(),user.getEmail(),SHARED_EMAIL);
                     //Add pictureUrl to sharedPrefs
                     if(user.getPhotoUrl()!=null)
                     Utils.getInstance().save(getApplication(),user.getPhotoUrl().toString(),getString(R.string.shared_userphotourl_key));
@@ -237,6 +240,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Log.d("mauthlistener","uid is:"+user.getUid());
                     Log.d("mauthlistener","provider is:"+user.getProviderId());
                     Log.d("mauthlistener","photourl is:"+user.getPhotoUrl());
+
                     //No need to ask for email again, go directly
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     showProgress(false);
@@ -251,7 +255,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
 
-        if(isEmailValid(Utils.getInstance().getValue(this,"email")) ){
+        if(isEmailValid(Utils.getInstance().getValue(this,SHARED_EMAIL)) ){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             showProgress(false);
             finish();
@@ -259,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         }
 
-//GETSHA for facebook //TODO DELETE
+//GETSHA for facebook
        // **
 //         try {
 //            PackageInfo info = getPackageManager().getPackageInfo(
@@ -291,7 +295,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Log.d(TAG,"signInWithCredential:onComplete"+task.isSuccessful());
                         if(!task.isSuccessful()){
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
 
                         }else{
@@ -309,9 +313,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             friendsMap.put("Friend0","");
                             cardsMap.put("FavCard1","");
 //                            gamesMap.put("game0","GAME123");//GameUID123
-                             user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():"FOTOURL",
+                             user=new User(firebaseUser.getDisplayName().toString(),"0","0",firebaseUser.getEmail().toString(),firebaseUser.getUid(),firebaseUser.getPhotoUrl()!=null?firebaseUser.getPhotoUrl().toString():getString(R.string.fotourl_placeholder),
                                     friendsMap,cardsMap,gamesMap);
-                            databaseRef=database.getReference("Users");
+                            databaseRef=database.getReference(REF_USERS);
                             Log.d("mauthlistener","name is:"+firebaseUser.getDisplayName());
                             Log.d("mauthlistener","email is:"+firebaseUser.getEmail());
                             Log.d("mauthlistener","uid is:"+firebaseUser.getUid());
@@ -601,7 +605,7 @@ public void getUser(String mail){
 
 private void saveUserSession(String usermail,String resultTask){
 Utils utils= Utils.getInstance();
-    utils.save(this,usermail,"email");
+    utils.save(this,usermail,SHARED_EMAIL);
 
 }
 

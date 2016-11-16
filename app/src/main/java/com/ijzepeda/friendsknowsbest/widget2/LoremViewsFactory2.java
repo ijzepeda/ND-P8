@@ -74,7 +74,7 @@ public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory
     public RemoteViews getViewAt(int position) {
 
         if(Utils.getInstance().getWidgetGameList().isEmpty()){
-            Log.e("FACTORY","getviewat is utils list is empty");
+            Log.e("FACTORY","get view at is utils list is empty");
         }
         else {
             wWidgetGamesList.clear();
@@ -90,18 +90,18 @@ public class LoremViewsFactory2 implements RemoteViewsService.RemoteViewsFactory
 //        row.setTextViewText(android.R.id.text1, wWidgetGamesList.get(position).getName());
         //Complete row
         row.setTextViewText(R.id.game_name, wWidgetGamesList.get(position).getName());
-        row.setTextViewText(R.id.cardsdrawn,"cards:"+ wWidgetGamesList.get(position).getCurrentCard()+"/"+ wWidgetGamesList.get(position).getNoCards());
-        row.setTextViewText(R.id.players, "Players:"+wWidgetGamesList.get(position).getNoUsers());
+        row.setTextViewText(R.id.cardsdrawn, wWidgetGamesList.get(position).getCurrentCard()+"/"+ wWidgetGamesList.get(position).getNoCards());
+        row.setTextViewText(R.id.players, ""+wWidgetGamesList.get(position).getNoUsers());
 
 
 //        row.setTextViewText(android.R.id.text1, items[position]);
 
         Intent i=new Intent();
         Bundle extras=new Bundle();
-        extras.putParcelable(WidgetProvider2.EXTRA_WORD, wWidgetGamesList.get(position));//in order to do this, I implemented parcelable in Game object
-//        extras.putString(WidgetProvider2.EXTRA_WORD, wWidgetGamesList.get(position).getUid());
+        extras.putParcelable(WidgetProvider2.EXTRA_WIDGET_GAME, wWidgetGamesList.get(position));//in order to do this, I implemented parcelable in Game object
+//        extras.putString(WidgetProvider2.EXTRA_WIDGET_GAME, wWidgetGamesList.get(position).getUid());
 
-//        extras.putString(WidgetProvider2.EXTRA_WORD, items[position]);
+//        extras.putString(WidgetProvider2.EXTRA_WIDGET_GAME, items[position]);
         i.putExtras(extras);
 //        row.setOnClickFillInIntent(android.R.id.text1, i);
         row.setOnClickFillInIntent(R.id.widget_list_item, i);

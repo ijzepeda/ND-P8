@@ -37,6 +37,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_CARD;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_GAMES;
+import static com.ijzepeda.friendsknowsbest.Utils.CHILD_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.DEEPLINK_LOGO;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_DECK;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_GAME;
+import static com.ijzepeda.friendsknowsbest.Utils.REF_USERS;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_EMAIL;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_UID;
+import static com.ijzepeda.friendsknowsbest.Utils.SHARED_USERNAME;
+
 public class NewGame extends AppCompatActivity  implements
         GoogleApiClient.OnConnectionFailedListener {
     private static String TAG="NewGameActivity";
@@ -59,12 +70,12 @@ public class NewGame extends AppCompatActivity  implements
     User user;
 
     //GameElements
+    static String UID_GAME_CONSTRUCT_PATH="GAME_";
     int currentCard=0;
     String deckId="deck00";
-    String name;//=gameName.getText().toString();//"First Game";
+    String name;
     int noUsers=1;
     int noCards;
-//    private static int defaultNoCards=10;
     String uid="";
     boolean unlimitedCounter=true;
     Map<String,Object> userMap=new HashMap<String,Object>();
@@ -98,17 +109,17 @@ private GoogleApiClient mGoogleApiClient;
         auth= FirebaseAuth.getInstance();
         storage= FirebaseStorage.getInstance();
         // -- reference to table in database
-        databaseGameRef =database.getReference("Game");
-        databaseDeckRef =database.getReference("Deck");
-        databaseUserRef =database.getReference("Users");
+        databaseGameRef =database.getReference(REF_GAME);
+        databaseDeckRef =database.getReference(REF_DECK);
+        databaseUserRef =database.getReference(REF_USERS);
 
-        userUid=Utils.getInstance().getValue(getApplication(),"uid");
+        userUid=Utils.getInstance().getValue(getApplication(),SHARED_UID);
         userName=auth.getCurrentUser().getDisplayName();
         if(userName==null || userName.equals(null) || userName.equals("")){
-            userName=""+Utils.getInstance().getValue(getApplication(),"username");
+            userName=""+Utils.getInstance().getValue(getApplication(),SHARED_USERNAME);
         }
 
-        userEmail=Utils.getInstance().getValue(getApplication(),"email");
+        userEmail=Utils.getInstance().getValue(getApplication(),SHARED_EMAIL);
 
         if(auth.getCurrentUser().getPhotoUrl()!=null) {
 //    LOAD FROM USERS DB or sharedprefs
@@ -120,7 +131,7 @@ private GoogleApiClient mGoogleApiClient;
         String timeStamp = new SimpleDateFormat("yyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 int randomSeed=(int)(Math.random());
         deckId=deckId+timeStamp+"_"+randomSeed;
-        uid="GAME_"+timeStamp+"_"+randomSeed;
+        uid=UID_GAME_CONSTRUCT_PATH+timeStamp+"_"+randomSeed;
 //        deckId=deckId+"123";
 //        uid="GAME123";
 
@@ -195,20 +206,19 @@ public void createDeck(){
 
 //    playerOnCardMap.put(userUid,userName);// commented on 19-10:1116
     playerOnCardMap.put(userUid,userUid);
-    Log.e("Track&Delete","    playerOnCardMap.put(userUid,userName):"+userUid+", "+userName);
 //    for( i =0;i<noOfCardsInArray;i++) {
     for( i =0;i<noCards;i++) {
-         cardNo = "card" + i;
+         cardNo = CHILD_CARD + i;
          cardMap.put(cardNo, ""); //esto agrega la cardNo y el numero que tiene. esto debe ir dentro de cardNo{card:#}
          databaseDeckRef.child(deckId).updateChildren(cardMap);
-         collectionCardNoMap.put("card", randomCardOrder[i]);
-         collectionCardNoMap.put("users", "");
+         collectionCardNoMap.put(CHILD_CARD, randomCardOrder[i]);
+         collectionCardNoMap.put(CHILD_USERS, "");
          databaseDeckRef.child(deckId).child(cardNo).updateChildren(collectionCardNoMap);
-         databaseDeckRef.child(deckId).child(cardNo).child("users").updateChildren(playerOnCardMap);
+         databaseDeckRef.child(deckId).child(cardNo).child(CHILD_USERS).updateChildren(playerOnCardMap);
         //CREATE UserVote
         Log.e("Adding PLAYER","Creating blank userVote deckId:"+deckId+", userUid:"+userUid+", userName:"+userName+", cardNo"+cardNo+", userPic"+userPic);
-        UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","nomineePicUrl",false);
-        databaseDeckRef.child(deckId).child(cardNo).child("users").child(userUid).setValue(userVote);
+        UserVote userVote = new UserVote(userName, userUid, userPic, "", false, "" + "", "","",false);//"nomineePicUrl"
+        databaseDeckRef.child(deckId).child(cardNo).child(CHILD_USERS).child(userUid).setValue(userVote);
 
 
         cardMap.clear();
@@ -241,13 +251,13 @@ return uid;
 
 
     private void addGameToUser(){
-        databaseUserRef.child(userUid).child("games").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseUserRef.child(userUid).child(CHILD_GAMES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.child(uid).exists()) {
                     Map<String,Object> gamesMap=new HashMap<String, Object>();
                     gamesMap.put(uid,uid);
-                    databaseUserRef.child(userUid).child("games").updateChildren(gamesMap);
+                    databaseUserRef.child(userUid).child(CHILD_GAMES).updateChildren(gamesMap);
                 }else{
                     Toast.makeText(NewGame.this, getString(R.string.you_are_in_that_game), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(NewGame.this,LoadActivity.class);
@@ -281,12 +291,12 @@ return uid;
         Log.e("<<deeplink>>","is:"+deeplink);
         Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.add_friends_dl_main))
                 .setMessage(getString(R.string.lets_play_main))
-//                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))// WORKS!
-//https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME123
                 .setDeepLink(Uri.parse(deeplink))
-               .setCustomImage(Uri.parse("android.resource://com.ijzepeda.friendsknowsbest/mipmap/logo"))//getString(R.string.invitation_custom_image)))
-//        .setEmailSubject("You are invited to a FriendsKnowsBest game")
-//        .setEmailHtmlContent("Just click %%APPINVITE_LINK_PLACEHOLDER%% and lets play")
+                .setCustomImage(Uri.parse(DEEPLINK_LOGO))//getString(R.string.invitation_custom_image)))
+//                .setDeepLink(Uri.parse("http://ijzepeda.com/addGame/"+gameid))// WORKS!
+//                  https://r2qvt.app.goo.gl/?link=http://ijzepeda.com/&apn=com.ijzepeda.friendsknowsbest&amv=1&afl=https://play.google.com/store/apps/details?id=com.ijzepeda.fkb&al=http://ijzepeda.com/addGame/GAME123
+//              .setEmailSubject("You are invited to a FriendsKnowsBest game")
+//              .setEmailHtmlContent("Just click %%APPINVITE_LINK_PLACEHOLDER%% and lets play")
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
 

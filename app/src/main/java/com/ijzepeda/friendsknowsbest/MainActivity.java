@@ -84,8 +84,8 @@ private static String TAG="MainActivity";
             logoutBtn.setVisibility(View.GONE);
             onlineBtn.setVisibility(View.VISIBLE);
 
-            //Todo Check
-            //delete widget data
+
+            //check delete widget data
 //            Utils.getInstance().clearWidgetGamesList();//changed on 14-11
             Utils.getInstance().clearWidgetGamesList(getApplication());
 
@@ -211,7 +211,7 @@ private static String TAG="MainActivity";
 //        Utils.getInstance().clearWidgetGamesList();//changed on 14-11
         Utils.getInstance().clearWidgetGamesList(getApplication());
 //it works but triggerson receive
-//Not sure if I need this????..TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Not sure if I need this????..~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), WidgetProvider2.class));
                 WidgetProvider2 myWidget = new WidgetProvider2();
                 myWidget.onUpdate(getApplication(), AppWidgetManager.getInstance(getApplication()),ids);
@@ -262,7 +262,7 @@ private static String TAG="MainActivity";
 //                                    gamesRecyclerAdapter.notifyDataSetChanged();
 
                                     //Widget: save games to shared prefs.
-                                    //todo instead of saving them on shared prefs do it on content provider
+                                    // instead of saving them on shared prefs do it on content provider
 //                                    if (Utils.getInstance().getWidgetGameFromList(gameTemp.getUid()) == null) {
 //                                        Utils.getInstance().addGameToWidgetList(gameTemp);//CHECK : WIDGET LIST
                                         if (Utils.getInstance().getWidgetGameFromListContentProvider(gameTemp.getUid(),getApplication()) == null) {

@@ -111,7 +111,7 @@ public class Settings extends AppCompatActivity {
                                         Log.d("USER PHOTO","mFileUri IS:"+mFileUri.toString());//content://media/external/images/media/99898
                                         Map<String,Object> photoUrl=new HashMap<String, Object>();
                                         photoUrl.put("photoUrl",downloadUri.toString());
-                                        database.getReference().child("Users").child(firebaseUser.getUid()).updateChildren(photoUrl);//child("photoUrl").setValue(downloadUri.toString());//mFileUri);//TODO UPDATE NOT SETVALUE
+                                        database.getReference().child("Users").child(firebaseUser.getUid()).updateChildren(photoUrl);
                                         //Add pictureUrl to sharedPrefs
                                         Utils.getInstance().save(getApplication(),downloadUri.toString(),getString(R.string.shared_userphotourl_key));
 

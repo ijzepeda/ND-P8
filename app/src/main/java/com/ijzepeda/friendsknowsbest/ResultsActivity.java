@@ -87,7 +87,7 @@ public class ResultsActivity extends AppCompatActivity {
         //retrieveGameDetails
         currentGameID=getIntent().getStringExtra(GAME_ID);
         currentDeckID=getIntent().getStringExtra(DECK_ID);
-        currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);//Todo check this getCurrentCard());
+        currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);
         currentDeckCard=getIntent().getIntExtra(CURRENT_DECK_CARD_ID,0);
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 

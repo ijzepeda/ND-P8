@@ -81,8 +81,8 @@ public class LoadActivity extends AppCompatActivity {
         username=auth.getCurrentUser().getDisplayName();
         useruid=auth.getCurrentUser().getUid();
 
-//todo I better create a table for relation. within users add a field for CurrentGames, and store games. then using thos gameids, filetr the games to load
-        //TODO READ ALL RECORDS AND SAVE ONLY MATCH?[MORE PETITIONS LESS ACTIONS] or REQUEST MULTIPLE TIMES TO FETCH SPECIFIC RECORDS?[LESS ACTIONS BUT MORE METITIONS]
+// I better create a table for relation. within users add a field for CurrentGames, and store games. then using thos gameids, filetr the games to load
+  // READ ALL RECORDS AND SAVE ONLY MATCH?[MORE PETITIONS LESS ACTIONS] or REQUEST MULTIPLE TIMES TO FETCH SPECIFIC RECORDS?[LESS ACTIONS BUT MORE METITIONS]
 
         databaseUsersRef.child(useruid).child("games").
                 addListenerForSingleValueEvent(new ValueEventListener() {

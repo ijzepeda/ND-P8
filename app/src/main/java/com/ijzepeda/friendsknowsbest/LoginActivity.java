@@ -82,13 +82,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -302,8 +296,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         }else{
 
-                        //TODO somehow verify that if the user exists, then create/fill the user details in database
-
                             Toast.makeText(LoginActivity.this, R.string.suth_facebook_success,
                                     Toast.LENGTH_SHORT).show();
 
@@ -313,7 +305,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Map<String,Object>cardsMap=new HashMap<String, Object>();
                             Map<String,Object>gamesMap=new HashMap<String, Object>();
 
-                            //TODO DELETE HARDCODED STUFF
+                            // DELETE HARDCODED STUFF
                             friendsMap.put("Friend0","");
                             cardsMap.put("FavCard1","");
 //                            gamesMap.put("game0","GAME123");//GameUID123
@@ -326,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Log.d("mauthlistener","provider is:"+firebaseUser.getProviderId());
                             Log.d("mauthlistener","photourl is:"+firebaseUser.getPhotoUrl());
 
-//TODO if user doesnt exist, then create it
+// if user doesnt exist, then create it
                             databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -453,7 +445,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            /**TODO: THIS WAS on the base activity
+            /**: THIS WAS on the base activity
              *
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -615,12 +607,10 @@ Utils utils= Utils.getInstance();
 
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
     @Override

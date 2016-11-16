@@ -147,12 +147,12 @@ if(gameToLoad!=null){
     gameTotalCards=gameToLoad.getNoCards();
 
 }
-        
+
         //if(gameTotalCards>=0)
         isGameover();
 
 
-Log.e("GameActivity","Oncreate on  gameuid:"+currentGameID+", card:"+currentCard);//TODO CHECK BORRAR DELETE
+Log.d("GameActivity","Oncreate on  gameuid:"+currentGameID+", card:"+currentCard);// DELETE
        FirebaseUser mFirebaseUser = auth.getCurrentUser();
 
         if( mFirebaseUser==null){
@@ -231,7 +231,6 @@ return;
         Card cartita=new Card(displayCardNo++, Integer.parseInt(quote.substring(0,1)),quote,category,false);//tenia un 0,1
 //        Integer.parseInt(quote.substring(0,1));
         cards.add(cartita);
-//TODO no puedo notificar        adapter.notifyDataSetChanged();
 
     }
     public void fetchCard(){
@@ -277,9 +276,9 @@ public void loadDeck(){
 
     //-------    Players RecyclerView
     PlayersInGameRecyclerAdapter playersRecyclerAdapter;
-//    RecyclerView playersRecyclerView;//todo commented on 19-10: 1132
+//    RecyclerView playersRecyclerView;// commented on 19-10: 1132
     RecyclerView playersFromDeckRecyclerView;
-    public List<String> playersList=new ArrayList<>(); //todo commented to test user object trecyclerview 19-10
+    public List<String> playersList=new ArrayList<>(); // commented to test user object trecyclerview 19-10
     public List<UserVote> playersListFromDeck=new ArrayList<>();
 
     public void fetchPlayersFromDeck(){
@@ -296,11 +295,11 @@ public void loadDeck(){
                 databaseDeckRootRef.child(currentGame.getDeckId()).child("card"+currentCard).child("users").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        playersListFromDeck.clear();// TODO for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
+                        playersListFromDeck.clear();//  for some reason, clearing delete everything for the next steps, but removing this line, will duplicate users[momentarily]
                         totalUsers=(int)dataSnapshot.getChildrenCount();
                         for(DataSnapshot childSnapshot:dataSnapshot.getChildren()){
                             UserVote userToRecyclerView=childSnapshot.getValue(UserVote.class);  //CREO QUE ya: mando el uservote, pero debo llenarle los datos de nominee
-                            playersListFromDeck.add(userToRecyclerView); //todo commented to test user object trecyclerview 19-10
+                            playersListFromDeck.add(userToRecyclerView); // commented to test user object trecyclerview 19-10
                             playersRecyclerAdapter.notifyDataSetChanged();
                         }
                         //Having players fetched continue
@@ -340,7 +339,7 @@ public void loadDeck(){
    public void selectedPlayer(final String selectedPlayer,final String selectedPlayerUID,final String selectedPlayerPHOTOURL){
 //        commentTextView.setInputType(InputType.TYPE_CLASS_TEXT);
 //        commentTextView.setFocusable(true);
-       //TODO ~~~~ Error aqui , no esta recibiendo valores!!!
+       // ~~~~ Error aqui , no esta recibiendo valores!!!
        commentTextView.setHint(getString(R.string.why_would_you_vote_him)+selectedPlayer);
 //       sendBtn.setClickable(false);
        sendBtn.setClickable(true);
@@ -469,12 +468,12 @@ public void showResult(){
         getWindow().setExitTransition(new Explode());
     }
 
-    startActivity(intent);///todo not enble to debug
+    startActivity(intent);
     finish();
 
 }
 
-    //todo
+    //
     //Fill Widget Data!
     public void fillWidgetData(){
 

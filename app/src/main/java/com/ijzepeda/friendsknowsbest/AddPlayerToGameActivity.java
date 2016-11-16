@@ -136,9 +136,9 @@ public class AddPlayerToGameActivity extends AppCompatActivity implements
 
                                     Log.d("~~~~AddGame","removing base I got gameid:"+gameId);
 
-//TODO------------------------------------------------------------------------------------------------------------------
-                                    //todo Alert and accept to add to game:
-                                    //TODO if user is already in the game take him directly to GameActivity(gameId)
+//------------------------------------------------------------------------------------------------------------------
+                                    // Alert and accept to add to game:
+                                    // if user is already in the game take him directly to GameActivity(gameId)
                                     //If i dont block to add the same user again , his messages will be deleted [i guess]
                                     //verify on user.game, becaus ehe might want to be added again, if left
                                     databaseUsersRef.child(userUid).child("games").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -241,7 +241,7 @@ databaseGameRef.child(gameId).child("noUsers").addListenerForSingleValueEvent(ne
         databaseGameRef.child(gameId).child("currentCard").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                currentCard=Integer.parseInt(dataSnapshot.getValue().toString());//todo added on 161016-1411
+                currentCard=Integer.parseInt(dataSnapshot.getValue().toString());// added on 161016-1411
             }
 
             @Override

@@ -151,7 +151,7 @@ uid=Utils.getInstance().getValue(getApplication(),"uid");
                         friendsMap,cardsMap,gamesMap);
                 databaseRef=database.getReference("Users");
 
-                //TODO KEY CANT BE AN EMAIL!
+                // KEY CANT BE AN EMAIL!
                 Map<String,Object> map=new HashMap<String,Object>();
                 map.put(firebaseUser.getUid(),"");
                 databaseRef.updateChildren(map);

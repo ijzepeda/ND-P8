@@ -161,7 +161,8 @@ public void createDeck(){
     //i was about to put the card text in the back end, BUT
     //i need them for offline
     //also if users have different language, they only will read what is online
-//TODO steps
+
+// steps
     //generate deckID  - unique value-> gameID?
 //get length of chosen array: category_romantic so far
     //create a MAP within a FOR add the cards number, for order [so RANDOM]
@@ -178,7 +179,7 @@ public void createDeck(){
     Map<String,Object> cardMap=new HashMap<String,Object>();//Number of card in Deck
     Map<String,Object> collectionCardNoMap=new HashMap<String,Object>();//number of card within collection
     Map<String,Object> playerOnCardMap=new HashMap<String,Object>();//number of card within collection
-    String [] cards=getResources().getStringArray(R.array.category_romantic);//TODO Verifica esto!
+    String [] cards=getResources().getStringArray(R.array.category_romantic);// Verifica esto!
     int noOfCardsInArray=cards.length;
 
     Integer[] randomCardOrder = new Integer[noOfCardsInArray];
@@ -189,18 +190,10 @@ public void createDeck(){
 
 //OnlineCard
 
-    //todo este codigo semifunciona, genera las cards# pero solo al ultimo le pone los childs
      String cardNo;
 //    playerOnCardMap.put(userName,userEmail);
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-    //TODO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ hacer solo (userUID,"") como objeto, y dentro ponerle los valores de nombre, fotoURL, votado, mensaje y etc etc
-//    playerOnCardMap.put(userUid,userName);//todo commented on 19-10:1116
+
+//    playerOnCardMap.put(userUid,userName);// commented on 19-10:1116
     playerOnCardMap.put(userUid,userUid);
     Log.e("Track&Delete","    playerOnCardMap.put(userUid,userName):"+userUid+", "+userName);
 //    for( i =0;i<noOfCardsInArray;i++) {
@@ -221,14 +214,6 @@ public void createDeck(){
         cardMap.clear();
          collectionCardNoMap.clear();
      }
-//    databaseDeckRef.child(deckId).child("card9").child("users").updateChildren(playerOnCardMap);//la puse y funciono!
-
-//    databaseDeckRef.child(deckId).setValue(cardMap);
-//    databaseGameRef.child("GAME"+i).setValue(gameObject);
-//Updatechildren, no borra
-//    children.children. accesa directo a un record
-
-//TODO Update game values, such as: noCARDS or name, if user change it from invite to send. BLOCK
 }
 
 

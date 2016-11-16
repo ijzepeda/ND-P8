@@ -11,7 +11,7 @@ public class OnlineDeck {
 //    Map<String,Object> userVotes;//=new HAshMap<String,Object>(); users.put("users",""); root.updateChildren(users)
 //    Map<String,Object> card;//>>CollectionCardNo[from Collection]
     Map<String,Map<String,Object>> card;
-//TODO: CARD will be serialized in order to be shown, it will be made of CollectionCardNumber, and UserVotes
+// CARD will be serialized in order to be shown, it will be made of CollectionCardNumber, and UserVotes
     public OnlineDeck() {
     }
 

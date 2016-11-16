@@ -136,6 +136,8 @@ int currentDeckCard;
         currentCard=getIntent().getIntExtra(CURRENT_CARD_ID,0);// check this getCurrentCard());
         gameTotalCards=getIntent().getIntExtra(TOTAL_CARDS_ID, (getResources().getStringArray(R.array.category_romantic)).length);//tdod CHECk it may cause a problem if this value is different, but still no probaility to fetch null number
 
+
+
 //retrievegameDetailsFromWidget
         Game gameToLoad=getIntent().getParcelableExtra(WidgetProvider2.EXTRA_WORD);
 if(gameToLoad!=null){
@@ -145,6 +147,7 @@ if(gameToLoad!=null){
     gameTotalCards=gameToLoad.getNoCards();
 
 }
+        
         //if(gameTotalCards>=0)
         isGameover();
 

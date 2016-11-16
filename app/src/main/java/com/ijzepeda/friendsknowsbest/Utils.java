@@ -67,7 +67,7 @@ public class Utils {
         widgetGameList.clear();
 
         //content provider clear
-        Uri games=Uri.parse(Utils.CONTENT_URL);
+        Uri games=Uri.parse(Utils.CONTENT_URL+"/games");
         int count= context.getContentResolver().delete(games,null,null);
 
     }

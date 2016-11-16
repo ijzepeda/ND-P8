@@ -145,4 +145,18 @@ public class Game implements Parcelable {
         parcel.writeString(uid);
         parcel.writeByte((byte) (unlimitedCounter ? 1 : 0));
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "currentCard=" + currentCard +
+                ", deckId='" + deckId + '\'' +
+                ", name='" + name + '\'' +
+                ", noUsers=" + noUsers +
+                ", noCards=" + noCards +
+                ", uid='" + uid + '\'' +
+                ", unlimitedCounter=" + unlimitedCounter +
+                ", users=" + users +
+                '}';
+    }
 }

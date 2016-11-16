@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ private static String GAME_ID="game_id";
     private static String DECK_ID="deck_id";
     private static String CURRENT_CARD_ID="current_card_id";
     private static String TOTAL_CARDS_ID="total_card_id";
+    private static String DRAWN_CARDS="drawn_cards";
 
     Game game;
 
@@ -55,6 +57,7 @@ private static String GAME_ID="game_id";
         holder.deckIdTV.setText(game.getDeckId());
         holder.gameidTV.setText(game.getUid());
         holder.gameidTV.setVisibility(View.GONE);
+        holder.gameidTV.setVisibility(View.VISIBLE);
 
 
         String cardDrawn=game.getCurrentCard()+"/"+game.getNoCards();
@@ -75,6 +78,7 @@ private static String GAME_ID="game_id";
 TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
         ImageButton deleteGameBtn;
         Context context;
+        int currentCard,totalCards;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -89,20 +93,28 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
 //            itemView.setOnClickListener(this);
             context =itemView.getContext();
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    game=gamesList.get(getAdapterPosition());
                     Intent gameIntent = new Intent(context, GameActivity.class);
                     gameIntent.putExtra(GAME_ID, gameidTV.getText());
                     gameIntent.putExtra(DECK_ID,  deckIdTV.getText()+"");
                     gameIntent.putExtra(CURRENT_CARD_ID,  game.getCurrentCard());
                     gameIntent.putExtra(TOTAL_CARDS_ID,  game.getNoCards());
+                    gameIntent.putExtra(DRAWN_CARDS,  game.getNoCards());
 
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//closing next activity
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);//
                     gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
-
+                    Log.e("Game Adapter","~~~~~~~~~~~~~~~~~~ERROR CON las tarjetas:");
+                    Log.e("Game Adapter","CURRENT_CARD_ID:"+game.getCurrentCard());
+                    Log.e("Game Adapter","gameTotalCards:"+game.getNoCards());
+                    Log.e("Game Adapter","gameid:"+gameidTV.getText());
+                    Log.e("gameadapter","en viewholder gamobj cambio de valor a:"+game.toString());
                     context.startActivity(gameIntent);
                 }
             });
@@ -112,10 +124,12 @@ TextView gameidTV,deckIdTV,gameNameTV,cardsDrawn, noUsersTV;
                 public void onClick(View view) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle (context.getString(R.string.leave_game))
-                            .setMessage (context.getString(R.string.are_you_sure) + String.valueOf(getAdapterPosition()))
+                            // + String.valueOf(getAdapterPosition())
+                            .setMessage (context.getString(R.string.are_you_sure))
                             .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    //firebase.child(id).removeValue();
                                 }
                             })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

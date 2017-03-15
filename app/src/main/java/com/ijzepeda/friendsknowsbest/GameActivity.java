@@ -138,7 +138,7 @@ int currentDeckCard;
         auth=FirebaseAuth.getInstance();
         storage=FirebaseStorage.getInstance();
         databaseGameRef =database.getReference(REF_GAME);
-        databaseDeckRootRef =database.getReference(REF_GAME);
+        databaseDeckRootRef =database.getReference(REF_DECK);//150317 - was REF_GAME, never found the route, therefore crash
 
 
         //retrieveGameDetails

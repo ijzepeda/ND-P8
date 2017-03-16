@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class com.squareup.** { *; }
+-dontwarn com.squareup.**
+-keep public class Store {}
